@@ -1,0 +1,89 @@
+# NZZ.ch Article Scraper
+
+Scraper for extracting articles from https://www.nzz.ch/neueste-artikel
+
+## Setup
+
+1. **Install dependencies:**
+   ```bash
+   pip install -r ../requirements.txt
+   ```
+
+## Running the Scraper
+
+### Basic Usage
+
+```bash
+python run_scraper.py
+```
+
+## Viewing Scraped Articles
+
+### DataFrame View (Recommended)
+
+```bash
+# Show all articles
+python view_articles.py df
+
+# Show first 10 articles
+python view_articles.py df --limit 10
+
+# Show specific article
+python view_articles.py df --id article-id-here
+
+# Search articles
+python view_articles.py df --search "wirtschaft"
+```
+
+The DataFrame view shows:
+- **Total articles**: Number of articles in database
+- **Number of datapoints**: Number of articles displayed
+- **Number of columns**: Number of columns (11)
+- **All columns**: ID, Title, URL, Category, Author, Tags, Description, Published, Updated, Scraped At, **Content Length** (instead of content)
+
+### Detailed View
+
+```bash
+# View all articles in detail
+python view_articles.py view
+
+# View first 5 articles
+python view_articles.py view --limit 5
+
+# View specific article
+python view_articles.py view --id article-id-here
+```
+
+### Summary View
+
+```bash
+python view_articles.py list
+```
+
+## Tag Extraction (3 Steps)
+
+1. **Step 1: Extract tags from `news_keywords` meta tag**
+   - Splits comma-separated keywords from the `news_keywords` meta tag
+
+2. **Step 2: Filter out generic keywords**
+   - Removes: `Nachrichten`, `NZZ`, `News`, `Article`
+
+3. **Step 3: Extract category from URL path**
+   - Extracts category from URL structure (e.g., `/zuerich/`, `/wirtschaft/`, `/international/`)
+
+## Features
+
+- Extracts articles from neueste-artikel page
+- Extracts tags from news_keywords meta tag (filtered)
+- Extracts category from URL path
+- Extracts author, description, dates
+- Rate limiting and retry logic
+- No login required
+
+## Database
+
+Articles are stored in `nzz_scraped_articles.db` SQLite database.
+
+## Logs
+
+Check `nzz_scraper.log` for detailed operation logs.
