@@ -1,0 +1,3432 @@
+[
+  {
+    "id": 1,
+    "article_id": "1764342",
+    "related_article_id": "1765585",
+    "related_article_url": "https://www.nzz.ch/feuilleton/schweizer-hochschulen-antisemitische-tweets-und-viel-solidaritaet-mit-palaestina-ld.1765585",
+    "created_at": "2025-11-10T11:57:32.145713"
+  },
+  {
+    "id": 2,
+    "article_id": "1764342",
+    "related_article_id": "1762332",
+    "related_article_url": "https://www.nzz.ch/feuilleton/shai-davidai-columbia-harvard-hamas-terror-studenten-ld.1762332",
+    "created_at": "2025-11-10T11:57:32.169027"
+  },
+  {
+    "id": 3,
+    "article_id": "1764342",
+    "related_article_id": "1761502",
+    "related_article_url": "https://www.nzz.ch/feuilleton/studentische-hamas-fans-die-den-progrom-feiern-ld.1761502",
+    "created_at": "2025-11-10T11:57:32.174215"
+  },
+  {
+    "id": 4,
+    "article_id": "1906060",
+    "related_article_id": "1905290",
+    "related_article_url": "https://www.nzz.ch/international/terrorattacke-auf-synagoge-in-manchester-ld.1905290",
+    "created_at": "2025-11-10T11:59:43.301475"
+  },
+  {
+    "id": 5,
+    "article_id": "1906060",
+    "related_article_id": "1905501",
+    "related_article_url": "https://www.nzz.ch/international/eines-der-todesopfer-in-manchester-ist-von-der-polizei-erschossen-worden-ld.1905501",
+    "created_at": "2025-11-10T11:59:43.309434"
+  },
+  {
+    "id": 6,
+    "article_id": "1906060",
+    "related_article_id": "1850912",
+    "related_article_url": "https://www.nzz.ch/international/7-oktober-2023-hamas-ueberfall-loest-antisemitismus-welle-in-europa-aus-ld.1850912",
+    "created_at": "2025-11-10T11:59:43.314170"
+  },
+  {
+    "id": 7,
+    "article_id": "1900909",
+    "related_article_id": "1898033",
+    "related_article_url": "https://www.nzz.ch/feuilleton/jk-rowling-zerlegt-sturgeons-memoiren-streit-um-frauenrechte-ld.1898033",
+    "created_at": "2025-11-10T11:59:46.374270"
+  },
+  {
+    "id": 8,
+    "article_id": "1900909",
+    "related_article_id": "1844429",
+    "related_article_url": "https://www.nzz.ch/feuilleton/jk-rowlings-kampf-zwischen-feminismus-und-fan-protesten-ld.1844429",
+    "created_at": "2025-11-10T11:59:46.379655"
+  },
+  {
+    "id": 9,
+    "article_id": "1900909",
+    "related_article_id": "1863736",
+    "related_article_url": "https://www.nzz.ch/international/nach-magdeburg-musk-nennt-afd-einzige-hoffnung-breton-antwortet-mit-vorwurf-ld.1863736",
+    "created_at": "2025-11-10T11:59:46.385058"
+  },
+  {
+    "id": 10,
+    "article_id": "1765585",
+    "related_article_id": "1764635",
+    "related_article_url": "https://www.nzz.ch/feuilleton/philosophy-for-palestine-wenn-philosophen-zu-agitatoren-werden-ld.1764635",
+    "created_at": "2025-11-10T12:00:05.823256"
+  },
+  {
+    "id": 11,
+    "article_id": "1765585",
+    "related_article_id": "1761502",
+    "related_article_url": "https://www.nzz.ch/feuilleton/studentische-hamas-fans-die-den-progrom-feiern-ld.1761502",
+    "created_at": "2025-11-10T12:00:05.830858"
+  },
+  {
+    "id": 12,
+    "article_id": "1765585",
+    "related_article_id": "1761644",
+    "related_article_url": "https://www.nzz.ch/international/us-universitaeten-der-woke-diskurs-umgarnt-minderheiten-grenzt-aber-juden-aus-ld.1761644",
+    "created_at": "2025-11-10T12:00:05.834889"
+  },
+  {
+    "id": 13,
+    "article_id": "1762332",
+    "related_article_id": "1761991",
+    "related_article_url": "https://www.nzz.ch/feuilleton/hamas-ist-von-hitler-inspiriert-ld.1761991",
+    "created_at": "2025-11-10T12:00:09.929463"
+  },
+  {
+    "id": 14,
+    "article_id": "1762332",
+    "related_article_id": "1761644",
+    "related_article_url": "https://www.nzz.ch/international/us-universitaeten-der-woke-diskurs-umgarnt-minderheiten-grenzt-aber-juden-aus-ld.1761644",
+    "created_at": "2025-11-10T12:00:09.952799"
+  },
+  {
+    "id": 15,
+    "article_id": "1762332",
+    "related_article_id": "1754543",
+    "related_article_url": "https://www.nzz.ch/feuilleton/richard-malka-anwalt-charlie-hebdo-terror-paris-karikaturen-ld.1754543",
+    "created_at": "2025-11-10T12:00:09.957844"
+  },
+  {
+    "id": 16,
+    "article_id": "1761502",
+    "related_article_id": "1759944",
+    "related_article_url": "https://www.nzz.ch/feuilleton/angriff-auf-israel-die-hamas-macht-kein-hehl-aus-ihren-bestialischen-motiven-ld.1759944",
+    "created_at": "2025-11-10T12:00:12.772090"
+  },
+  {
+    "id": 17,
+    "article_id": "1761502",
+    "related_article_id": "1761337",
+    "related_article_url": "https://www.nzz.ch/feuilleton/der-slowenische-philosoph-slavoj-zizek-hat-mit-seiner-rede-bei-der-eroeffnungsfeier-an-der-frankfurter-buchmesse-einen-aufruhr-ausgeloest-ld.1761337",
+    "created_at": "2025-11-10T12:00:12.777419"
+  },
+  {
+    "id": 18,
+    "article_id": "1761502",
+    "related_article_id": "1760344",
+    "related_article_url": "https://www.nzz.ch/feuilleton/ich-werde-von-israelhasser-rausgejagt-sagt-medienkuenstler-michael-bielicky-ld.1760344",
+    "created_at": "2025-11-10T12:00:12.781663"
+  },
+  {
+    "id": 19,
+    "article_id": "1905290",
+    "related_article_id": "1904376",
+    "related_article_url": "https://www.nzz.ch/international/cancel-culture-in-deutschland-michel-friedman-diskutiert-mit-buergern-in-kluetz-ld.1904376",
+    "created_at": "2025-11-10T12:00:15.468124"
+  },
+  {
+    "id": 20,
+    "article_id": "1905290",
+    "related_article_id": "1903543",
+    "related_article_url": "https://www.nzz.ch/feuilleton/in-muenchen-wurde-die-letzte-erhaltene-vorkriegssynagoge-vor-dem-verfall-gerettet-bei-der-eroeffnung-kaempfte-bundeskanzler-merz-mit-seinen-gefuehlen-ld.1903543",
+    "created_at": "2025-11-10T12:00:15.473027"
+  },
+  {
+    "id": 21,
+    "article_id": "1905290",
+    "related_article_id": "1903736",
+    "related_article_url": "https://www.nzz.ch/feuilleton/antisemitismus-sickert-in-die-europaeische-gesellschaft-ein-ld.1903736",
+    "created_at": "2025-11-10T12:00:15.478206"
+  },
+  {
+    "id": 22,
+    "article_id": "1905501",
+    "related_article_id": "1905290",
+    "related_article_url": "https://www.nzz.ch/international/terrorattacke-auf-synagoge-in-manchester-ld.1905290",
+    "created_at": "2025-11-10T12:00:26.123402"
+  },
+  {
+    "id": 23,
+    "article_id": "1905501",
+    "related_article_id": "1887209",
+    "related_article_url": "https://www.nzz.ch/international/brandsaetze-gegen-einen-juedischen-gedenkmarsch-in-boulder-demonstranten-wollten-an-die-gewaltopfer-erinnern-und-wurden-selbst-angegriffen-ld.1887209",
+    "created_at": "2025-11-10T12:00:26.128753"
+  },
+  {
+    "id": 24,
+    "article_id": "1905501",
+    "related_article_id": "1903970",
+    "related_article_url": "https://www.nzz.ch/international/immigration-waere-eine-gute-sache-wenn-sie-langsam-vor-sich-ginge-warum-mehr-als-die-haelfte-der-briten-unzufrieden-ist-mit-der-einwanderungspolitik-ld.1903970",
+    "created_at": "2025-11-10T12:00:26.132623"
+  },
+  {
+    "id": 25,
+    "article_id": "1850912",
+    "related_article_id": "1841273",
+    "related_article_url": "https://www.nzz.ch/feuilleton/antisemitismus-an-deutschen-unis-nicht-einmal-mehr-ein-hauch-von-gegenwehr-ld.1841273",
+    "created_at": "2025-11-10T12:00:28.485752"
+  },
+  {
+    "id": 26,
+    "article_id": "1850912",
+    "related_article_id": "1835969",
+    "related_article_url": "https://www.nzz.ch/international/frankreich-schock-nach-vergewaltigung-mit-antisemitischem-motiv-ld.1835969",
+    "created_at": "2025-11-10T12:00:28.490102"
+  },
+  {
+    "id": 27,
+    "article_id": "1850912",
+    "related_article_id": "1820113",
+    "related_article_url": "https://www.nzz.ch/international/antisemitismus-und-wuetende-muslime-nachwahl-wirft-licht-auf-labours-probleme-ld.1820113",
+    "created_at": "2025-11-10T12:00:28.497437"
+  },
+  {
+    "id": 28,
+    "article_id": "1898033",
+    "related_article_id": "1844429",
+    "related_article_url": "https://www.nzz.ch/feuilleton/jk-rowlings-kampf-zwischen-feminismus-und-fan-protesten-ld.1844429",
+    "created_at": "2025-11-10T12:00:31.273537"
+  },
+  {
+    "id": 29,
+    "article_id": "1898033",
+    "related_article_id": "1879688",
+    "related_article_url": "https://www.nzz.ch/feuilleton/valerie-wilms-ueber-ihre-transsexualitaet-und-die-gender-ideologie-ld.1879688",
+    "created_at": "2025-11-10T12:00:31.296112"
+  },
+  {
+    "id": 30,
+    "article_id": "1898033",
+    "related_article_id": "1561475",
+    "related_article_url": "https://www.nzz.ch/feuilleton/shitstorm-gegen-j-k-rowling-zetern-ist-leichter-als-hinhoeren-ld.1561475",
+    "created_at": "2025-11-10T12:00:31.298746"
+  },
+  {
+    "id": 31,
+    "article_id": "1844429",
+    "related_article_id": "1726972",
+    "related_article_url": "https://www.nzz.ch/feuilleton/j-k-rowling-podcast-ld.1726972",
+    "created_at": "2025-11-10T12:00:35.224495"
+  },
+  {
+    "id": 32,
+    "article_id": "1844429",
+    "related_article_id": "1684295",
+    "related_article_url": "https://www.nzz.ch/feuilleton/jedes-kind-auf-der-welt-wird-seinen-namen-kennen-25-jahre-nach-erscheinen-des-ersten-bandes-ist-harry-potter-noch-immer-ein-phaenomenaler-erfolg-wie-kam-es-dazu-ld.1684295",
+    "created_at": "2025-11-10T12:00:35.229107"
+  },
+  {
+    "id": 33,
+    "article_id": "1844429",
+    "related_article_id": "1729276",
+    "related_article_url": "https://www.nzz.ch/feuilleton/rowling-interviewerin-megan-phelps-roper-hass-war-ihre-heimat-ld.1729276",
+    "created_at": "2025-11-10T12:00:35.234429"
+  },
+  {
+    "id": 34,
+    "article_id": "1863736",
+    "related_article_id": "1858665",
+    "related_article_url": "https://www.nzz.ch/feuilleton/twitter-x-elon-musk-fc-sankt-pauli-werder-bremen-guardian-stephen-king-robert-habeck-ld.1858665",
+    "created_at": "2025-11-10T12:00:37.092998"
+  },
+  {
+    "id": 35,
+    "article_id": "1863736",
+    "related_article_id": "1862698",
+    "related_article_url": "https://www.nzz.ch/feuilleton/elon-musk-und-das-tesla-dilemma-naehe-zu-trump-beschaemt-fahrer-ld.1862698",
+    "created_at": "2025-11-10T12:00:37.092998"
+  },
+  {
+    "id": 36,
+    "article_id": "1863736",
+    "related_article_id": "1853985",
+    "related_article_url": "https://www.nzz.ch/international/elon-musk-trump-und-der-spiegel-tesla-chef-wehrt-sich-gegen-staatsfeind-montage-ld.1853985",
+    "created_at": "2025-11-10T12:00:37.092998"
+  },
+  {
+    "id": 37,
+    "article_id": "1561475",
+    "related_article_id": "1543749",
+    "related_article_url": "https://www.nzz.ch/feuilleton/gender-die-sache-ist-kompliziert-oder-viel-einfach-als-gedacht-ld.1543749",
+    "created_at": "2025-11-10T12:09:18.845489"
+  },
+  {
+    "id": 38,
+    "article_id": "1561475",
+    "related_article_id": "1560568",
+    "related_article_url": "https://www.nzz.ch/international/grossbritannien-kulturkampf-um-das-verlorene-empire-ld.1560568",
+    "created_at": "2025-11-10T12:09:18.851951"
+  },
+  {
+    "id": 39,
+    "article_id": "1887209",
+    "related_article_id": "1885755",
+    "related_article_url": "https://www.nzz.ch/international/attentaeter-ermordet-ein-junges-paar-vor-dem-juedischen-museum-in-washington-ld.1885755",
+    "created_at": "2025-11-10T12:09:25.153613"
+  },
+  {
+    "id": 40,
+    "article_id": "1887209",
+    "related_article_id": "1823875",
+    "related_article_url": "https://www.nzz.ch/meinung/antisemitismus-wer-ihn-bekaempfen-will-muss-seine-varianten-kennen-ld.1823875",
+    "created_at": "2025-11-10T12:09:25.176827"
+  },
+  {
+    "id": 41,
+    "article_id": "1887209",
+    "related_article_id": "1765981",
+    "related_article_url": "https://www.nzz.ch/international/harvard-israel-und-hamas-hochspannung-auf-dem-campus-ld.1765981",
+    "created_at": "2025-11-10T12:09:25.182114"
+  },
+  {
+    "id": 42,
+    "article_id": "1887209",
+    "related_article_id": "1877608",
+    "related_article_url": "https://www.nzz.ch/international/mahmoud-khalil-zeigte-an-pro-palaestinensischen-protesten-an-der-columbia-universitaet-sein-gesicht-nun-sitzt-er-in-ausschaffungshaft-in-louisiana-ld.1877608",
+    "created_at": "2025-11-10T12:09:25.185331"
+  },
+  {
+    "id": 43,
+    "article_id": "1841273",
+    "related_article_id": "1839569",
+    "related_article_url": "https://www.nzz.ch/feuilleton/die-nazis-fanden-ihr-heil-in-nahost-ld.1839569",
+    "created_at": "2025-11-10T12:09:26.798802"
+  },
+  {
+    "id": 44,
+    "article_id": "1841273",
+    "related_article_id": "1836712",
+    "related_article_url": "https://www.nzz.ch/feuilleton/antisemitismus-existiert-seit-der-antike-was-ist-die-wurzel-des-judenhasses-ld.1836712",
+    "created_at": "2025-11-10T12:09:26.820417"
+  },
+  {
+    "id": 45,
+    "article_id": "1841273",
+    "related_article_id": "1832679",
+    "related_article_url": "https://www.nzz.ch/international/tu-praesidentin-geraldine-rauch-antisemitismus-ja-aber-ruecktritt-nein-ld.1832679",
+    "created_at": "2025-11-10T12:09:26.824421"
+  },
+  {
+    "id": 46,
+    "article_id": "1726972",
+    "related_article_id": "1684295",
+    "related_article_url": "https://www.nzz.ch/feuilleton/jedes-kind-auf-der-welt-wird-seinen-namen-kennen-25-jahre-nach-erscheinen-des-ersten-bandes-ist-harry-potter-noch-immer-ein-phaenomenaler-erfolg-wie-kam-es-dazu-ld.1684295",
+    "created_at": "2025-11-10T12:09:29.262479"
+  },
+  {
+    "id": 47,
+    "article_id": "1726972",
+    "related_article_id": "1726177",
+    "related_article_url": "https://www.nzz.ch/panorama/harry-potter-spiel-hogwarts-legacy-stuermt-die-gaming-charts-ld.1726177",
+    "created_at": "2025-11-10T12:09:29.285266"
+  },
+  {
+    "id": 48,
+    "article_id": "1726972",
+    "related_article_id": "1700857",
+    "related_article_url": "https://www.nzz.ch/feuilleton/rowlings-rache-ld.1700857",
+    "created_at": "2025-11-10T12:09:29.289299"
+  },
+  {
+    "id": 49,
+    "article_id": "1903970",
+    "related_article_id": "1902394",
+    "related_article_url": "https://www.nzz.ch/international/mehr-als-100-000-menschen-bei-rechter-demo-in-london-ld.1902394",
+    "created_at": "2025-11-10T12:09:32.561951"
+  },
+  {
+    "id": 50,
+    "article_id": "1903970",
+    "related_article_id": "1896762",
+    "related_article_url": "https://www.nzz.ch/international/die-proteste-rund-um-die-asylpolitik-erreichen-das-zentrum-von-london-ld.1896762",
+    "created_at": "2025-11-10T12:09:32.566457"
+  },
+  {
+    "id": 51,
+    "article_id": "1903970",
+    "related_article_id": "1898216",
+    "related_article_url": "https://www.nzz.ch/podcast/asylhotels-in-grossbritannien-bei-protesten-vor-ihren-tueren-zeigt-sich-die-spaltung-der-gesellschaft-ld.1898216",
+    "created_at": "2025-11-10T12:09:32.570532"
+  },
+  {
+    "id": 52,
+    "article_id": "1903970",
+    "related_article_id": "1883911",
+    "related_article_url": "https://www.nzz.ch/international/labour-und-migration-keir-starmer-will-brexit-versprechen-umsetzen-ld.1883911",
+    "created_at": "2025-11-10T12:09:32.574825"
+  },
+  {
+    "id": 53,
+    "article_id": "1761644",
+    "related_article_id": "1713014",
+    "related_article_url": "https://www.nzz.ch/international/ethnologie-kongress-seattle-woker-zeitgeist-und-wissenschaft-ld.1713014",
+    "created_at": "2025-11-10T12:09:35.270462"
+  },
+  {
+    "id": 54,
+    "article_id": "1761644",
+    "related_article_id": "1721805",
+    "related_article_url": "https://www.nzz.ch/international/wokeness-und-wissenschaft-interview-mit-dem-soziologen-langlitz-ld.1721805",
+    "created_at": "2025-11-10T12:09:35.292981"
+  },
+  {
+    "id": 55,
+    "article_id": "1761644",
+    "related_article_id": "1760314",
+    "related_article_url": "https://www.nzz.ch/meinung/harvard-studenten-nuetzliche-idioten-fuer-die-hamas-ld.1760314",
+    "created_at": "2025-11-10T12:09:35.297074"
+  },
+  {
+    "id": 56,
+    "article_id": "1761644",
+    "related_article_id": "1761502",
+    "related_article_url": "https://www.nzz.ch/feuilleton/studentische-hamas-fans-die-den-progrom-feiern-ld.1761502",
+    "created_at": "2025-11-10T12:09:35.301132"
+  },
+  {
+    "id": 57,
+    "article_id": "1761644",
+    "related_article_id": "1328681",
+    "related_article_url": "https://www.nzz.ch/meinung/postkoloniales-schwarz-weiss-denken-ld.1328681",
+    "created_at": "2025-11-10T12:09:35.304929"
+  },
+  {
+    "id": 58,
+    "article_id": "1904376",
+    "related_article_id": "1903719",
+    "related_article_url": "https://www.nzz.ch/feuilleton/michel-friedman-wird-in-mecklenburg-wieder-ausgeladen-ld.1903719",
+    "created_at": "2025-11-10T12:09:42.855309"
+  },
+  {
+    "id": 59,
+    "article_id": "1904376",
+    "related_article_id": "1706529",
+    "related_article_url": "https://www.nzz.ch/feuilleton/fremd-michel-friedman-sagt-was-jude-sein-in-deutschland-heisst-ld.1706529",
+    "created_at": "2025-11-10T12:09:42.889608"
+  },
+  {
+    "id": 60,
+    "article_id": "1904376",
+    "related_article_id": "1630964",
+    "related_article_url": "https://www.nzz.ch/feuilleton/michel-friedman-plaediert-fuer-eine-leidenschaftliche-streitkultur-ld.1630964",
+    "created_at": "2025-11-10T12:09:42.893704"
+  },
+  {
+    "id": 61,
+    "article_id": "1759944",
+    "related_article_id": "1759194",
+    "related_article_url": "https://www.nzz.ch/international/jom-kippur-krieg-vor-50-jahren-als-israels-existenz-am-seidenen-faden-hing-ld.1759194",
+    "created_at": "2025-11-10T12:09:44.821227"
+  },
+  {
+    "id": 62,
+    "article_id": "1759944",
+    "related_article_id": "1759810",
+    "related_article_url": "https://www.nzz.ch/international/israel-und-die-hamas-wie-der-gazastreifen-zum-chronischen-krisenherd-wurde-ld.1759810",
+    "created_at": "2025-11-10T12:09:44.827091"
+  },
+  {
+    "id": 63,
+    "article_id": "1759944",
+    "related_article_id": "1759917",
+    "related_article_url": "https://www.nzz.ch/international/nahost-schock-entsetzen-und-der-wunsch-nach-rache-in-israel-ld.1759917",
+    "created_at": "2025-11-10T12:09:44.833727"
+  },
+  {
+    "id": 64,
+    "article_id": "1759944",
+    "related_article_id": "1759996",
+    "related_article_url": "https://www.nzz.ch/international/israel-wie-in-der-negev-wueste-ein-festival-im-massaker-endete-ld.1759996",
+    "created_at": "2025-11-10T12:09:44.835934"
+  },
+  {
+    "id": 65,
+    "article_id": "1862698",
+    "related_article_id": "1858665",
+    "related_article_url": "https://www.nzz.ch/feuilleton/twitter-x-elon-musk-fc-sankt-pauli-werder-bremen-guardian-stephen-king-robert-habeck-ld.1858665",
+    "created_at": "2025-11-10T12:09:47.900203"
+  },
+  {
+    "id": 66,
+    "article_id": "1862698",
+    "related_article_id": "1857980",
+    "related_article_url": "https://www.nzz.ch/feuilleton/donald-trump-und-elon-musk-eine-bromance-im-weissen-haus-ld.1857980",
+    "created_at": "2025-11-10T12:09:47.922405"
+  },
+  {
+    "id": 67,
+    "article_id": "1862698",
+    "related_article_id": "1832586",
+    "related_article_url": "https://www.nzz.ch/feuilleton/cybertruck-elon-musks-antithese-zu-allem-was-autodesigner-geschaffen-haben-ld.1832586",
+    "created_at": "2025-11-10T12:09:47.925408"
+  },
+  {
+    "id": 68,
+    "article_id": "1903736",
+    "related_article_id": "1762176",
+    "related_article_url": "https://www.nzz.ch/feuilleton/islamischer-antisemitismus-frankreich-terror-charlie-ilan-halimi-ld.1762176",
+    "created_at": "2025-11-10T12:09:50.755521"
+  },
+  {
+    "id": 69,
+    "article_id": "1903736",
+    "related_article_id": "1903529",
+    "related_article_url": "https://www.nzz.ch/international/frankreich-und-grossbritannien-erkennen-palaestina-an-beiderorts-ist-der-schritt-innenpolitisch-umstritten-ld.1903529",
+    "created_at": "2025-11-10T12:09:50.769645"
+  },
+  {
+    "id": 70,
+    "article_id": "1903736",
+    "related_article_id": "1860515",
+    "related_article_url": "https://www.nzz.ch/international/der-judenhass-bedroht-die-akademische-freiheit-in-deutschland-ld.1860515",
+    "created_at": "2025-11-10T12:09:50.773176"
+  },
+  {
+    "id": 71,
+    "article_id": "1760344",
+    "related_article_id": "1759944",
+    "related_article_url": "https://www.nzz.ch/feuilleton/angriff-auf-israel-die-hamas-macht-kein-hehl-aus-ihren-bestialischen-motiven-ld.1759944",
+    "created_at": "2025-11-10T12:09:53.785398"
+  },
+  {
+    "id": 72,
+    "article_id": "1760344",
+    "related_article_id": "1760054",
+    "related_article_url": "https://www.nzz.ch/feuilleton/nicht-israel-ist-fuer-die-lage-im-gazastreifen-verantwortlich-sondern-die-hamas-ld.1760054",
+    "created_at": "2025-11-10T12:09:53.791031"
+  },
+  {
+    "id": 73,
+    "article_id": "1760344",
+    "related_article_id": "1732447",
+    "related_article_url": "https://www.nzz.ch/feuilleton/whispered-in-gaza-das-problem-ist-hamas-nicht-israel-ld.1732447",
+    "created_at": "2025-11-10T12:09:53.795430"
+  },
+  {
+    "id": 74,
+    "article_id": "1835969",
+    "related_article_id": "1765066",
+    "related_article_url": "https://www.nzz.ch/international/darf-die-tochter-von-jean-marie-le-pen-gegen-antisemitismus-demonstrieren-ld.1765066",
+    "created_at": "2025-11-10T12:10:04.702548"
+  },
+  {
+    "id": 75,
+    "article_id": "1835969",
+    "related_article_id": "1822772",
+    "related_article_url": "https://www.nzz.ch/international/allianz-von-linksextremen-und-islamisten-antisemitismus-an-frankreichs-top-uni-ld.1822772",
+    "created_at": "2025-11-10T12:10:04.708265"
+  },
+  {
+    "id": 76,
+    "article_id": "1835969",
+    "related_article_id": "1765502",
+    "related_article_url": "https://www.nzz.ch/feuilleton/linker-antisemitismus-in-frankreich-verbuendet-sich-mit-islamisten-ld.1765502",
+    "created_at": "2025-11-10T12:10:04.712299"
+  },
+  {
+    "id": 77,
+    "article_id": "1903543",
+    "related_article_id": "1900455",
+    "related_article_url": "https://www.nzz.ch/feuilleton/hier-wirft-man-mir-vor-die-knesset-sei-faschistoid-ossip-klarweins-architektur-trieb-israels-avantgarde-auf-die-barrikaden-ld.1900455",
+    "created_at": "2025-11-10T12:10:06.125487"
+  },
+  {
+    "id": 78,
+    "article_id": "1903543",
+    "related_article_id": "1875100",
+    "related_article_url": "https://www.nzz.ch/schweiz/tiefer-schock-und-grosse-solidaritaet-vor-20-jahren-brannte-in-lugano-die-synagoge-ld.1875100",
+    "created_at": "2025-11-10T12:10:06.147705"
+  },
+  {
+    "id": 79,
+    "article_id": "1903543",
+    "related_article_id": "1826376",
+    "related_article_url": "https://www.nzz.ch/feuilleton/in-amsterdam-wurde-das-nationaal-holocaustmuseum-eroeffnet-ld.1826376",
+    "created_at": "2025-11-10T12:10:06.152083"
+  },
+  {
+    "id": 80,
+    "article_id": "1853985",
+    "related_article_id": "1839965",
+    "related_article_url": "https://www.nzz.ch/der-andere-blick/elon-musk-und-deutschland-wenig-ahnung-aber-meistens-liegt-er-richtig-ld.1839965",
+    "created_at": "2025-11-10T12:10:12.289135"
+  },
+  {
+    "id": 81,
+    "article_id": "1853985",
+    "related_article_id": "1853803",
+    "related_article_url": "https://www.nzz.ch/international/elon-musk-macht-den-wahlkampf-fuer-trump-zum-gewinnspiel-ld.1853803",
+    "created_at": "2025-11-10T12:10:12.311303"
+  },
+  {
+    "id": 82,
+    "article_id": "1853985",
+    "related_article_id": "1851687",
+    "related_article_url": "https://www.nzz.ch/international/trump-macht-wahlkampf-am-ort-des-attentats-gemeinsam-mit-elon-musk-ld.1851687",
+    "created_at": "2025-11-10T12:10:12.316417"
+  },
+  {
+    "id": 83,
+    "article_id": "1761337",
+    "related_article_id": "1760530",
+    "related_article_url": "https://www.nzz.ch/feuilleton/adania-shibli-ein-literaturpreis-fuer-die-umstrittene-palaestinenserin-ld.1760530",
+    "created_at": "2025-11-10T12:10:14.980354"
+  },
+  {
+    "id": 84,
+    "article_id": "1761337",
+    "related_article_id": "1761073",
+    "related_article_url": "https://www.nzz.ch/feuilleton/der-deutsche-buchpreis-2023-geht-an-ld.1761073",
+    "created_at": "2025-11-10T12:10:14.985610"
+  },
+  {
+    "id": 85,
+    "article_id": "1761337",
+    "related_article_id": "1760961",
+    "related_article_url": "https://www.nzz.ch/feuilleton/precht-verbreitet-antisemitisches-klischee-der-zdf-loescht-seine-aussage-ld.1760961",
+    "created_at": "2025-11-10T12:10:14.990909"
+  },
+  {
+    "id": 86,
+    "article_id": "1760314",
+    "related_article_id": "1683481",
+    "related_article_url": "https://www.nzz.ch/meinung/der-damm-broeckelt-ueberall-antisemitismus-wird-salonfaehig-ld.1683481",
+    "created_at": "2025-11-10T12:11:53.024305"
+  },
+  {
+    "id": 87,
+    "article_id": "1760314",
+    "related_article_id": "1595872",
+    "related_article_url": "https://www.nzz.ch/meinung/bds-und-ihre-sympathisanten-die-nuetzlichen-idioten-der-antisemiten-ld.1595872",
+    "created_at": "2025-11-10T12:11:53.047869"
+  },
+  {
+    "id": 88,
+    "article_id": "1760314",
+    "related_article_id": "1472150",
+    "related_article_url": "https://www.nzz.ch/feuilleton/diversity-an-us-unis-wenn-antirassismus-zu-rassismus-wird-ld.1472150",
+    "created_at": "2025-11-10T12:11:53.053021"
+  },
+  {
+    "id": 89,
+    "article_id": "1684295",
+    "related_article_id": "1726177",
+    "related_article_url": "https://www.nzz.ch/panorama/harry-potter-spiel-hogwarts-legacy-stuermt-die-gaming-charts-ld.1726177",
+    "created_at": "2025-11-10T12:12:03.444209"
+  },
+  {
+    "id": 90,
+    "article_id": "1684295",
+    "related_article_id": "1679692",
+    "related_article_url": "https://www.nzz.ch/feuilleton/fantasy-literatur-helden-tauchen-in-reale-buecher-ein-ld.1679692",
+    "created_at": "2025-11-10T12:12:03.468491"
+  },
+  {
+    "id": 91,
+    "article_id": "1684295",
+    "related_article_id": "1668470",
+    "related_article_url": "https://www.nzz.ch/sport/der-tag-als-simon-ammann-harry-potter-wurde-ld.1668470",
+    "created_at": "2025-11-10T12:12:03.472491"
+  },
+  {
+    "id": 92,
+    "article_id": "1721805",
+    "related_article_id": "1713014",
+    "related_article_url": "https://www.nzz.ch/international/ethnologie-kongress-seattle-woker-zeitgeist-und-wissenschaft-ld.1713014",
+    "created_at": "2025-11-10T12:12:05.306629"
+  },
+  {
+    "id": 93,
+    "article_id": "1721805",
+    "related_article_id": "1693341",
+    "related_article_url": "https://www.nzz.ch/meinung/kulturelle-aneignung-der-vorwurf-torpediert-die-kultur-selbst-ld.1693341",
+    "created_at": "2025-11-10T12:12:05.327425"
+  },
+  {
+    "id": 94,
+    "article_id": "1721805",
+    "related_article_id": "1718585",
+    "related_article_url": "https://www.nzz.ch/schweiz/thomas-meyer-es-ist-ein-unterschied-ob-sie-sich-woke-verhalten-oder-ob-sie-eine-woke-haltung-haben-ld.1718585",
+    "created_at": "2025-11-10T12:12:05.331425"
+  },
+  {
+    "id": 95,
+    "article_id": "1760530",
+    "related_article_id": "1759029",
+    "related_article_url": "https://www.nzz.ch/feuilleton/natalja-kljutscharjowa-die-schriftstellerin-beobachtet-russland-im-krieg-ld.1759029",
+    "created_at": "2025-11-10T12:12:11.093212"
+  },
+  {
+    "id": 96,
+    "article_id": "1760530",
+    "related_article_id": "1758907",
+    "related_article_url": "https://www.nzz.ch/feuilleton/zum-tod-des-syrischen-schriftstellers-khaled-khalifa-ld.1758907",
+    "created_at": "2025-11-10T12:12:11.098099"
+  },
+  {
+    "id": 97,
+    "article_id": "1760530",
+    "related_article_id": "1759922",
+    "related_article_url": "https://www.nzz.ch/feuilleton/taylor-swift-talent-und-geschaeftssinn-ld.1759922",
+    "created_at": "2025-11-10T12:12:11.102111"
+  },
+  {
+    "id": 98,
+    "article_id": "1732447",
+    "related_article_id": "1723095",
+    "related_article_url": "https://www.nzz.ch/feuilleton/fauda-israel-liest-den-europaeern-die-leviten-ld.1723095",
+    "created_at": "2025-11-10T12:12:14.535896"
+  },
+  {
+    "id": 99,
+    "article_id": "1732447",
+    "related_article_id": "1719353",
+    "related_article_url": "https://www.nzz.ch/international/naher-osten-auf-netflix-dubai-bling-und-palaestina-begeisterung-ld.1719353",
+    "created_at": "2025-11-10T12:12:14.558295"
+  },
+  {
+    "id": 100,
+    "article_id": "1732447",
+    "related_article_id": "1687907",
+    "related_article_url": "https://www.nzz.ch/feuilleton/der-mossad-fing-klein-an-1948-spionierten-juedische-araber-ld.1687907",
+    "created_at": "2025-11-10T12:12:14.561643"
+  },
+  {
+    "id": 101,
+    "article_id": "1765981",
+    "related_article_id": "1761644",
+    "related_article_url": "https://www.nzz.ch/international/us-universitaeten-der-woke-diskurs-umgarnt-minderheiten-grenzt-aber-juden-aus-ld.1761644",
+    "created_at": "2025-11-10T12:12:20.592695"
+  },
+  {
+    "id": 102,
+    "article_id": "1765981",
+    "related_article_id": "1765493",
+    "related_article_url": "https://www.nzz.ch/feuilleton/hamas-und-die-neue-linke-es-entlarvt-sich-die-doppelmoral-des-linken-diskurses-ld.1765493",
+    "created_at": "2025-11-10T12:12:20.615639"
+  },
+  {
+    "id": 103,
+    "article_id": "1765981",
+    "related_article_id": "1761502",
+    "related_article_url": "https://www.nzz.ch/feuilleton/studentische-hamas-fans-die-den-progrom-feiern-ld.1761502",
+    "created_at": "2025-11-10T12:12:20.618850"
+  },
+  {
+    "id": 104,
+    "article_id": "1765981",
+    "related_article_id": "1765585",
+    "related_article_url": "https://www.nzz.ch/feuilleton/schweizer-hochschulen-antisemitische-tweets-und-viel-solidaritaet-mit-palaestina-ld.1765585",
+    "created_at": "2025-11-10T12:12:20.623859"
+  },
+  {
+    "id": 105,
+    "article_id": "1765981",
+    "related_article_id": "1764635",
+    "related_article_url": "https://www.nzz.ch/feuilleton/philosophy-for-palestine-wenn-philosophen-zu-agitatoren-werden-ld.1764635",
+    "created_at": "2025-11-10T12:12:20.628874"
+  },
+  {
+    "id": 106,
+    "article_id": "1765981",
+    "related_article_id": "1762332",
+    "related_article_url": "https://www.nzz.ch/feuilleton/shai-davidai-columbia-harvard-hamas-terror-studenten-ld.1762332",
+    "created_at": "2025-11-10T12:12:20.632890"
+  },
+  {
+    "id": 107,
+    "article_id": "1826376",
+    "related_article_id": "1730057",
+    "related_article_url": "https://www.nzz.ch/international/neues-gebetszentrum-am-golf-die-friedliche-dreifaltigkeit-von-abu-dhabi-ld.1730057",
+    "created_at": "2025-11-10T12:12:22.335499"
+  },
+  {
+    "id": 108,
+    "article_id": "1826376",
+    "related_article_id": "1825353",
+    "related_article_url": "https://www.nzz.ch/feuilleton/wenn-architektur-und-kunst-ineinandergreifen-ld.1825353",
+    "created_at": "2025-11-10T12:12:22.341296"
+  },
+  {
+    "id": 109,
+    "article_id": "1826376",
+    "related_article_id": "1738769",
+    "related_article_url": "https://www.nzz.ch/feuilleton/architekturbiennale-in-venedig-blickt-auf-afrika-ld.1738769",
+    "created_at": "2025-11-10T12:12:22.345351"
+  },
+  {
+    "id": 110,
+    "article_id": "1729276",
+    "related_article_id": "1726972",
+    "related_article_url": "https://www.nzz.ch/feuilleton/j-k-rowling-podcast-ld.1726972",
+    "created_at": "2025-11-10T12:12:25.145562"
+  },
+  {
+    "id": 111,
+    "article_id": "1729276",
+    "related_article_id": "1684295",
+    "related_article_url": "https://www.nzz.ch/feuilleton/jedes-kind-auf-der-welt-wird-seinen-namen-kennen-25-jahre-nach-erscheinen-des-ersten-bandes-ist-harry-potter-noch-immer-ein-phaenomenaler-erfolg-wie-kam-es-dazu-ld.1684295",
+    "created_at": "2025-11-10T12:12:25.168298"
+  },
+  {
+    "id": 112,
+    "article_id": "1729276",
+    "related_article_id": "1700857",
+    "related_article_url": "https://www.nzz.ch/feuilleton/rowlings-rache-ld.1700857",
+    "created_at": "2025-11-10T12:12:25.173320"
+  },
+  {
+    "id": 113,
+    "article_id": "1858665",
+    "related_article_id": "1857980",
+    "related_article_url": "https://www.nzz.ch/feuilleton/donald-trump-und-elon-musk-eine-bromance-im-weissen-haus-ld.1857980",
+    "created_at": "2025-11-10T12:12:28.461808"
+  },
+  {
+    "id": 114,
+    "article_id": "1858665",
+    "related_article_id": "1822080",
+    "related_article_url": "https://www.nzz.ch/technologie/das-tiktok-trauma-vom-aufstieg-der-maechtigsten-app-der-welt-ld.1822080",
+    "created_at": "2025-11-10T12:12:28.467104"
+  },
+  {
+    "id": 115,
+    "article_id": "1858665",
+    "related_article_id": "1712088",
+    "related_article_url": "https://www.nzz.ch/feuilleton/wollt-ihr-den-totalen-tweet-elon-musk-loest-bei-linken-panik-aus-ld.1712088",
+    "created_at": "2025-11-10T12:12:28.472230"
+  },
+  {
+    "id": 116,
+    "article_id": "1706529",
+    "related_article_id": "1702380",
+    "related_article_url": "https://www.nzz.ch/feuilleton/neuer-antisemitismus-in-deutschland-wie-der-linksgruene-zeitgeist-alles-ueberrollt-ld.1702380",
+    "created_at": "2025-11-10T12:12:32.032903"
+  },
+  {
+    "id": 117,
+    "article_id": "1706529",
+    "related_article_id": "1689842",
+    "related_article_url": "https://www.nzz.ch/feuilleton/der-antisemitismus-skandal-auf-der-documenta-war-absehbar-ld.1689842",
+    "created_at": "2025-11-10T12:12:32.054399"
+  },
+  {
+    "id": 118,
+    "article_id": "1706529",
+    "related_article_id": "1676754",
+    "related_article_url": "https://www.nzz.ch/international/olaf-scholz-bei-anne-will-er-will-alles-richtig-gemacht-haben-ld.1676754",
+    "created_at": "2025-11-10T12:12:32.060457"
+  },
+  {
+    "id": 119,
+    "article_id": "1706529",
+    "related_article_id": "1630964",
+    "related_article_url": "https://www.nzz.ch/feuilleton/michel-friedman-plaediert-fuer-eine-leidenschaftliche-streitkultur-ld.1630964",
+    "created_at": "2025-11-10T12:12:32.064645"
+  },
+  {
+    "id": 120,
+    "article_id": "1706529",
+    "related_article_id": "1698329",
+    "related_article_url": "https://www.nzz.ch/meinung/der-andere-blick/auf-olaf-scholz-kann-sich-israel-nicht-verlassen-ld.1698329",
+    "created_at": "2025-11-10T12:12:32.069932"
+  },
+  {
+    "id": 121,
+    "article_id": "1898216",
+    "related_article_id": "1896762",
+    "related_article_url": "https://www.nzz.ch/international/die-proteste-rund-um-die-asylpolitik-erreichen-das-zentrum-von-london-ld.1896762",
+    "created_at": "2025-11-10T12:12:41.316108"
+  },
+  {
+    "id": 122,
+    "article_id": "1898216",
+    "related_article_id": "1895205",
+    "related_article_url": "https://www.nzz.ch/international/reform-uk-regiert-in-kent-testlauf-fuer-nigel-farages-partei-ld.1895205",
+    "created_at": "2025-11-10T12:12:41.321984"
+  },
+  {
+    "id": 123,
+    "article_id": "1898216",
+    "related_article_id": "1896316",
+    "related_article_url": "https://www.nzz.ch/wirtschaft/neustart-fuer-das-eingeschlafene-londoner-nachtleben-ausgerechnet-im-bankenviertel-ld.1896316",
+    "created_at": "2025-11-10T12:12:41.326748"
+  },
+  {
+    "id": 124,
+    "article_id": "1630964",
+    "related_article_id": "1624506",
+    "related_article_url": "https://www.nzz.ch/meinung/demokratische-streitkultur-fuer-radikale-meinungsfreiheit-ld.1624506",
+    "created_at": "2025-11-10T12:12:42.844029"
+  },
+  {
+    "id": 125,
+    "article_id": "1630964",
+    "related_article_id": "1607910",
+    "related_article_url": "https://www.nzz.ch/meinung/ist-das-noch-debatte-der-aufstieg-der-mundtotmacher-ld.1607910",
+    "created_at": "2025-11-10T12:12:42.865848"
+  },
+  {
+    "id": 126,
+    "article_id": "1630964",
+    "related_article_id": "1572383",
+    "related_article_url": "https://www.nzz.ch/international/corona-krise-populisten-sind-immer-die-anderen-ld.1572383",
+    "created_at": "2025-11-10T12:12:42.869853"
+  },
+  {
+    "id": 127,
+    "article_id": "1630964",
+    "related_article_id": "1627024",
+    "related_article_url": "https://www.nzz.ch/meinung/corona-und-der-antisemitismus-verschwoerungstheorien-den-naehrboden-entziehen-ld.1627024",
+    "created_at": "2025-11-10T12:12:42.875278"
+  },
+  {
+    "id": 128,
+    "article_id": "1730057",
+    "related_article_id": "1654441",
+    "related_article_url": "https://www.nzz.ch/international/emirate-abu-dhabi-modernisiert-familienrecht-fuer-nichtmuslime-ld.1654441",
+    "created_at": "2025-11-10T12:20:34.855902"
+  },
+  {
+    "id": 129,
+    "article_id": "1730057",
+    "related_article_id": "1728087",
+    "related_article_url": "https://www.nzz.ch/zuerich/meinung/die-wuestenmetropole-dubai-mutet-ihren-expats-mehr-zu-ld.1728087",
+    "created_at": "2025-11-10T12:20:34.888587"
+  },
+  {
+    "id": 130,
+    "article_id": "1730057",
+    "related_article_id": "1667774",
+    "related_article_url": "https://www.nzz.ch/international/die-emirate-sind-neuer-konkurrenz-aus-saudiarabien-ausgesetzt-ld.1667774",
+    "created_at": "2025-11-10T12:20:34.899770"
+  },
+  {
+    "id": 131,
+    "article_id": "1823875",
+    "related_article_id": "1769798",
+    "related_article_url": "https://www.nzz.ch/international/nach-anhoerung-zu-antisemitismus-uni-praesidentin-in-usa-tritt-zurueck-ld.1769798",
+    "created_at": "2025-11-10T12:20:41.830529"
+  },
+  {
+    "id": 132,
+    "article_id": "1823875",
+    "related_article_id": "1474124",
+    "related_article_url": "https://www.nzz.ch/international/wie-george-soros-vom-messias-zum-volksfeind-wurde-ld.1474124",
+    "created_at": "2025-11-10T12:20:41.843590"
+  },
+  {
+    "id": 133,
+    "article_id": "1823875",
+    "related_article_id": "1400371",
+    "related_article_url": "https://www.nzz.ch/international/warum-in-westeuropa-der-hass-auf-juden-immer-wieder-aufflammt-ld.1400371",
+    "created_at": "2025-11-10T12:20:41.850991"
+  },
+  {
+    "id": 134,
+    "article_id": "1595872",
+    "related_article_id": "1482547",
+    "related_article_url": "https://www.nzz.ch/meinung/der-andere-blick/bds-bundestag-will-antisemitische-kampagne-verurteilen-ld.1482547",
+    "created_at": "2025-11-10T12:20:44.940437"
+  },
+  {
+    "id": 135,
+    "article_id": "1595872",
+    "related_article_id": "1553317",
+    "related_article_url": "https://www.nzz.ch/feuilleton/die-ruhrtriennale-und-achille-mbembe-ein-beispiel-fuer-das-verbreitete-antisemitisch-antizionistische-muster-der-linken-und-linksliberalen-ld.1553317",
+    "created_at": "2025-11-10T12:20:44.967769"
+  },
+  {
+    "id": 136,
+    "article_id": "1595872",
+    "related_article_id": "1314583",
+    "related_article_url": "https://www.nzz.ch/feuilleton/kampagne-gegen-israel-aktionen-fuer-eine-boykottierung-israels-stossen-auf-den-widerspruch-achtsamer-deutscher-politiker-aller-lager-ld.1314583",
+    "created_at": "2025-11-10T12:20:44.972745"
+  },
+  {
+    "id": 137,
+    "article_id": "1759029",
+    "related_article_id": "1699260",
+    "related_article_url": "https://www.nzz.ch/feuilleton/pussy-riot-ein-interview-mit-saengerin-marija-aljochina-ld.1699260",
+    "created_at": "2025-11-10T12:20:48.030677"
+  },
+  {
+    "id": 138,
+    "article_id": "1759029",
+    "related_article_id": "1700659",
+    "related_article_url": "https://www.nzz.ch/feuilleton/boris-grebenschtschikow-haelt-den-krieg-fuer-eine-schande-ld.1700659",
+    "created_at": "2025-11-10T12:20:48.057607"
+  },
+  {
+    "id": 139,
+    "article_id": "1759029",
+    "related_article_id": "1732335",
+    "related_article_url": "https://www.nzz.ch/feuilleton/emigration-statt-kriegsdienst-ukrainer-auf-der-flucht-ld.1732335",
+    "created_at": "2025-11-10T12:20:48.069363"
+  },
+  {
+    "id": 140,
+    "article_id": "1572383",
+    "related_article_id": "1571258",
+    "related_article_url": "https://www.nzz.ch/international/bayern-patzt-bei-corona-tests-ministerin-wollte-zuruecktreten-ld.1571258",
+    "created_at": "2025-11-10T12:20:50.853574"
+  },
+  {
+    "id": 141,
+    "article_id": "1572383",
+    "related_article_id": "1559559",
+    "related_article_url": "https://www.nzz.ch/video/nzz-standpunkte/corona-massnahmen-in-der-kritik-mit-dem-besuchsverbot-sind-wir-definitiv-zu-weit-gegangen-ld.1559559",
+    "created_at": "2025-11-10T12:20:50.886902"
+  },
+  {
+    "id": 142,
+    "article_id": "1627024",
+    "related_article_id": "1515689",
+    "related_article_url": "https://www.nzz.ch/meinung/antisemitismus-halle-der-judenhass-und-die-afd-ld.1515689",
+    "created_at": "2025-11-10T12:20:53.791071"
+  },
+  {
+    "id": 143,
+    "article_id": "1627024",
+    "related_article_id": "1608073",
+    "related_article_url": "https://www.nzz.ch/meinung/wie-identitaetslinke-letztlich-die-menschenrechte-relativieren-ld.1608073",
+    "created_at": "2025-11-10T12:20:53.818147"
+  },
+  {
+    "id": 144,
+    "article_id": "1822772",
+    "related_article_id": "1763878",
+    "related_article_url": "https://www.nzz.ch/international/nahostkonflikt-bei-frankreichs-juden-geht-die-angst-um-ld.1763878",
+    "created_at": "2025-11-10T12:20:59.956476"
+  },
+  {
+    "id": 145,
+    "article_id": "1822772",
+    "related_article_id": "1674438",
+    "related_article_url": "https://www.nzz.ch/feuilleton/rassismus-religion-und-radau-wie-die-culture-woke-die-universitaeten-veraendert-ld.1674438",
+    "created_at": "2025-11-10T12:20:59.972184"
+  },
+  {
+    "id": 146,
+    "article_id": "1822772",
+    "related_article_id": "1644831",
+    "related_article_url": "https://www.nzz.ch/feuilleton/diskussion-beendet-ld.1644831",
+    "created_at": "2025-11-10T12:20:59.979714"
+  },
+  {
+    "id": 147,
+    "article_id": "1895205",
+    "related_article_id": "1882453",
+    "related_article_url": "https://www.nzz.ch/international/die-reform-partei-pfluegt-grossbritannien-um-wird-nigel-farage-nun-naechster-premierminister-ld.1882453",
+    "created_at": "2025-11-10T12:21:04.376768"
+  },
+  {
+    "id": 148,
+    "article_id": "1895205",
+    "related_article_id": "1892073",
+    "related_article_url": "https://www.nzz.ch/international/der-britische-ex-aussenminister-jeremy-hunt-zu-trump-brexit-und-nigel-farage-ld.1892073",
+    "created_at": "2025-11-10T12:21:04.404265"
+  },
+  {
+    "id": 149,
+    "article_id": "1895205",
+    "related_article_id": "1838757",
+    "related_article_url": "https://www.nzz.ch/international/der-rasante-aufstieg-von-reform-uk-warum-nigel-farages-rechtspartei-die-britische-politik-der-naechsten-jahre-praegen-wird-ld.1838757",
+    "created_at": "2025-11-10T12:21:04.414022"
+  },
+  {
+    "id": 150,
+    "article_id": "1851687",
+    "related_article_id": "1848662",
+    "related_article_url": "https://www.nzz.ch/international/nach-dem-zweiten-attentatsversuch-werden-forderungen-nach-besserem-schutz-fuer-donald-trump-laut-ld.1848662",
+    "created_at": "2025-11-10T12:21:06.540603"
+  },
+  {
+    "id": 151,
+    "article_id": "1851687",
+    "related_article_id": "1839501",
+    "related_article_url": "https://www.nzz.ch/video/erklaert/videoanalyse-attentat-auf-trump-ld.1839501",
+    "created_at": "2025-11-10T12:21:06.567460"
+  },
+  {
+    "id": 152,
+    "article_id": "1700857",
+    "related_article_id": "1561475",
+    "related_article_url": "https://www.nzz.ch/feuilleton/shitstorm-gegen-j-k-rowling-zetern-ist-leichter-als-hinhoeren-ld.1561475",
+    "created_at": "2025-11-10T12:21:09.900343"
+  },
+  {
+    "id": 153,
+    "article_id": "1700857",
+    "related_article_id": "1651061",
+    "related_article_url": "https://www.nzz.ch/feuilleton/j-k-rowlings-neues-kinderbuch-die-suche-nach-dem-schwein-ld.1651061",
+    "created_at": "2025-11-10T12:21:09.924881"
+  },
+  {
+    "id": 154,
+    "article_id": "1700857",
+    "related_article_id": "1684295",
+    "related_article_url": "https://www.nzz.ch/feuilleton/jedes-kind-auf-der-welt-wird-seinen-namen-kennen-25-jahre-nach-erscheinen-des-ersten-bandes-ist-harry-potter-noch-immer-ein-phaenomenaler-erfolg-wie-kam-es-dazu-ld.1684295",
+    "created_at": "2025-11-10T12:21:09.933193"
+  },
+  {
+    "id": 155,
+    "article_id": "1832679",
+    "related_article_id": "1826519",
+    "related_article_url": "https://www.nzz.ch/international/woke-universitaet-wie-die-praesidentin-der-tu-berlin-ihre-uni-auf-links-dreht-ld.1826519",
+    "created_at": "2025-11-10T12:21:12.810632"
+  },
+  {
+    "id": 156,
+    "article_id": "1832679",
+    "related_article_id": "1830420",
+    "related_article_url": "https://www.nzz.ch/feuilleton/fuer-linke-aktivisten-sind-die-palaestinenser-die-letzten-guten-wilden-dieser-erde-ld.1830420",
+    "created_at": "2025-11-10T12:21:12.839293"
+  },
+  {
+    "id": 157,
+    "article_id": "1832679",
+    "related_article_id": "1830475",
+    "related_article_url": "https://www.nzz.ch/meinung/studentenproteste-gegen-israel-schaden-den-universitaeten-ld.1830475",
+    "created_at": "2025-11-10T12:21:12.846296"
+  },
+  {
+    "id": 158,
+    "article_id": "1472150",
+    "related_article_id": "1303257",
+    "related_article_url": "https://www.nzz.ch/feuilleton/political-correctness-das-ist-ein-normales-religioeses-verhalten-ld.1303257",
+    "created_at": "2025-11-10T12:21:21.054072"
+  },
+  {
+    "id": 159,
+    "article_id": "1472150",
+    "related_article_id": "1422381",
+    "related_article_url": "https://www.nzz.ch/feuilleton/sugar-daddy-dankt-ab-wie-metoo-die-alten-maenner-zum-feindbild-erklaert-hat-ld.1422381",
+    "created_at": "2025-11-10T12:21:21.084438"
+  },
+  {
+    "id": 160,
+    "article_id": "1472150",
+    "related_article_id": "1418921",
+    "related_article_url": "https://www.nzz.ch/feuilleton/schaut-her-ich-bin-zu-allem-bereit-ld.1418921",
+    "created_at": "2025-11-10T12:21:21.097740"
+  },
+  {
+    "id": 161,
+    "article_id": "1472150",
+    "related_article_id": "1448781",
+    "related_article_url": "https://www.nzz.ch/feuilleton/oeffentliches-stillen-seht-ich-bin-mutter-ich-tue-was-ich-will-ld.1448781",
+    "created_at": "2025-11-10T12:21:21.108182"
+  },
+  {
+    "id": 162,
+    "article_id": "1758907",
+    "related_article_id": "1728033",
+    "related_article_url": "https://www.nzz.ch/feuilleton/erdbeben-syrien-die-katastrophe-hat-die-menschen-geeint-ld.1728033",
+    "created_at": "2025-11-10T12:21:24.038082"
+  },
+  {
+    "id": 163,
+    "article_id": "1758907",
+    "related_article_id": "1722742",
+    "related_article_url": "https://www.nzz.ch/feuilleton/khaled-khalifa-der-syrische-schriftsteller-im-interview-ld.1722742",
+    "created_at": "2025-11-10T12:21:24.061938"
+  },
+  {
+    "id": 164,
+    "article_id": "1758907",
+    "related_article_id": "1561318",
+    "related_article_url": "https://www.nzz.ch/feuilleton/khaled-khalifa-erzaehlt-vom-langsamen-sterben-aleppos-ld.1561318",
+    "created_at": "2025-11-10T12:21:24.068049"
+  },
+  {
+    "id": 165,
+    "article_id": "1687907",
+    "related_article_id": "1683396",
+    "related_article_url": "https://www.nzz.ch/feuilleton/tehran-der-mossad-spioniert-in-iran-hochspannung-auf-appletv-ld.1683396",
+    "created_at": "2025-11-10T12:22:17.253556"
+  },
+  {
+    "id": 166,
+    "article_id": "1687907",
+    "related_article_id": "1685413",
+    "related_article_url": "https://www.nzz.ch/international/offizier-der-revolutionsgarden-in-teheran-ermordet-ld.1685413",
+    "created_at": "2025-11-10T12:22:17.271128"
+  },
+  {
+    "id": 167,
+    "article_id": "1687907",
+    "related_article_id": "1524374",
+    "related_article_url": "https://www.nzz.ch/feuilleton/the-spy-bei-netflix-sacha-baron-cohen-ist-der-tragische-spion-ld.1524374",
+    "created_at": "2025-11-10T12:22:17.280923"
+  },
+  {
+    "id": 168,
+    "article_id": "1762176",
+    "related_article_id": "1754543",
+    "related_article_url": "https://www.nzz.ch/feuilleton/richard-malka-anwalt-charlie-hebdo-terror-paris-karikaturen-ld.1754543",
+    "created_at": "2025-11-10T12:22:26.101976"
+  },
+  {
+    "id": 169,
+    "article_id": "1762176",
+    "related_article_id": "1595049",
+    "related_article_url": "https://www.nzz.ch/feuilleton/frankreich-schulen-im-griff-des-islamismus-ld.1595049",
+    "created_at": "2025-11-10T12:22:26.130566"
+  },
+  {
+    "id": 170,
+    "article_id": "1762176",
+    "related_article_id": "1604691",
+    "related_article_url": "https://www.nzz.ch/feuilleton/wenn-sich-antisemiten-als-neue-juden-inszenieren-waere-widerspruch-gefragt-stattdessen-erhalten-sie-unterstuetzung-von-wissenschaftern-ld.1604691",
+    "created_at": "2025-11-10T12:22:26.133561"
+  },
+  {
+    "id": 171,
+    "article_id": "1883911",
+    "related_article_id": "1875546",
+    "related_article_url": "https://www.nzz.ch/international/warum-derart-viele-junge-briten-nicht-arbeiten-ld.1875546",
+    "created_at": "2025-11-10T12:22:28.954997"
+  },
+  {
+    "id": 172,
+    "article_id": "1883911",
+    "related_article_id": "1754289",
+    "related_article_url": "https://www.nzz.ch/international/migration-aerzte-und-pfleger-aus-nigeria-gehen-nach-grossbritannien-ld.1754289",
+    "created_at": "2025-11-10T12:22:28.986358"
+  },
+  {
+    "id": 173,
+    "article_id": "1883911",
+    "related_article_id": "1882453",
+    "related_article_url": "https://www.nzz.ch/international/die-reform-partei-pfluegt-grossbritannien-um-wird-nigel-farage-nun-naechster-premierminister-ld.1882453",
+    "created_at": "2025-11-10T12:22:28.994043"
+  },
+  {
+    "id": 174,
+    "article_id": "1900455",
+    "related_article_id": "1875755",
+    "related_article_url": "https://www.nzz.ch/feuilleton/wie-schuppen-bei-einem-tier-beruehmt-wurde-norman-foster-mit-high-tech-architektur-ld.1875755",
+    "created_at": "2025-11-10T12:22:31.653041"
+  },
+  {
+    "id": 175,
+    "article_id": "1900455",
+    "related_article_id": "1874984",
+    "related_article_url": "https://www.nzz.ch/feuilleton/der-neue-hauptsitz-der-groessten-bank-der-welt-in-new-york-soll-null-betriebsemissionen-aufweisen-ld.1874984",
+    "created_at": "2025-11-10T12:22:31.679909"
+  },
+  {
+    "id": 176,
+    "article_id": "1900455",
+    "related_article_id": "1890708",
+    "related_article_url": "https://www.nzz.ch/feuilleton/es-wird-immer-heisser-kuehlere-wohnungen-sind-moeglich-wenn-anders-gebaut-wird-ld.1890708",
+    "created_at": "2025-11-10T12:22:31.686702"
+  },
+  {
+    "id": 177,
+    "article_id": "1765066",
+    "related_article_id": "1764703",
+    "related_article_url": "https://www.nzz.ch/meinung/bundesrat-cassis-ueber-grassierenden-antisemitismus-nach-dem-7-oktober-ld.1764703",
+    "created_at": "2025-11-10T12:22:34.721003"
+  },
+  {
+    "id": 178,
+    "article_id": "1765066",
+    "related_article_id": "1765062",
+    "related_article_url": "https://www.nzz.ch/international/die-barrikade-am-stammtisch-der-judenhasser-ld.1765062",
+    "created_at": "2025-11-10T12:22:34.747313"
+  },
+  {
+    "id": 179,
+    "article_id": "1765066",
+    "related_article_id": "1460788",
+    "related_article_url": "https://www.nzz.ch/international/frankreich-grossdemonstration-gegen-antisemitismus-ld.1460788",
+    "created_at": "2025-11-10T12:22:34.753923"
+  },
+  {
+    "id": 180,
+    "article_id": "1418921",
+    "related_article_id": "1413456",
+    "related_article_url": "https://www.nzz.ch/feuilleton/affaere-argento-wird-metoo-ein-opfer-von-fake-news-ld.1413456",
+    "created_at": "2025-11-10T12:22:38.053527"
+  },
+  {
+    "id": 181,
+    "article_id": "1418921",
+    "related_article_id": "1413133",
+    "related_article_url": "https://www.nzz.ch/panorama/argento-metoo-vorkaempferin-des-sexuellen-uebergriffs-bezichtigt-ld.1413133",
+    "created_at": "2025-11-10T12:22:38.081373"
+  },
+  {
+    "id": 182,
+    "article_id": "1763878",
+    "related_article_id": "1762861",
+    "related_article_url": "https://www.nzz.ch/international/frankreich-will-gegen-junge-krawallmacher-und-deren-eltern-durchgreifen-ld.1762861",
+    "created_at": "2025-11-10T12:22:43.907743"
+  },
+  {
+    "id": 183,
+    "article_id": "1763878",
+    "related_article_id": "1760854",
+    "related_article_url": "https://www.nzz.ch/international/nach-erneuter-islamistischer-attacke-auf-einen-lehrer-ist-die-nervositaet-in-frankreich-gross-ld.1760854",
+    "created_at": "2025-11-10T12:22:43.914729"
+  },
+  {
+    "id": 184,
+    "article_id": "1763878",
+    "related_article_id": "1761203",
+    "related_article_url": "https://www.nzz.ch/international/nach-der-ermordung-eines-lehrers-will-frankreich-radikalisierte-auslaender-leichter-ausschaffen-ld.1761203",
+    "created_at": "2025-11-10T12:22:43.926010"
+  },
+  {
+    "id": 185,
+    "article_id": "1668470",
+    "related_article_id": "1667931",
+    "related_article_url": "https://www.nzz.ch/sport/olympia-2022-simon-ammann-springt-und-springt-und-springt-ld.1667931",
+    "created_at": "2025-11-10T12:22:47.416012"
+  },
+  {
+    "id": 186,
+    "article_id": "1668470",
+    "related_article_id": "1655756",
+    "related_article_url": "https://www.nzz.ch/sport/ski-nordisch-dario-cologna-und-simon-ammann-im-gespraech-ld.1655756",
+    "created_at": "2025-11-10T12:22:47.448303"
+  },
+  {
+    "id": 187,
+    "article_id": "1668470",
+    "related_article_id": "771029",
+    "related_article_url": "https://www.nzz.ch/sport/skisport/im-kopf-herrscht-ein-durcheinander-ld.771029",
+    "created_at": "2025-11-10T12:22:47.456029"
+  },
+  {
+    "id": 188,
+    "article_id": "1754543",
+    "related_article_id": "1595049",
+    "related_article_url": "https://www.nzz.ch/feuilleton/frankreich-schulen-im-griff-des-islamismus-ld.1595049",
+    "created_at": "2025-11-10T12:22:50.679821"
+  },
+  {
+    "id": 189,
+    "article_id": "1754543",
+    "related_article_id": "1752648",
+    "related_article_url": "https://www.nzz.ch/feuilleton/medine-gruene-melenchon-france-insoumise-islamogauchismus-antisemitismus-ld.1752648",
+    "created_at": "2025-11-10T12:22:50.706430"
+  },
+  {
+    "id": 190,
+    "article_id": "1754543",
+    "related_article_id": "1731479",
+    "related_article_url": "https://www.nzz.ch/feuilleton/florence-bergeaud-blackler-muslimbruderschaft-hijab-islamismus-bruessel-belgien-frankreich-ld.1731479",
+    "created_at": "2025-11-10T12:22:50.715470"
+  },
+  {
+    "id": 191,
+    "article_id": "1764635",
+    "related_article_id": "1761337",
+    "related_article_url": "https://www.nzz.ch/feuilleton/der-slowenische-philosoph-slavoj-zizek-hat-mit-seiner-rede-bei-der-eroeffnungsfeier-an-der-frankfurter-buchmesse-einen-aufruhr-ausgeloest-ld.1761337",
+    "created_at": "2025-11-10T12:22:53.682669"
+  },
+  {
+    "id": 192,
+    "article_id": "1764635",
+    "related_article_id": "1735300",
+    "related_article_url": "https://www.nzz.ch/feuilleton/michael-wolffsohn-die-documenta-war-keine-ueberraschung-keine-ueberraschung-war-auch-olaf-scholz-das-deutsche-meinungsbild-gegenueber-israel-ist-negativ-ld.1735300",
+    "created_at": "2025-11-10T12:22:53.709690"
+  },
+  {
+    "id": 193,
+    "article_id": "1764635",
+    "related_article_id": "102598",
+    "related_article_url": "https://www.nzz.ch/wenn-die-philosophie-moderiert-ld.102598",
+    "created_at": "2025-11-10T12:22:53.717143"
+  },
+  {
+    "id": 194,
+    "article_id": "1826519",
+    "related_article_id": "1807609",
+    "related_article_url": "https://www.nzz.ch/meinung/kommunismus-und-universitaeten-da-zeigen-sich-erschreckende-parallelen-ld.1807609",
+    "created_at": "2025-11-10T12:22:56.829300"
+  },
+  {
+    "id": 195,
+    "article_id": "1826519",
+    "related_article_id": "1786822",
+    "related_article_url": "https://www.nzz.ch/gesellschaft/university-of-austin-tritt-gegen-cancel-culture-an-ld.1786822",
+    "created_at": "2025-11-10T12:22:56.855200"
+  },
+  {
+    "id": 196,
+    "article_id": "1826519",
+    "related_article_id": "1821650",
+    "related_article_url": "https://www.nzz.ch/schweiz/offener-brief-zur-wissenschaftsfreiheit-universitaet-woke-ld.1821650",
+    "created_at": "2025-11-10T12:22:56.865288"
+  },
+  {
+    "id": 197,
+    "article_id": "1676754",
+    "related_article_id": "1676740",
+    "related_article_url": "https://www.nzz.ch/international/scholz-plant-raketenschutzschild-fuer-deutschland-ld.1676740",
+    "created_at": "2025-11-10T12:23:02.956644"
+  },
+  {
+    "id": 198,
+    "article_id": "1676754",
+    "related_article_id": "1613540",
+    "related_article_url": "https://www.nzz.ch/international/krieg-in-der-ukraine-die-neusten-entwicklungen-ld.1613540",
+    "created_at": "2025-11-10T12:23:02.987172"
+  },
+  {
+    "id": 199,
+    "article_id": "1676754",
+    "related_article_id": "1671542",
+    "related_article_url": "https://www.nzz.ch/international/deutsche-russland-politik-schroeders-werk-und-merkels-beitrag-ld.1671542",
+    "created_at": "2025-11-10T12:23:02.995329"
+  },
+  {
+    "id": 200,
+    "article_id": "1877608",
+    "related_article_id": "1874991",
+    "related_article_url": "https://www.nzz.ch/international/praesident-trump-blaest-zum-angriff-gegen-die-elite-universitaeten-er-will-gegen-den-antisemitismus-vorgehen-ld.1874991",
+    "created_at": "2025-11-10T12:23:52.752200"
+  },
+  {
+    "id": 201,
+    "article_id": "1877608",
+    "related_article_id": "1876617",
+    "related_article_url": "https://www.nzz.ch/international/aggressive-verhoere-und-schreckliche-abschiebehaft-die-probleme-bei-der-einreise-in-die-usa-haeufen-sich-auch-fuer-touristen-ld.1876617",
+    "created_at": "2025-11-10T12:23:52.781619"
+  },
+  {
+    "id": 202,
+    "article_id": "1877608",
+    "related_article_id": "1876709",
+    "related_article_url": "https://www.nzz.ch/international/die-columbia-universitaet-macht-fuer-foerdergelder-zugestaendnisse-ld.1876709",
+    "created_at": "2025-11-10T12:23:52.789311"
+  },
+  {
+    "id": 203,
+    "article_id": "1644831",
+    "related_article_id": "1605481",
+    "related_article_url": "https://www.nzz.ch/feuilleton/islamogauchisme-nathalie-heinich-ueber-franzoesische-universitaeten-ld.1605481",
+    "created_at": "2025-11-10T12:24:00.992072"
+  },
+  {
+    "id": 204,
+    "article_id": "1644831",
+    "related_article_id": "1295031",
+    "related_article_url": "https://www.nzz.ch/feuilleton/meinungsfreiheit-die-linke-macht-den-menschen-wieder-zum-gefangenen-seines-stands-ld.1295031",
+    "created_at": "2025-11-10T12:24:01.021324"
+  },
+  {
+    "id": 205,
+    "article_id": "1644831",
+    "related_article_id": "1591320",
+    "related_article_url": "https://www.nzz.ch/feuilleton/emmanuel-macron-samuel-paty-und-charlie-hebdo-sind-schuld-wie-etablierte-us-medien-ueber-islamistischen-terror-in-frankreich-berichten-ld.1591320",
+    "created_at": "2025-11-10T12:24:01.028877"
+  },
+  {
+    "id": 206,
+    "article_id": "1644831",
+    "related_article_id": "1607537",
+    "related_article_url": "https://www.nzz.ch/feuilleton/weisse-maenner-sie-sind-heute-die-suendenboecke-fuer-alles-ld.1607537",
+    "created_at": "2025-11-10T12:24:01.038993"
+  },
+  {
+    "id": 207,
+    "article_id": "1644831",
+    "related_article_id": "1604728",
+    "related_article_url": "https://www.nzz.ch/meinung/was-tun-mit-dem-radikalen-islam-schweigen-hilft-auch-nicht-ld.1604728",
+    "created_at": "2025-11-10T12:24:01.045370"
+  },
+  {
+    "id": 208,
+    "article_id": "1728033",
+    "related_article_id": "1722742",
+    "related_article_url": "https://www.nzz.ch/feuilleton/khaled-khalifa-der-syrische-schriftsteller-im-interview-ld.1722742",
+    "created_at": "2025-11-10T12:24:04.028397"
+  },
+  {
+    "id": 209,
+    "article_id": "1728033",
+    "related_article_id": "1725817",
+    "related_article_url": "https://www.nzz.ch/international/besuch-im-syrischen-erdbebengebiet-in-idlib-fehlt-es-an-allem-ld.1725817",
+    "created_at": "2025-11-10T12:24:04.060864"
+  },
+  {
+    "id": 210,
+    "article_id": "1728033",
+    "related_article_id": "1536230",
+    "related_article_url": "https://www.nzz.ch/international/syrien-die-neusten-entwicklungen-im-buergerkrieg-ld.1536230",
+    "created_at": "2025-11-10T12:24:04.068494"
+  },
+  {
+    "id": 211,
+    "article_id": "1685413",
+    "related_article_id": "1673304",
+    "related_article_url": "https://www.nzz.ch/international/iran-sanktionen-der-usa-treffen-den-gesundheitssektor-hart-ld.1673304",
+    "created_at": "2025-11-10T12:24:07.067398"
+  },
+  {
+    "id": 212,
+    "article_id": "1685413",
+    "related_article_id": "1683673",
+    "related_article_url": "https://www.nzz.ch/international/iran-justiz-bestaetigt-todesurteil-gegen-schwedischen-arzt-ld.1683673",
+    "created_at": "2025-11-10T12:24:07.093366"
+  },
+  {
+    "id": 213,
+    "article_id": "1685413",
+    "related_article_id": "1683396",
+    "related_article_url": "https://www.nzz.ch/feuilleton/tehran-der-mossad-spioniert-in-iran-hochspannung-auf-appletv-ld.1683396",
+    "created_at": "2025-11-10T12:24:07.099196"
+  },
+  {
+    "id": 214,
+    "article_id": "1685413",
+    "related_article_id": "1683870",
+    "related_article_url": "https://www.nzz.ch/international/iran-die-atomverhandlungen-stecken-fest-ld.1683870",
+    "created_at": "2025-11-10T12:24:07.110008"
+  },
+  {
+    "id": 215,
+    "article_id": "1685413",
+    "related_article_id": "1680097",
+    "related_article_url": "https://www.nzz.ch/international/hormuz-geopolitischer-brennpunkt-und-aussteigerparadies-ld.1680097",
+    "created_at": "2025-11-10T12:24:07.116899"
+  },
+  {
+    "id": 216,
+    "article_id": "1839965",
+    "related_article_id": "1838155",
+    "related_article_url": "https://www.nzz.ch/promoted-content/meme-coins-kein-scherz-ld.1838155",
+    "created_at": "2025-11-10T12:24:09.924154"
+  },
+  {
+    "id": 217,
+    "article_id": "1839965",
+    "related_article_id": "1839925",
+    "related_article_url": "https://www.nzz.ch/technologie/elon-musk-wird-zu-trumps-geheimwaffe-ld.1839925",
+    "created_at": "2025-11-10T12:24:09.951779"
+  },
+  {
+    "id": 218,
+    "article_id": "1839965",
+    "related_article_id": "1839855",
+    "related_article_url": "https://www.nzz.ch/feuilleton/el-hotzo-verliert-rbb-job-entlassen-nach-schadenfrohen-trump-posts-ld.1839855",
+    "created_at": "2025-11-10T12:24:09.958401"
+  },
+  {
+    "id": 219,
+    "article_id": "1839965",
+    "related_article_id": "1767905",
+    "related_article_url": "https://www.nzz.ch/feuilleton/bei-radio-genoa-zerstoeren-und-ueberrennen-migranten-jeden-tag-europa-ist-das-echt-ld.1767905",
+    "created_at": "2025-11-10T12:24:09.965310"
+  },
+  {
+    "id": 220,
+    "article_id": "1448781",
+    "related_article_id": "1418921",
+    "related_article_url": "https://www.nzz.ch/feuilleton/schaut-her-ich-bin-zu-allem-bereit-ld.1418921",
+    "created_at": "2025-11-10T12:24:12.845044"
+  },
+  {
+    "id": 221,
+    "article_id": "1448781",
+    "related_article_id": "1377010",
+    "related_article_url": "https://www.nzz.ch/feuilleton/allein-hat-frau-mehr-spass-sogar-maerchen-funktionieren-heute-ganz-gut-ohne-maenner-ld.1377010",
+    "created_at": "2025-11-10T12:24:12.872542"
+  },
+  {
+    "id": 222,
+    "article_id": "1448781",
+    "related_article_id": "1422381",
+    "related_article_url": "https://www.nzz.ch/feuilleton/sugar-daddy-dankt-ab-wie-metoo-die-alten-maenner-zum-feindbild-erklaert-hat-ld.1422381",
+    "created_at": "2025-11-10T12:24:12.882095"
+  },
+  {
+    "id": 223,
+    "article_id": "1448781",
+    "related_article_id": "1640798",
+    "related_article_url": "https://www.nzz.ch/gesundheit/stillen-ist-gesund-doch-auf-muettern-lastet-enormer-druck-ld.1640798",
+    "created_at": "2025-11-10T12:24:12.890142"
+  },
+  {
+    "id": 224,
+    "article_id": "1726177",
+    "related_article_id": "1684295",
+    "related_article_url": "https://www.nzz.ch/feuilleton/jedes-kind-auf-der-welt-wird-seinen-namen-kennen-25-jahre-nach-erscheinen-des-ersten-bandes-ist-harry-potter-noch-immer-ein-phaenomenaler-erfolg-wie-kam-es-dazu-ld.1684295",
+    "created_at": "2025-11-10T12:24:18.528921"
+  },
+  {
+    "id": 225,
+    "article_id": "1726177",
+    "related_article_id": "1725540",
+    "related_article_url": "https://www.nzz.ch/international/buch-zu-gender-klinik-tavistock-freigiebig-mit-pubertaetsblockern-ld.1725540",
+    "created_at": "2025-11-10T12:24:18.558126"
+  },
+  {
+    "id": 226,
+    "article_id": "1726177",
+    "related_article_id": "1707526",
+    "related_article_url": "https://www.nzz.ch/feuilleton/nicht-nur-in-harry-potter-ein-riese-robbie-coltrane-war-gross-ld.1707526",
+    "created_at": "2025-11-10T12:24:18.568796"
+  },
+  {
+    "id": 227,
+    "article_id": "1726177",
+    "related_article_id": "1722225",
+    "related_article_url": "https://www.nzz.ch/feuilleton/rainer-ist-mein-hobby-der-deutsche-youtuber-drachenlord-hat-eine-grausame-internetgefolgschaft-was-treibt-die-hater-an-ld.1722225",
+    "created_at": "2025-11-10T12:24:18.575327"
+  },
+  {
+    "id": 228,
+    "article_id": "1719353",
+    "related_article_id": "1716694",
+    "related_article_url": "https://www.nzz.ch/feuilleton/farha-auf-netflix-antisemitische-stereotype-ld.1716694",
+    "created_at": "2025-11-10T12:24:21.543341"
+  },
+  {
+    "id": 229,
+    "article_id": "1719353",
+    "related_article_id": "1666415",
+    "related_article_url": "https://www.nzz.ch/international/expo-2020-in-dubai-eine-zukunftsvision-fuer-den-nahen-osten-ld.1666415",
+    "created_at": "2025-11-10T12:24:21.570378"
+  },
+  {
+    "id": 230,
+    "article_id": "1719353",
+    "related_article_id": "1702682",
+    "related_article_url": "https://www.nzz.ch/international/saudiarabien-arabische-staaten-drohen-mit-verbot-von-netflix-ld.1702682",
+    "created_at": "2025-11-10T12:24:21.577855"
+  },
+  {
+    "id": 231,
+    "article_id": "1875755",
+    "related_article_id": "1876519",
+    "related_article_url": "https://www.nzz.ch/feuilleton/das-eth-hauptgebaeude-in-zuerich-ist-eine-schweizer-architektur-ikone-vor-hundert-jahren-erhielt-sie-ihre-heutige-gestalt-ld.1876519",
+    "created_at": "2025-11-10T12:24:24.505487"
+  },
+  {
+    "id": 232,
+    "article_id": "1875755",
+    "related_article_id": "1874984",
+    "related_article_url": "https://www.nzz.ch/feuilleton/der-neue-hauptsitz-der-groessten-bank-der-welt-in-new-york-soll-null-betriebsemissionen-aufweisen-ld.1874984",
+    "created_at": "2025-11-10T12:24:24.529623"
+  },
+  {
+    "id": 233,
+    "article_id": "1875755",
+    "related_article_id": "1865041",
+    "related_article_url": "https://www.nzz.ch/feuilleton/neugestaltung-des-museo-egizio-in-turin-das-alte-aegypten-erstrahlt-jetzt-im-coolen-look-einer-modeboutique-ld.1865041",
+    "created_at": "2025-11-10T12:24:24.537251"
+  },
+  {
+    "id": 234,
+    "article_id": "1699260",
+    "related_article_id": "1688996",
+    "related_article_url": "https://www.nzz.ch/feuilleton/pussy-riot-furioser-auftritt-in-basel-ld.1688996",
+    "created_at": "2025-11-10T12:24:27.442015"
+  },
+  {
+    "id": 235,
+    "article_id": "1699260",
+    "related_article_id": "1697280",
+    "related_article_url": "https://www.nzz.ch/meinung/rocknroll-ein-erfreuliches-beispiel-kultureller-aneignung-ld.1697280",
+    "created_at": "2025-11-10T12:24:27.467452"
+  },
+  {
+    "id": 236,
+    "article_id": "1699260",
+    "related_article_id": "1698760",
+    "related_article_url": "https://www.nzz.ch/feuilleton/phia-menard-am-zuercher-theater-spektakel-ld.1698760",
+    "created_at": "2025-11-10T12:24:27.478868"
+  },
+  {
+    "id": 237,
+    "article_id": "1735300",
+    "related_article_id": "1733831",
+    "related_article_url": "https://www.nzz.ch/meinung/seit-der-staatsgruendung-vor-75-jahren-kaempft-israel-ums-ueberleben-ld.1733831",
+    "created_at": "2025-11-10T12:24:30.021438"
+  },
+  {
+    "id": 238,
+    "article_id": "1735300",
+    "related_article_id": "1702380",
+    "related_article_url": "https://www.nzz.ch/feuilleton/neuer-antisemitismus-in-deutschland-wie-der-linksgruene-zeitgeist-alles-ueberrollt-ld.1702380",
+    "created_at": "2025-11-10T12:24:30.036683"
+  },
+  {
+    "id": 239,
+    "article_id": "1735300",
+    "related_article_id": "1731006",
+    "related_article_url": "https://www.nzz.ch/international/israel-eugene-kontorovich-verteidigt-die-justizreform-ld.1731006",
+    "created_at": "2025-11-10T12:24:30.043559"
+  },
+  {
+    "id": 240,
+    "article_id": "1735300",
+    "related_article_id": "1729823",
+    "related_article_url": "https://www.nzz.ch/international/justizreform-in-israel-ist-ein-kompromiss-noch-moeglich-ld.1729823",
+    "created_at": "2025-11-10T12:24:30.055196"
+  },
+  {
+    "id": 241,
+    "article_id": "1735300",
+    "related_article_id": "1683307",
+    "related_article_url": "https://www.nzz.ch/meinung/muslimischer-antisemitismus-ist-in-deutschland-weit-verbreitet-ld.1683307",
+    "created_at": "2025-11-10T12:24:30.064419"
+  },
+  {
+    "id": 242,
+    "article_id": "1735300",
+    "related_article_id": "1359869",
+    "related_article_url": "https://www.nzz.ch/feuilleton/der-historiker-michael-wolffsohn-sieht-in-einer-radikalisierten-muslimischen-minderheit-den-grund-fuer-wachsenden-antisemitismus-ld.1359869",
+    "created_at": "2025-11-10T12:24:30.072757"
+  },
+  {
+    "id": 243,
+    "article_id": "1853803",
+    "related_article_id": "1852772",
+    "related_article_url": "https://www.nzz.ch/meinung/spacex-starship-der-erfolgreiche-testflug-bestaetigt-elon-musks-strategie-ld.1852772",
+    "created_at": "2025-11-10T12:24:38.802918"
+  },
+  {
+    "id": 244,
+    "article_id": "1853803",
+    "related_article_id": "1851845",
+    "related_article_url": "https://www.nzz.ch/international/wie-putin-elon-musk-ausnutzt-struktur-einer-russischen-desinformationskampagne-ld.1851845",
+    "created_at": "2025-11-10T12:24:38.829469"
+  },
+  {
+    "id": 245,
+    "article_id": "1853803",
+    "related_article_id": "1841092",
+    "related_article_url": "https://www.nzz.ch/report-und-debatte/elon-musk-der-verlorene-vater-ld.1841092",
+    "created_at": "2025-11-10T12:24:38.837629"
+  },
+  {
+    "id": 246,
+    "article_id": "1759917",
+    "related_article_id": "1759794",
+    "related_article_url": "https://www.nzz.ch/international/krieg-in-nahost-die-neuesten-entwicklungen-ld.1759794",
+    "created_at": "2025-11-10T12:24:41.916772"
+  },
+  {
+    "id": 247,
+    "article_id": "1759917",
+    "related_article_id": "1759855",
+    "related_article_url": "https://www.nzz.ch/international/droht-ein-krieg-zwischen-israel-und-der-hizbollah-ld.1759855",
+    "created_at": "2025-11-10T12:24:41.949871"
+  },
+  {
+    "id": 248,
+    "article_id": "1759917",
+    "related_article_id": "1759897",
+    "related_article_url": "https://www.nzz.ch/international/israel-versagen-der-geheimdienste-wirft-ernste-fragen-auf-ld.1759897",
+    "created_at": "2025-11-10T12:24:41.956480"
+  },
+  {
+    "id": 249,
+    "article_id": "1667774",
+    "related_article_id": "1653062",
+    "related_article_url": "https://www.nzz.ch/international/emirate-ambitionierte-militaermacht-auf-toenernen-fuessen-ld.1653062",
+    "created_at": "2025-11-10T12:28:55.623971"
+  },
+  {
+    "id": 250,
+    "article_id": "1667774",
+    "related_article_id": "1586095",
+    "related_article_url": "https://www.nzz.ch/international/die-emirate-lockern-ihr-scharia-recht-ld.1586095",
+    "created_at": "2025-11-10T12:28:55.653900"
+  },
+  {
+    "id": 251,
+    "article_id": "1667774",
+    "related_article_id": "1613169",
+    "related_article_url": "https://www.nzz.ch/international/iran-und-saudiarabien-bemuehen-sich-um-entspannung-ld.1613169",
+    "created_at": "2025-11-10T12:28:55.670025"
+  },
+  {
+    "id": 252,
+    "article_id": "1712088",
+    "related_article_id": "1711018",
+    "related_article_url": "https://www.nzz.ch/meinung/der-andere-blick/ard-korrespondent-nennt-twitter-nutzer-ratten-zeit-abzuruesten-ld.1711018",
+    "created_at": "2025-11-10T12:29:02.278919"
+  },
+  {
+    "id": 253,
+    "article_id": "1712088",
+    "related_article_id": "1683787",
+    "related_article_url": "https://www.nzz.ch/feuilleton/will-elon-musk-twitter-kaufen-weil-er-im-rassistischen-suedafrika-erzogen-worden-ist-einblicke-in-die-abgruende-der-muskologie-ld.1683787",
+    "created_at": "2025-11-10T12:29:02.306528"
+  },
+  {
+    "id": 254,
+    "article_id": "1712088",
+    "related_article_id": "1711349",
+    "related_article_url": "https://www.nzz.ch/technologie/elon-musk-und-china-twitter-kauf-verschaerft-abhaengigkeiten-ld.1711349",
+    "created_at": "2025-11-10T12:29:02.313450"
+  },
+  {
+    "id": 255,
+    "article_id": "1698760",
+    "related_article_id": "1693448",
+    "related_article_url": "https://www.nzz.ch/feuilleton/spotify-hit-white-noise-auf-podcasts-ld.1693448",
+    "created_at": "2025-11-10T12:29:05.156664"
+  },
+  {
+    "id": 256,
+    "article_id": "1698760",
+    "related_article_id": "1689986",
+    "related_article_url": "https://www.nzz.ch/feuilleton/elvis-baz-luhrmanns-film-ueber-den-king-of-rocknroll-ld.1689986",
+    "created_at": "2025-11-10T12:29:05.184445"
+  },
+  {
+    "id": 257,
+    "article_id": "1698760",
+    "related_article_id": "1683383",
+    "related_article_url": "https://www.nzz.ch/feuilleton/zeitgenoessisches-theater-lob-des-buhrufs-ld.1683383",
+    "created_at": "2025-11-10T12:29:05.189371"
+  },
+  {
+    "id": 258,
+    "article_id": "1683481",
+    "related_article_id": "1599370",
+    "related_article_url": "https://www.nzz.ch/international/die-boykottierten-boykotteure-ld.1599370",
+    "created_at": "2025-11-10T12:29:08.036094"
+  },
+  {
+    "id": 259,
+    "article_id": "1683481",
+    "related_article_id": "1595872",
+    "related_article_url": "https://www.nzz.ch/meinung/bds-und-ihre-sympathisanten-die-nuetzlichen-idioten-der-antisemiten-ld.1595872",
+    "created_at": "2025-11-10T12:29:08.068078"
+  },
+  {
+    "id": 260,
+    "article_id": "1683481",
+    "related_article_id": "1671109",
+    "related_article_url": "https://www.nzz.ch/feuilleton/schweizer-ld.1671109",
+    "created_at": "2025-11-10T12:29:08.077837"
+  },
+  {
+    "id": 261,
+    "article_id": "1786822",
+    "related_article_id": "1788916",
+    "related_article_url": "https://www.nzz.ch/meinung/usa-wer-erloest-amerika-vom-wahn-der-reinheit-ld.1788916",
+    "created_at": "2025-11-10T12:29:10.765823"
+  },
+  {
+    "id": 262,
+    "article_id": "1765502",
+    "related_article_id": "1765500",
+    "related_article_url": "https://www.nzz.ch/feuilleton/juden-sind-nirgendwo-sicher-und-werden-es-auch-kuenftig-nicht-sein-ld.1765500",
+    "created_at": "2025-11-10T12:29:13.523946"
+  },
+  {
+    "id": 263,
+    "article_id": "1765502",
+    "related_article_id": "1735300",
+    "related_article_url": "https://www.nzz.ch/feuilleton/michael-wolffsohn-die-documenta-war-keine-ueberraschung-keine-ueberraschung-war-auch-olaf-scholz-das-deutsche-meinungsbild-gegenueber-israel-ist-negativ-ld.1735300",
+    "created_at": "2025-11-10T12:29:13.552745"
+  },
+  {
+    "id": 264,
+    "article_id": "1765502",
+    "related_article_id": "1761271",
+    "related_article_url": "https://www.nzz.ch/meinung/massaker-der-hamas-das-singulaere-ereignis-signalisiert-einen-epochenbruch-ld.1761271",
+    "created_at": "2025-11-10T12:29:13.557389"
+  },
+  {
+    "id": 265,
+    "article_id": "1400371",
+    "related_article_id": "1388682",
+    "related_article_url": "https://www.nzz.ch/meinung/antisemitismus-wir-muessen-miteinander-reden-ld.1388682",
+    "created_at": "2025-11-10T12:29:22.277341"
+  },
+  {
+    "id": 266,
+    "article_id": "1400371",
+    "related_article_id": "1387925",
+    "related_article_url": "https://www.nzz.ch/meinung/neuer-und-alter-antisemitismus-ein-gang-durch-den-irrgarten-der-logik-des-ressentiments-ld.1387925",
+    "created_at": "2025-11-10T12:29:22.301510"
+  },
+  {
+    "id": 267,
+    "article_id": "1400371",
+    "related_article_id": "1390420",
+    "related_article_url": "https://www.nzz.ch/schweiz/wieso-die-schweiz-nicht-weiss-wie-viele-antisemitisch-motivierte-straftaten-jedes-jahr-begangen-werden-ld.1390420",
+    "created_at": "2025-11-10T12:29:22.314237"
+  },
+  {
+    "id": 268,
+    "article_id": "1400371",
+    "related_article_id": "1399463",
+    "related_article_url": "https://www.nzz.ch/international/der-neue-judenhass-frankreich-muss-sich-diesem-problem-stellen-ld.1399463",
+    "created_at": "2025-11-10T12:29:22.322579"
+  },
+  {
+    "id": 269,
+    "article_id": "1595049",
+    "related_article_id": "1595872",
+    "related_article_url": "https://www.nzz.ch/meinung/bds-und-ihre-sympathisanten-die-nuetzlichen-idioten-der-antisemiten-ld.1595872",
+    "created_at": "2025-11-10T12:29:25.034338"
+  },
+  {
+    "id": 270,
+    "article_id": "1595049",
+    "related_article_id": "1584248",
+    "related_article_url": "https://www.nzz.ch/feuilleton/die-linke-und-der-islamismus-ld.1584248",
+    "created_at": "2025-11-10T12:29:25.058349"
+  },
+  {
+    "id": 271,
+    "article_id": "1595049",
+    "related_article_id": "1591320",
+    "related_article_url": "https://www.nzz.ch/feuilleton/emmanuel-macron-samuel-paty-und-charlie-hebdo-sind-schuld-wie-etablierte-us-medien-ueber-islamistischen-terror-in-frankreich-berichten-ld.1591320",
+    "created_at": "2025-11-10T12:29:25.068349"
+  },
+  {
+    "id": 272,
+    "article_id": "1725817",
+    "related_article_id": "1725907",
+    "related_article_url": "https://www.nzz.ch/international/notlage-in-syrien-damaskus-gibt-den-sanktionen-die-schuld-ld.1725907",
+    "created_at": "2025-11-10T12:29:28.697483"
+  },
+  {
+    "id": 273,
+    "article_id": "1725817",
+    "related_article_id": "1725119",
+    "related_article_url": "https://www.nzz.ch/international/erdbeben-in-syrien-katastrophe-in-einem-versehrten-land-ld.1725119",
+    "created_at": "2025-11-10T12:29:28.722861"
+  },
+  {
+    "id": 274,
+    "article_id": "1725817",
+    "related_article_id": "1725651",
+    "related_article_url": "https://www.nzz.ch/international/erdbeben-in-der-tuerkei-die-stadt-antakya-ist-komplett-zerstoert-ld.1725651",
+    "created_at": "2025-11-10T12:29:28.730929"
+  },
+  {
+    "id": 275,
+    "article_id": "1725119",
+    "related_article_id": "1724888",
+    "related_article_url": "https://www.nzz.ch/international/erdbeben-in-der-tuerkei-und-syrien-ngo-kommen-an-grenzen-ld.1724888",
+    "created_at": "2025-11-10T12:32:58.603619"
+  },
+  {
+    "id": 276,
+    "article_id": "1725119",
+    "related_article_id": "1724880",
+    "related_article_url": "https://www.nzz.ch/international/tuerkei-welche-politischen-konsequenzen-wird-das-beben-haben-ld.1724880",
+    "created_at": "2025-11-10T12:32:58.633207"
+  },
+  {
+    "id": 277,
+    "article_id": "1725119",
+    "related_article_id": "1724886",
+    "related_article_url": "https://www.nzz.ch/schweiz/80-schweizer-spezialisten-stehen-im-erdbebengebiet-im-einsatz-so-funktioniert-die-rettungskette-ld.1724886",
+    "created_at": "2025-11-10T12:32:58.641436"
+  },
+  {
+    "id": 278,
+    "article_id": "1387925",
+    "related_article_id": "1359869",
+    "related_article_url": "https://www.nzz.ch/feuilleton/der-historiker-michael-wolffsohn-sieht-in-einer-radikalisierten-muslimischen-minderheit-den-grund-fuer-wachsenden-antisemitismus-ld.1359869",
+    "created_at": "2025-11-10T12:33:07.154794"
+  },
+  {
+    "id": 279,
+    "article_id": "1387925",
+    "related_article_id": "1295810",
+    "related_article_url": "https://www.nzz.ch/feuilleton/antisemitismus-in-deutschland-wie-nur-umgehen-mit-dem-mitgebrachten-judenhass-ld.1295810",
+    "created_at": "2025-11-10T12:33:07.179138"
+  },
+  {
+    "id": 280,
+    "article_id": "1387925",
+    "related_article_id": "1385852",
+    "related_article_url": "https://www.nzz.ch/international/ungarn-soros-stiftungen-sind-am-ende-ld.1385852",
+    "created_at": "2025-11-10T12:33:07.187647"
+  },
+  {
+    "id": 281,
+    "article_id": "1387925",
+    "related_article_id": "1363065",
+    "related_article_url": "https://www.nzz.ch/meinung/stille-machtergreifung-ld.1363065",
+    "created_at": "2025-11-10T12:33:07.197161"
+  },
+  {
+    "id": 282,
+    "article_id": "1387925",
+    "related_article_id": "1360947",
+    "related_article_url": "https://www.nzz.ch/leserdebatte/tut-westeuropa-genug-gegen-den-antisemitismus-ld.1360947",
+    "created_at": "2025-11-10T12:33:07.204165"
+  },
+  {
+    "id": 283,
+    "article_id": "1387925",
+    "related_article_id": "1376473",
+    "related_article_url": "https://www.nzz.ch/meinung/rechtsnationalismus-und-antisemitismus-sind-gute-bettgenossen-ld.1376473",
+    "created_at": "2025-11-10T12:33:07.212455"
+  },
+  {
+    "id": 284,
+    "article_id": "1707526",
+    "related_article_id": "1706982",
+    "related_article_url": "https://www.nzz.ch/feuilleton/angela-lansbury-mord-ist-ihr-hobby-war-ihre-berufung-ld.1706982",
+    "created_at": "2025-11-10T12:33:10.576819"
+  },
+  {
+    "id": 285,
+    "article_id": "1707526",
+    "related_article_id": "1684295",
+    "related_article_url": "https://www.nzz.ch/feuilleton/jedes-kind-auf-der-welt-wird-seinen-namen-kennen-25-jahre-nach-erscheinen-des-ersten-bandes-ist-harry-potter-noch-immer-ein-phaenomenaler-erfolg-wie-kam-es-dazu-ld.1684295",
+    "created_at": "2025-11-10T12:33:10.601258"
+  },
+  {
+    "id": 286,
+    "article_id": "1707526",
+    "related_article_id": "1707192",
+    "related_article_url": "https://www.nzz.ch/feuilleton/john-cleese-neue-sendung-gegen-wokeness-und-cancel-culture-ld.1707192",
+    "created_at": "2025-11-10T12:33:10.611301"
+  },
+  {
+    "id": 287,
+    "article_id": "1474124",
+    "related_article_id": "1292677",
+    "related_article_url": "https://www.nzz.ch/meinung/die-demokratie-in-der-krise-wie-aus-einem-versprechen-ein-kampfbegriff-wurde-ld.1292677",
+    "created_at": "2025-11-10T12:33:13.637468"
+  },
+  {
+    "id": 288,
+    "article_id": "1474124",
+    "related_article_id": "1454532",
+    "related_article_url": "https://www.nzz.ch/wirtschaft/soros-warnt-vor-china-und-seinen-neuen-technologien-ld.1454532",
+    "created_at": "2025-11-10T12:33:13.660680"
+  },
+  {
+    "id": 289,
+    "article_id": "1474124",
+    "related_article_id": "1449227",
+    "related_article_url": "https://nzzas.nzz.ch/hintergrund/investor-george-soros-ist-der-perfekte-feind-ld.1449227",
+    "created_at": "2025-11-10T12:33:13.671060"
+  },
+  {
+    "id": 290,
+    "article_id": "1761203",
+    "related_article_id": "1760854",
+    "related_article_url": "https://www.nzz.ch/international/nach-erneuter-islamistischer-attacke-auf-einen-lehrer-ist-die-nervositaet-in-frankreich-gross-ld.1760854",
+    "created_at": "2025-11-10T12:33:16.159278"
+  },
+  {
+    "id": 291,
+    "article_id": "1761203",
+    "related_article_id": "1760740",
+    "related_article_url": "https://www.nzz.ch/international/angreifer-mit-messer-toetet-in-einer-schule-in-frankreich-einen-man-ld.1760740",
+    "created_at": "2025-11-10T12:33:16.187569"
+  },
+  {
+    "id": 292,
+    "article_id": "1761203",
+    "related_article_id": "1761364",
+    "related_article_url": "https://www.nzz.ch/international/sechs-flughaefen-in-frankreich-nach-bombendrohungen-evakuiert-ld.1761364",
+    "created_at": "2025-11-10T12:33:16.193633"
+  },
+  {
+    "id": 293,
+    "article_id": "1759897",
+    "related_article_id": "1759794",
+    "related_article_url": "https://www.nzz.ch/international/krieg-in-nahost-die-neuesten-entwicklungen-ld.1759794",
+    "created_at": "2025-11-10T12:33:19.324291"
+  },
+  {
+    "id": 294,
+    "article_id": "1759897",
+    "related_article_id": "1759828",
+    "related_article_url": "https://www.nzz.ch/meinung/untitledkrieg-in-gaza-das-politische-kalkuel-der-hamas-koennte-aufgehen-ld.1759828",
+    "created_at": "2025-11-10T12:33:19.354984"
+  },
+  {
+    "id": 295,
+    "article_id": "1759897",
+    "related_article_id": "1759860",
+    "related_article_url": "https://www.nzz.ch/international/die-palaestinenser-politik-der-eu-ist-gescheitert-ld.1759860",
+    "created_at": "2025-11-10T12:33:19.359517"
+  },
+  {
+    "id": 296,
+    "article_id": "1759897",
+    "related_article_id": "1759810",
+    "related_article_url": "https://www.nzz.ch/international/israel-und-die-hamas-wie-der-gazastreifen-zum-chronischen-krisenherd-wurde-ld.1759810",
+    "created_at": "2025-11-10T12:33:19.369355"
+  },
+  {
+    "id": 297,
+    "article_id": "1759996",
+    "related_article_id": "1759794",
+    "related_article_url": "https://www.nzz.ch/international/krieg-in-nahost-die-neuesten-entwicklungen-ld.1759794",
+    "created_at": "2025-11-10T12:33:29.282212"
+  },
+  {
+    "id": 298,
+    "article_id": "1759996",
+    "related_article_id": "1759798",
+    "related_article_url": "https://www.nzz.ch/fotografie/schwere-angriffe-der-hamas-treffen-die-israelische-bevoelkerung-ld.1759798",
+    "created_at": "2025-11-10T12:33:29.308052"
+  },
+  {
+    "id": 299,
+    "article_id": "1759996",
+    "related_article_id": "1759917",
+    "related_article_url": "https://www.nzz.ch/international/nahost-schock-entsetzen-und-der-wunsch-nach-rache-in-israel-ld.1759917",
+    "created_at": "2025-11-10T12:33:29.313782"
+  },
+  {
+    "id": 300,
+    "article_id": "1762861",
+    "related_article_id": "1758416",
+    "related_article_url": "https://www.nzz.ch/international/krawalle-in-frankreich-eine-stadt-rafft-sich-auf-aber-die-wut-ist-gross-ld.1758416",
+    "created_at": "2025-11-10T12:33:32.273301"
+  },
+  {
+    "id": 301,
+    "article_id": "1762861",
+    "related_article_id": "1753016",
+    "related_article_url": "https://www.nzz.ch/international/frankreich-macron-fuehrt-unruhen-auf-fehlende-integration-zurueck-ld.1753016",
+    "created_at": "2025-11-10T12:33:32.300451"
+  },
+  {
+    "id": 302,
+    "article_id": "1762861",
+    "related_article_id": "1745905",
+    "related_article_url": "https://www.nzz.ch/international/viele-bewohner-in-den-franzoesischen-problemquartieren-fuehlen-sich-unverstanden-und-vernachlaessigt-der-tod-von-nahel-wird-zum-ventil-ld.1745905",
+    "created_at": "2025-11-10T12:33:32.309596"
+  },
+  {
+    "id": 303,
+    "article_id": "1640798",
+    "related_article_id": "1641097",
+    "related_article_url": "https://www.nzz.ch/wirtschaft/sinkende-geburtenraten-neue-situation-fuer-nestle-danone-co-ld.1641097",
+    "created_at": "2025-11-10T12:33:35.439475"
+  },
+  {
+    "id": 304,
+    "article_id": "1640798",
+    "related_article_id": "155137",
+    "related_article_url": "https://www.nzz.ch/wissenschaft/entwicklungspsychologie-deutsche-babys-schreien-weniger-als-italienische-ld.155137",
+    "created_at": "2025-11-10T12:33:35.466046"
+  },
+  {
+    "id": 305,
+    "article_id": "1640798",
+    "related_article_id": "1548000",
+    "related_article_url": "https://www.nzz.ch/wissenschaft/coronavirus-was-schwangere-wissen-sollten-ld.1548000",
+    "created_at": "2025-11-10T12:33:35.473312"
+  },
+  {
+    "id": 306,
+    "article_id": "1640798",
+    "related_article_id": "1884654",
+    "related_article_url": "https://www.nzz.ch/technologie/statt-naechtelangen-programmierens-das-silicon-valley-ist-begeistert-vom-schlafen-ld.1884654",
+    "created_at": "2025-11-10T12:33:35.480729"
+  },
+  {
+    "id": 307,
+    "article_id": "1640798",
+    "related_article_id": "1833834",
+    "related_article_url": "https://www.nzz.ch/wissenschaft/erstmals-todesfall-mit-neuem-vogelgrippe-virus-typ-h5n2-gemeldet-ld.1833834",
+    "created_at": "2025-11-10T12:33:35.487075"
+  },
+  {
+    "id": 308,
+    "article_id": "1640798",
+    "related_article_id": "1814221",
+    "related_article_url": "https://www.nzz.ch/podcast/abnehmspritze-der-hype-fuehrt-zu-knappheit-nzz-akzent-ld.1814221",
+    "created_at": "2025-11-10T12:33:35.493899"
+  },
+  {
+    "id": 309,
+    "article_id": "1640798",
+    "related_article_id": "1733014",
+    "related_article_url": "https://www.nzz.ch/podcast/warum-menschen-vor-dem-tod-fremden-ein-organ-spenden-nzz-akzent-ld.1733014",
+    "created_at": "2025-11-10T12:33:35.501682"
+  },
+  {
+    "id": 310,
+    "article_id": "1640798",
+    "related_article_id": "1738153",
+    "related_article_url": "https://www.nzz.ch/podcast/10-kilo-abnehmen-ein-selbstversuch-nzz-akzent-ld.1738153",
+    "created_at": "2025-11-10T12:33:35.514069"
+  },
+  {
+    "id": 311,
+    "article_id": "1896762",
+    "related_article_id": "1893273",
+    "related_article_url": "https://www.nzz.ch/international/pilotpromacron-und-starmer-handeln-migrationsdeal-ausjekt-zwischen-london-und-paris-macron-und-starmer-wollen-die-migration-am-aermelkanal-unterbinden-ld.1893273",
+    "created_at": "2025-11-10T12:33:38.691057"
+  },
+  {
+    "id": 312,
+    "article_id": "1896762",
+    "related_article_id": "1842673",
+    "related_article_url": "https://www.nzz.ch/international/hohe-migration-und-perspektivenlosigkeit-der-weissen-unterschicht-treiben-die-krawalle-in-england-an-ld.1842673",
+    "created_at": "2025-11-10T12:33:38.718676"
+  },
+  {
+    "id": 313,
+    "article_id": "1896762",
+    "related_article_id": "1842679",
+    "related_article_url": "https://www.nzz.ch/international/nicht-schuldig-mein-liebster-manche-englische-krawallmacher-zeigen-wenig-reue-vor-gericht-andere-weinen-ld.1842679",
+    "created_at": "2025-11-10T12:33:38.724067"
+  },
+  {
+    "id": 314,
+    "article_id": "1896762",
+    "related_article_id": "1842666",
+    "related_article_url": "https://www.nzz.ch/international/asylsuchende-logieren-im-hotel-eine-notloesung-sorgt-in-england-fuer-wut-und-aerger-ld.1842666",
+    "created_at": "2025-11-10T12:33:38.736041"
+  },
+  {
+    "id": 315,
+    "article_id": "1388682",
+    "related_article_id": "1387925",
+    "related_article_url": "https://www.nzz.ch/meinung/neuer-und-alter-antisemitismus-ein-gang-durch-den-irrgarten-der-logik-des-ressentiments-ld.1387925",
+    "created_at": "2025-11-10T12:33:41.523722"
+  },
+  {
+    "id": 316,
+    "article_id": "1767905",
+    "related_article_id": "1721387",
+    "related_article_url": "https://www.nzz.ch/feuilleton/der-spiegel-fluechtlinge-evros-fake-news-ld.1721387",
+    "created_at": "2025-11-10T12:33:47.500448"
+  },
+  {
+    "id": 317,
+    "article_id": "1767905",
+    "related_article_id": "1758740",
+    "related_article_url": "https://www.nzz.ch/international/seenotretter-und-steuergeld-elon-musk-kann-es-kaum-glauben-ld.1758740",
+    "created_at": "2025-11-10T12:33:47.526308"
+  },
+  {
+    "id": 318,
+    "article_id": "1767905",
+    "related_article_id": "1558320",
+    "related_article_url": "https://www.nzz.ch/feuilleton/corona-krise-das-bild-das-um-die-welt-gegangen-ist-ld.1558320",
+    "created_at": "2025-11-10T12:33:47.535777"
+  },
+  {
+    "id": 319,
+    "article_id": "1745905",
+    "related_article_id": "1745917",
+    "related_article_url": "https://www.nzz.ch/international/krawalle-in-frankreich-marine-le-pen-schweigt-und-profitiert-ld.1745917",
+    "created_at": "2025-11-10T12:37:38.821978"
+  },
+  {
+    "id": 320,
+    "article_id": "1745905",
+    "related_article_id": "1745552",
+    "related_article_url": "https://www.nzz.ch/feuilleton/barbara-lefebvre-ausschreitungen-frankreich-zemmour-le-pen-melenchon-ld.1745552",
+    "created_at": "2025-11-10T12:37:38.847680"
+  },
+  {
+    "id": 321,
+    "article_id": "1745905",
+    "related_article_id": "1745373",
+    "related_article_url": "https://www.nzz.ch/international/festnahmen-krawalle-in-frankreich-junge-maenner-ohne-vorstrafen-ld.1745373",
+    "created_at": "2025-11-10T12:37:38.861980"
+  },
+  {
+    "id": 322,
+    "article_id": "1839569",
+    "related_article_id": "1761991",
+    "related_article_url": "https://www.nzz.ch/feuilleton/hamas-ist-von-hitler-inspiriert-ld.1761991",
+    "created_at": "2025-11-10T12:37:48.203234"
+  },
+  {
+    "id": 323,
+    "article_id": "1839569",
+    "related_article_id": "1837773",
+    "related_article_url": "https://www.nzz.ch/feuilleton/fuer-muslime-gibt-es-keine-schicksalhafte-oder-gar-religioese-pflicht-zum-judenhass-auch-nicht-aus-solidaritaet-mit-den-palaestinensern-ld.1837773",
+    "created_at": "2025-11-10T12:37:48.230106"
+  },
+  {
+    "id": 324,
+    "article_id": "1839569",
+    "related_article_id": "1834605",
+    "related_article_url": "https://www.nzz.ch/feuilleton/adolf-hitler-der-jahrhundertverbrecher-ld.1834605",
+    "created_at": "2025-11-10T12:37:48.235514"
+  },
+  {
+    "id": 325,
+    "article_id": "1890708",
+    "related_article_id": "1890138",
+    "related_article_url": "https://www.nzz.ch/feuilleton/ordnung-ist-schoenheit-die-handwerkskunst-der-shaker-uebersetzt-glaubensgrundsaetze-wie-einfachheit-demut-und-nuetzlichkeit-in-formvollendete-gestaltung-ld.1890138",
+    "created_at": "2025-11-10T12:37:51.397008"
+  },
+  {
+    "id": 326,
+    "article_id": "1890708",
+    "related_article_id": "1874984",
+    "related_article_url": "https://www.nzz.ch/feuilleton/der-neue-hauptsitz-der-groessten-bank-der-welt-in-new-york-soll-null-betriebsemissionen-aufweisen-ld.1874984",
+    "created_at": "2025-11-10T12:37:51.421758"
+  },
+  {
+    "id": 327,
+    "article_id": "1890708",
+    "related_article_id": "1883158",
+    "related_article_url": "https://www.nzz.ch/feuilleton/wenn-jemand-diese-bilder-mag-auf-denen-pferde-ueber-fluesse-springen-dann-bin-ich-nicht-die-richtige-fuer-den-auftrag-sagt-die-pionierin-der-hotelkunst-ld.1883158",
+    "created_at": "2025-11-10T12:37:51.431476"
+  },
+  {
+    "id": 328,
+    "article_id": "1524374",
+    "related_article_id": "1339252",
+    "related_article_url": "https://www.nzz.ch/feuilleton/the-crown-eine-koenigin-wer-um-das-ewige-weiss-ld.1339252",
+    "created_at": "2025-11-10T12:37:53.980526"
+  },
+  {
+    "id": 329,
+    "article_id": "1524374",
+    "related_article_id": "1515715",
+    "related_article_url": "https://www.nzz.ch/feuilleton/tom-segev-israel-ist-eine-der-groessten-erfolgsgeschichten-des-20-jahrhunderts-ld.1515715",
+    "created_at": "2025-11-10T12:37:54.009192"
+  },
+  {
+    "id": 330,
+    "article_id": "1524374",
+    "related_article_id": "1395765",
+    "related_article_url": "https://www.nzz.ch/feuilleton/netflix-serie-fauda-wo-keiner-an-frieden-denkt-herrscht-chaos-ld.1395765",
+    "created_at": "2025-11-10T12:37:54.018311"
+  },
+  {
+    "id": 331,
+    "article_id": "1842666",
+    "related_article_id": "1843481",
+    "related_article_url": "https://www.nzz.ch/meinung/kaum-im-amt-beendet-der-neue-premierminister-keir-starmer-die-unruhen-rasch-mit-harter-hand-doch-die-probleme-werden-ihn-wieder-einholen-ld.1843481",
+    "created_at": "2025-11-10T12:37:56.975575"
+  },
+  {
+    "id": 332,
+    "article_id": "1842666",
+    "related_article_id": "1842673",
+    "related_article_url": "https://www.nzz.ch/international/hohe-migration-und-perspektivenlosigkeit-der-weissen-unterschicht-treiben-die-krawalle-in-england-an-ld.1842673",
+    "created_at": "2025-11-10T12:37:57.004087"
+  },
+  {
+    "id": 333,
+    "article_id": "1842666",
+    "related_article_id": "1842876",
+    "related_article_url": "https://www.nzz.ch/international/auslaenderfeindliche-krawalle-in-nordirland-vereinen-katholische-und-protestantische-todfeinde-aus-dem-buergerkrieg-ld.1842876",
+    "created_at": "2025-11-10T12:37:57.011392"
+  },
+  {
+    "id": 334,
+    "article_id": "1896316",
+    "related_article_id": "1874087",
+    "related_article_url": "https://www.nzz.ch/zuerich/club-zukunft-zuerich-abschied-von-einer-aera-ld.1874087",
+    "created_at": "2025-11-10T12:37:59.694815"
+  },
+  {
+    "id": 335,
+    "article_id": "1896316",
+    "related_article_id": "1871030",
+    "related_article_url": "https://www.nzz.ch/zuerich/wir-haben-nicht-die-subventionitis-weil-die-gaeste-weniger-alkohol-trinken-fehlen-den-klubs-der-stadt-zuerich-einnahmen-sie-fordern-staatliche-gelder-ld.1871030",
+    "created_at": "2025-11-10T12:37:59.726358"
+  },
+  {
+    "id": 336,
+    "article_id": "1896316",
+    "related_article_id": "1853035",
+    "related_article_url": "https://www.nzz.ch/international/berlins-clubszene-in-der-krise-watergate-schliesst-nach-mehr-20-jahren-ld.1853035",
+    "created_at": "2025-11-10T12:37:59.731007"
+  },
+  {
+    "id": 337,
+    "article_id": "1765493",
+    "related_article_id": "1764234",
+    "related_article_url": "https://www.nzz.ch/feuilleton/narrativ-der-dekolonisierung-ist-gefaehrlich-und-falsch-ld.1764234",
+    "created_at": "2025-11-10T12:38:08.220419"
+  },
+  {
+    "id": 338,
+    "article_id": "1765493",
+    "related_article_id": "1764339",
+    "related_article_url": "https://www.nzz.ch/feuilleton/interview-necla-kelek-die-sozialwissenschafterin-verlangt-eine-reform-der-migrationspolitik-ld.1764339",
+    "created_at": "2025-11-10T12:38:08.245333"
+  },
+  {
+    "id": 339,
+    "article_id": "1765493",
+    "related_article_id": "1762070",
+    "related_article_url": "https://www.nzz.ch/feuilleton/massaker-der-hamas-man-koennte-glauben-den-7-oktober-habe-es-nicht-gegeben-ld.1762070",
+    "created_at": "2025-11-10T12:38:08.255341"
+  },
+  {
+    "id": 340,
+    "article_id": "1515689",
+    "related_article_id": "1514554",
+    "related_article_url": "https://www.nzz.ch/international/und-was-hat-halle-damit-zu-tun-eine-stadt-stellt-sich-fragen-ld.1514554",
+    "created_at": "2025-11-10T12:38:10.883779"
+  },
+  {
+    "id": 341,
+    "article_id": "1515689",
+    "related_article_id": "1514707",
+    "related_article_url": "https://www.nzz.ch/meinung/man-nehme-die-opfer-ernst-ld.1514707",
+    "created_at": "2025-11-10T12:38:10.911224"
+  },
+  {
+    "id": 342,
+    "article_id": "1515689",
+    "related_article_id": "1514481",
+    "related_article_url": "https://www.nzz.ch/international/halle-taeter-greift-juedische-gemeinde-an-ld.1514481",
+    "created_at": "2025-11-10T12:38:10.919416"
+  },
+  {
+    "id": 343,
+    "article_id": "1820113",
+    "related_article_id": "1763434",
+    "related_article_url": "https://www.nzz.ch/international/in-der-muslimischen-hochburg-leicester-wenden-sich-die-waehler-wegen-der-israel-politik-von-labour-partei-ab-ld.1763434",
+    "created_at": "2025-11-10T12:38:14.178451"
+  },
+  {
+    "id": 344,
+    "article_id": "1820113",
+    "related_article_id": "1819437",
+    "related_article_url": "https://www.nzz.ch/international/lee-andersons-ungezuegelte-zunge-rishi-sunaks-mann-fuers-grobe-stolpert-ueber-islamophobie-affaere-ld.1819437",
+    "created_at": "2025-11-10T12:38:14.199281"
+  },
+  {
+    "id": 345,
+    "article_id": "1820113",
+    "related_article_id": "1819236",
+    "related_article_url": "https://www.nzz.ch/international/geknickter-speaker-und-islamistische-drohungen-britische-politik-ist-in-aufruhr-ld.1819236",
+    "created_at": "2025-11-10T12:38:14.207461"
+  },
+  {
+    "id": 346,
+    "article_id": "1760854",
+    "related_article_id": "1760740",
+    "related_article_url": "https://www.nzz.ch/international/angreifer-mit-messer-toetet-in-einer-schule-in-frankreich-einen-man-ld.1760740",
+    "created_at": "2025-11-10T12:38:16.697051"
+  },
+  {
+    "id": 347,
+    "article_id": "1760854",
+    "related_article_id": "1760437",
+    "related_article_url": "https://www.nzz.ch/international/bundeskanzler-scholz-aeussert-sich-im-bundestag-zum-krieg-in-israel-ld.1760437",
+    "created_at": "2025-11-10T12:38:16.705142"
+  },
+  {
+    "id": 348,
+    "article_id": "1359869",
+    "related_article_id": "1348821",
+    "related_article_url": "https://www.nzz.ch/international/warme-worte-gegen-den-antisemitismus-ld.1348821",
+    "created_at": "2025-11-10T12:38:19.959942"
+  },
+  {
+    "id": 349,
+    "article_id": "1359869",
+    "related_article_id": "1360947",
+    "related_article_url": "https://www.nzz.ch/leserdebatte/tut-westeuropa-genug-gegen-den-antisemitismus-ld.1360947",
+    "created_at": "2025-11-10T12:38:19.986191"
+  },
+  {
+    "id": 350,
+    "article_id": "1359869",
+    "related_article_id": "1295810",
+    "related_article_url": "https://www.nzz.ch/feuilleton/antisemitismus-in-deutschland-wie-nur-umgehen-mit-dem-mitgebrachten-judenhass-ld.1295810",
+    "created_at": "2025-11-10T12:38:19.995412"
+  },
+  {
+    "id": 351,
+    "article_id": "1713014",
+    "related_article_id": "1680369",
+    "related_article_url": "https://www.nzz.ch/international/usa-buch-einer-weissen-ueber-schwarzen-feminismus-zurueckgezogen-ld.1680369",
+    "created_at": "2025-11-10T12:38:26.413917"
+  },
+  {
+    "id": 352,
+    "article_id": "1713014",
+    "related_article_id": "1512404",
+    "related_article_url": "https://www.nzz.ch/feuilleton/wer-magier-wird-betritt-das-reich-der-angst-ein-erfahrungsbericht-ld.1512404",
+    "created_at": "2025-11-10T12:38:26.437552"
+  },
+  {
+    "id": 353,
+    "article_id": "1713014",
+    "related_article_id": "1328681",
+    "related_article_url": "https://www.nzz.ch/meinung/postkoloniales-schwarz-weiss-denken-ld.1328681",
+    "created_at": "2025-11-10T12:38:26.451456"
+  },
+  {
+    "id": 354,
+    "article_id": "1713014",
+    "related_article_id": "1553119",
+    "related_article_url": "https://www.nzz.ch/feuilleton/rassismus-in-der-ethnologie-franz-boas-ueberwand-ihn-bereits-1911-ld.1553119",
+    "created_at": "2025-11-10T12:38:26.459254"
+  },
+  {
+    "id": 355,
+    "article_id": "1713014",
+    "related_article_id": "1693341",
+    "related_article_url": "https://www.nzz.ch/meinung/kulturelle-aneignung-der-vorwurf-torpediert-die-kultur-selbst-ld.1693341",
+    "created_at": "2025-11-10T12:38:26.466307"
+  },
+  {
+    "id": 356,
+    "article_id": "1876519",
+    "related_article_id": "1883683",
+    "related_article_url": "https://www.nzz.ch/feuilleton/santiago-calatrava-dient-die-kunst-als-experimentierfeld-fuer-seine-architektur-darin-gleicht-er-auch-le-corbusier-ld.1883683",
+    "created_at": "2025-11-10T12:38:29.547160"
+  },
+  {
+    "id": 357,
+    "article_id": "1876519",
+    "related_article_id": "1839591",
+    "related_article_url": "https://www.nzz.ch/feuilleton/das-stadttheater-st-gallen-ist-eine-ikone-des-brutalismus-ld.1839591",
+    "created_at": "2025-11-10T12:38:29.576206"
+  },
+  {
+    "id": 358,
+    "article_id": "1876519",
+    "related_article_id": "1871446",
+    "related_article_url": "https://www.nzz.ch/feuilleton/le-corbusier-ld.1871446",
+    "created_at": "2025-11-10T12:38:29.586072"
+  },
+  {
+    "id": 359,
+    "article_id": "1718585",
+    "related_article_id": "1718623",
+    "related_article_url": "https://www.nzz.ch/podcast/highlight-podcast-disney-zu-woke-nzz-akzent-ld.1718623",
+    "created_at": "2025-11-10T12:43:53.288659"
+  },
+  {
+    "id": 360,
+    "article_id": "1718585",
+    "related_article_id": "1531122",
+    "related_article_url": "https://www.nzz.ch/zuerich/der-wolkenbruch-autor-thomas-meyer-wendet-sich-gegen-billige-lacher-ld.1531122",
+    "created_at": "2025-11-10T12:43:53.321605"
+  },
+  {
+    "id": 361,
+    "article_id": "1718585",
+    "related_article_id": "1708785",
+    "related_article_url": "https://www.nzz.ch/wirtschaft/gendern-im-betrieb-warum-das-problematisch-ist-ld.1708785",
+    "created_at": "2025-11-10T12:43:53.339001"
+  },
+  {
+    "id": 362,
+    "article_id": "1700659",
+    "related_article_id": "1699260",
+    "related_article_url": "https://www.nzz.ch/feuilleton/pussy-riot-ein-interview-mit-saengerin-marija-aljochina-ld.1699260",
+    "created_at": "2025-11-10T12:43:58.446397"
+  },
+  {
+    "id": 363,
+    "article_id": "1700659",
+    "related_article_id": "1691130",
+    "related_article_url": "https://www.nzz.ch/feuilleton/der-ukrainekrieg-aus-der-sicht-der-russischen-soldatenmuetter-ld.1691130",
+    "created_at": "2025-11-10T12:43:58.473664"
+  },
+  {
+    "id": 364,
+    "article_id": "1700659",
+    "related_article_id": "1692604",
+    "related_article_url": "https://www.nzz.ch/feuilleton/sechzig-jahre-rolling-stones-ld.1692604",
+    "created_at": "2025-11-10T12:43:58.481733"
+  },
+  {
+    "id": 365,
+    "article_id": "1667931",
+    "related_article_id": "1655756",
+    "related_article_url": "https://www.nzz.ch/sport/ski-nordisch-dario-cologna-und-simon-ammann-im-gespraech-ld.1655756",
+    "created_at": "2025-11-10T12:44:01.511476"
+  },
+  {
+    "id": 366,
+    "article_id": "1667931",
+    "related_article_id": "1663808",
+    "related_article_url": "https://www.nzz.ch/sport/killian-peier-und-die-enttaeuschende-vierschanzentournee-ld.1663808",
+    "created_at": "2025-11-10T12:44:01.537253"
+  },
+  {
+    "id": 367,
+    "article_id": "1667931",
+    "related_article_id": "1666857",
+    "related_article_url": "https://www.nzz.ch/meinung/olympische-spiele-in-peking-sind-ein-vergehen-an-den-athleten-ld.1666857",
+    "created_at": "2025-11-10T12:44:01.547534"
+  },
+  {
+    "id": 368,
+    "article_id": "1360947",
+    "related_article_id": "1359869",
+    "related_article_url": "https://www.nzz.ch/feuilleton/der-historiker-michael-wolffsohn-sieht-in-einer-radikalisierten-muslimischen-minderheit-den-grund-fuer-wachsenden-antisemitismus-ld.1359869",
+    "created_at": "2025-11-10T12:44:04.486883"
+  },
+  {
+    "id": 369,
+    "article_id": "1360947",
+    "related_article_id": "1348821",
+    "related_article_url": "https://www.nzz.ch/international/warme-worte-gegen-den-antisemitismus-ld.1348821",
+    "created_at": "2025-11-10T12:44:04.515334"
+  },
+  {
+    "id": 370,
+    "article_id": "1553317",
+    "related_article_id": "1525246",
+    "related_article_url": "https://www.nzz.ch/feuilleton/juedisches-selbstbewusstsein-ist-moeglich-weil-es-israel-gibt-ld.1525246",
+    "created_at": "2025-11-10T12:44:07.422794"
+  },
+  {
+    "id": 371,
+    "article_id": "1553317",
+    "related_article_id": "1502930",
+    "related_article_url": "https://www.nzz.ch/feuilleton/das-judentum-und-die-deutschen-ld.1502930",
+    "created_at": "2025-11-10T12:44:07.450899"
+  },
+  {
+    "id": 372,
+    "article_id": "1553317",
+    "related_article_id": "1465573",
+    "related_article_url": "https://www.nzz.ch/international/was-ist-legitime-kritik-an-israel-und-wo-beginnt-der-antisemitismus-ld.1465573",
+    "created_at": "2025-11-10T12:44:07.462497"
+  },
+  {
+    "id": 373,
+    "article_id": "1553317",
+    "related_article_id": "1413504",
+    "related_article_url": "https://www.nzz.ch/zuerich/man-nimmt-im-kulturbetrieb-einzelne-personen-in-eine-mediale-geiselhaft-ld.1413504",
+    "created_at": "2025-11-10T12:44:07.473960"
+  },
+  {
+    "id": 374,
+    "article_id": "1553317",
+    "related_article_id": "1314583",
+    "related_article_url": "https://www.nzz.ch/feuilleton/kampagne-gegen-israel-aktionen-fuer-eine-boykottierung-israels-stossen-auf-den-widerspruch-achtsamer-deutscher-politiker-aller-lager-ld.1314583",
+    "created_at": "2025-11-10T12:44:07.484070"
+  },
+  {
+    "id": 375,
+    "article_id": "1605481",
+    "related_article_id": "1595049",
+    "related_article_url": "https://www.nzz.ch/feuilleton/frankreich-schulen-im-griff-des-islamismus-ld.1595049",
+    "created_at": "2025-11-10T12:44:10.617507"
+  },
+  {
+    "id": 376,
+    "article_id": "1605481",
+    "related_article_id": "1561543",
+    "related_article_url": "https://www.nzz.ch/feuilleton/wissenschaft-wird-zum-wiedergutmachungsprojekt-ld.1561543",
+    "created_at": "2025-11-10T12:44:10.627818"
+  },
+  {
+    "id": 377,
+    "article_id": "1605481",
+    "related_article_id": "1583252",
+    "related_article_url": "https://www.nzz.ch/international/frankreich-lehrermord-zeigt-womit-paedagogen-seit-langem-kaempfen-ld.1583252",
+    "created_at": "2025-11-10T12:44:10.638189"
+  },
+  {
+    "id": 378,
+    "article_id": "1605481",
+    "related_article_id": "1599831",
+    "related_article_url": "https://www.nzz.ch/feuilleton/universitaeten-die-prinzipien-der-aufklaerung-sind-zu-verteidigen-ld.1599831",
+    "created_at": "2025-11-10T12:44:10.648162"
+  },
+  {
+    "id": 379,
+    "article_id": "1716694",
+    "related_article_id": "1716793",
+    "related_article_url": "https://www.nzz.ch/feuilleton/generation-j-zitat-vorlage-biller-an-vowinckel-ld.1716793",
+    "created_at": "2025-11-10T12:44:16.276508"
+  },
+  {
+    "id": 380,
+    "article_id": "1716694",
+    "related_article_id": "1628024",
+    "related_article_url": "https://www.nzz.ch/feuilleton/ende-und-anfang-im-nahen-osten-wer-hat-begonnen-ld.1628024",
+    "created_at": "2025-11-10T12:44:16.289242"
+  },
+  {
+    "id": 381,
+    "article_id": "1716694",
+    "related_article_id": "1568595",
+    "related_article_url": "https://www.nzz.ch/feuilleton/ultraorthodoxe-juden-das-kino-hat-sie-fuer-sich-entdeckt-ld.1568595",
+    "created_at": "2025-11-10T12:44:16.298993"
+  },
+  {
+    "id": 382,
+    "article_id": "1328681",
+    "related_article_id": "1298892",
+    "related_article_url": "https://www.nzz.ch/international/subsaharische-retortenstaedte-der-afrikanische-traum-vom-neubeginn-ld.1298892",
+    "created_at": "2025-11-10T12:44:19.308570"
+  },
+  {
+    "id": 383,
+    "article_id": "1328681",
+    "related_article_id": "1327828",
+    "related_article_url": "https://www.nzz.ch/international/mythen-und-fakten-zur-gewalt-in-westafrika-ld.1327828",
+    "created_at": "2025-11-10T12:44:19.342242"
+  },
+  {
+    "id": 384,
+    "article_id": "1328681",
+    "related_article_id": "1309506",
+    "related_article_url": "https://www.nzz.ch/panorama/traditionelle-psychologie-in-afrika-ist-der-schatten-ein-teil-des-menschen-ld.1309506",
+    "created_at": "2025-11-10T12:44:19.359579"
+  },
+  {
+    "id": 385,
+    "article_id": "1679692",
+    "related_article_id": "895891",
+    "related_article_url": "https://www.nzz.ch/feuilleton/buecher/faszinierend-aber-auch-zutiefst-anstoessig-ld.895891",
+    "created_at": "2025-11-10T12:44:22.379597"
+  },
+  {
+    "id": 386,
+    "article_id": "1679692",
+    "related_article_id": "1570290",
+    "related_article_url": "https://www.nzz.ch/feuilleton/wenn-literatur-am-raederwerk-der-zeit-dreht-ld.1570290",
+    "created_at": "2025-11-10T12:44:22.407494"
+  },
+  {
+    "id": 387,
+    "article_id": "1679692",
+    "related_article_id": "1551880",
+    "related_article_url": "https://www.nzz.ch/feuilleton/angst-und-schrecken-im-kinderbuch-ld.1551880",
+    "created_at": "2025-11-10T12:44:22.420160"
+  },
+  {
+    "id": 388,
+    "article_id": "1607537",
+    "related_article_id": "1339738",
+    "related_article_url": "https://www.nzz.ch/feuilleton/geniessen-um-noch-mehr-zu-strafen-ld.1339738",
+    "created_at": "2025-11-10T12:44:25.501074"
+  },
+  {
+    "id": 389,
+    "article_id": "1607537",
+    "related_article_id": "1575199",
+    "related_article_url": "https://www.nzz.ch/feuilleton/wer-weiss-ist-hat-unrecht-die-rassismusdebatte-driftet-ab-ld.1575199",
+    "created_at": "2025-11-10T12:44:25.503134"
+  },
+  {
+    "id": 390,
+    "article_id": "1607537",
+    "related_article_id": "1605577",
+    "related_article_url": "https://www.nzz.ch/feuilleton/identitaetspolitik-mithu-sanyal-befreit-die-debatte-von-tabus-ld.1605577",
+    "created_at": "2025-11-10T12:44:25.521046"
+  },
+  {
+    "id": 391,
+    "article_id": "1607537",
+    "related_article_id": "1352169",
+    "related_article_url": "https://www.nzz.ch/feuilleton/kolonialismus-ist-keine-schwarz-weiss-geschichte-ld.1352169",
+    "created_at": "2025-11-10T12:44:25.531772"
+  },
+  {
+    "id": 392,
+    "article_id": "1607537",
+    "related_article_id": "1580921",
+    "related_article_url": "https://www.nzz.ch/feuilleton/blasphemie-das-imaginaere-verbrechen-kehrt-zurueck-ld.1580921",
+    "created_at": "2025-11-10T12:44:25.539502"
+  },
+  {
+    "id": 393,
+    "article_id": "1599370",
+    "related_article_id": "1304753",
+    "related_article_url": "https://www.nzz.ch/international/mit-naechstenliebe-gegen-den-hass-ld.1304753",
+    "created_at": "2025-11-10T12:44:28.704923"
+  },
+  {
+    "id": 394,
+    "article_id": "1599370",
+    "related_article_id": "1571953",
+    "related_article_url": "https://www.nzz.ch/feuilleton/neue-dauerausstellung-das-juedische-museum-in-berlin-stellt-sich-der-debatte-ld.1571953",
+    "created_at": "2025-11-10T12:44:28.733155"
+  },
+  {
+    "id": 395,
+    "article_id": "1599370",
+    "related_article_id": "1595872",
+    "related_article_url": "https://www.nzz.ch/meinung/bds-und-ihre-sympathisanten-die-nuetzlichen-idioten-der-antisemiten-ld.1595872",
+    "created_at": "2025-11-10T12:44:28.743054"
+  },
+  {
+    "id": 396,
+    "article_id": "1599370",
+    "related_article_id": "1314583",
+    "related_article_url": "https://www.nzz.ch/feuilleton/kampagne-gegen-israel-aktionen-fuer-eine-boykottierung-israels-stossen-auf-den-widerspruch-achtsamer-deutscher-politiker-aller-lager-ld.1314583",
+    "created_at": "2025-11-10T12:44:28.751845"
+  },
+  {
+    "id": 397,
+    "article_id": "1422381",
+    "related_article_id": "1363788",
+    "related_article_url": "https://www.nzz.ch/gesellschaft/andere-kulturen-andere-sitten-ld.1363788",
+    "created_at": "2025-11-10T12:44:38.403457"
+  },
+  {
+    "id": 398,
+    "article_id": "1422381",
+    "related_article_id": "1413456",
+    "related_article_url": "https://www.nzz.ch/feuilleton/affaere-argento-wird-metoo-ein-opfer-von-fake-news-ld.1413456",
+    "created_at": "2025-11-10T12:44:38.437052"
+  },
+  {
+    "id": 399,
+    "article_id": "1422381",
+    "related_article_id": "1330606",
+    "related_article_url": "https://www.nzz.ch/gesellschaft/sexismus-debatte-psychoanalytiker-schriftsteller-juerg-acklin-ld.1330606",
+    "created_at": "2025-11-10T12:44:38.450581"
+  },
+  {
+    "id": 400,
+    "article_id": "1871446",
+    "related_article_id": "1751808",
+    "related_article_url": "https://www.nzz.ch/feuilleton/le-corbusiers-planstadt-chandigarh-in-indien-der-dokumentarfilm-ld.1751808",
+    "created_at": "2025-11-10T12:44:41.862591"
+  },
+  {
+    "id": 401,
+    "article_id": "1871446",
+    "related_article_id": "1868567",
+    "related_article_url": "https://www.nzz.ch/feuilleton/sehnsuchtsort-wald-und-der-mystische-norden-die-fondation-beyeler-zeigt-ein-wintermaerchen-in-landschaftsbildern-ld.1868567",
+    "created_at": "2025-11-10T12:44:41.873882"
+  },
+  {
+    "id": 402,
+    "article_id": "1871446",
+    "related_article_id": "1867004",
+    "related_article_url": "https://www.nzz.ch/feuilleton/nur-fuer-schwindelfreie-das-neue-werk-im-kunsthaus-zuerich-ist-ein-technologisches-gesamtkunstwerk-das-alle-sinne-beruehrt-ld.1867004",
+    "created_at": "2025-11-10T12:44:41.883560"
+  },
+  {
+    "id": 403,
+    "article_id": "1731479",
+    "related_article_id": "1653391",
+    "related_article_url": "https://www.nzz.ch/feuilleton/muslimbruderschaft-die-unheimlichen-brueder-ld.1653391",
+    "created_at": "2025-11-10T12:44:45.305470"
+  },
+  {
+    "id": 404,
+    "article_id": "1731479",
+    "related_article_id": "1712678",
+    "related_article_url": "https://www.nzz.ch/feuilleton/die-fundi-versteher-warum-der-mediale-aufschrei-ueber-die-homophoben-aeusserungen-des-katarischen-wm-botschafters-verlogen-ist-ld.1712678",
+    "created_at": "2025-11-10T12:44:45.337361"
+  },
+  {
+    "id": 405,
+    "article_id": "1731479",
+    "related_article_id": "1604691",
+    "related_article_url": "https://www.nzz.ch/feuilleton/wenn-sich-antisemiten-als-neue-juden-inszenieren-waere-widerspruch-gefragt-stattdessen-erhalten-sie-unterstuetzung-von-wissenschaftern-ld.1604691",
+    "created_at": "2025-11-10T12:44:45.352807"
+  },
+  {
+    "id": 406,
+    "article_id": "1514707",
+    "related_article_id": "1514554",
+    "related_article_url": "https://www.nzz.ch/international/und-was-hat-halle-damit-zu-tun-eine-stadt-stellt-sich-fragen-ld.1514554",
+    "created_at": "2025-11-10T12:44:48.343467"
+  },
+  {
+    "id": 407,
+    "article_id": "1514707",
+    "related_article_id": "1514488",
+    "related_article_url": "https://www.nzz.ch/international/halle-der-christchurch-attentaeter-als-mutmassliches-vorbild-ld.1514488",
+    "created_at": "2025-11-10T12:44:48.369711"
+  },
+  {
+    "id": 408,
+    "article_id": "1871030",
+    "related_article_id": "1831729",
+    "related_article_url": "https://www.nzz.ch/feuilleton/altmodische-kulturfoerderung-zuerich-subventioniert-am-publikum-vorbei-ld.1831729",
+    "created_at": "2025-11-10T12:44:50.892015"
+  },
+  {
+    "id": 409,
+    "article_id": "1871030",
+    "related_article_id": "1868473",
+    "related_article_url": "https://www.nzz.ch/report-und-debatte/drogen-dramen-defizite-in-der-roten-fabrik-und-der-reitschule-kriselt-es-was-ist-aus-den-haeusern-der-jugendbewegung-von-1980-geworden-ld.1868473",
+    "created_at": "2025-11-10T12:44:50.917558"
+  },
+  {
+    "id": 410,
+    "article_id": "1295031",
+    "related_article_id": "85621",
+    "related_article_url": "https://www.nzz.ch/feuilleton/joerg-baberowskis-buch-raeume-der-gewalt-ein-moerder-namens-mensch-ld.85621",
+    "created_at": "2025-11-10T12:44:59.406017"
+  },
+  {
+    "id": 411,
+    "article_id": "1295031",
+    "related_article_id": "150918",
+    "related_article_url": "https://www.nzz.ch/feuilleton/populismus-und-opferdiskurs-die-boesen-sind-immer-die-anderen-ld.150918",
+    "created_at": "2025-11-10T12:44:59.432229"
+  },
+  {
+    "id": 412,
+    "article_id": "1295031",
+    "related_article_id": "15541",
+    "related_article_url": "https://www.nzz.ch/meinung/kommentare/politik-populismus-und-luege-die-krise-der-wahrheit-ld.15541",
+    "created_at": "2025-11-10T12:44:59.439229"
+  },
+  {
+    "id": 413,
+    "article_id": "1295031",
+    "related_article_id": "97262",
+    "related_article_url": "https://www.nzz.ch/feuilleton/liberalgott-bewahre-ld.97262",
+    "created_at": "2025-11-10T12:44:59.446232"
+  },
+  {
+    "id": 414,
+    "article_id": "1295031",
+    "related_article_id": "110624",
+    "related_article_url": "https://www.nzz.ch/feuilleton/zeitgeschehen/diskriminierung-und-viktimisierung-der-neue-opferautoritarismus-ld.110624",
+    "created_at": "2025-11-10T12:44:59.454240"
+  },
+  {
+    "id": 415,
+    "article_id": "1836712",
+    "related_article_id": "1830766",
+    "related_article_url": "https://www.nzz.ch/meinung/die-westliche-linke-opfert-israel-auf-dem-alter-ihres-selbsthasses-ld.1830766",
+    "created_at": "2025-11-10T12:46:01.794910"
+  },
+  {
+    "id": 416,
+    "article_id": "1836712",
+    "related_article_id": "1833395",
+    "related_article_url": "https://www.nzz.ch/feuilleton/es-liege-an-den-juden-dass-der-antisemitismus-zunimmt-im-kulturbetrieb-zirkulieren-abstruse-ansichten-wie-eine-berliner-diskussion-zeigt-ld.1833395",
+    "created_at": "2025-11-10T12:46:01.830791"
+  },
+  {
+    "id": 417,
+    "article_id": "1836712",
+    "related_article_id": "1836081",
+    "related_article_url": "https://www.nzz.ch/feuilleton/beschweigt-srf-systematisch-den-antisemitismus-von-woken-und-postkolonialen-ideologen-das-behauptet-der-zuercher-anwalt-emrah-erken-in-einer-beschwerde-ld.1836081",
+    "created_at": "2025-11-10T12:46:01.844304"
+  },
+  {
+    "id": 418,
+    "article_id": "1836712",
+    "related_article_id": "1830150",
+    "related_article_url": "https://www.nzz.ch/feuilleton/gebildete-barbaren-wie-sich-westliche-wissenschaft-und-kultur-abschaffen-ld.1830150",
+    "created_at": "2025-11-10T12:46:01.844304"
+  },
+  {
+    "id": 419,
+    "article_id": "1653391",
+    "related_article_id": "1625544",
+    "related_article_url": "https://www.nzz.ch/meinung/deutschland-der-islamische-antisemitismus-wird-verharmlost-ld.1625544",
+    "created_at": "2025-11-10T12:46:09.917598"
+  },
+  {
+    "id": 420,
+    "article_id": "1653391",
+    "related_article_id": "1604691",
+    "related_article_url": "https://www.nzz.ch/feuilleton/wenn-sich-antisemiten-als-neue-juden-inszenieren-waere-widerspruch-gefragt-stattdessen-erhalten-sie-unterstuetzung-von-wissenschaftern-ld.1604691",
+    "created_at": "2025-11-10T12:46:09.919473"
+  },
+  {
+    "id": 421,
+    "article_id": "1653391",
+    "related_article_id": "1599831",
+    "related_article_url": "https://www.nzz.ch/feuilleton/universitaeten-die-prinzipien-der-aufklaerung-sind-zu-verteidigen-ld.1599831",
+    "created_at": "2025-11-10T12:46:09.933319"
+  },
+  {
+    "id": 422,
+    "article_id": "1553119",
+    "related_article_id": "1543003",
+    "related_article_url": "https://www.nzz.ch/feuilleton/barracoon-zora-neale-hurston-und-cudjo-lewis-ueber-sklaverei-ld.1543003",
+    "created_at": "2025-11-10T12:46:14.518123"
+  },
+  {
+    "id": 423,
+    "article_id": "1553119",
+    "related_article_id": "1084062",
+    "related_article_url": "https://www.nzz.ch/feuilleton/buecher/der-dschungel-der-gefuehle-ld.1084062",
+    "created_at": "2025-11-10T12:46:14.527886"
+  },
+  {
+    "id": 424,
+    "article_id": "1399463",
+    "related_article_id": "867571",
+    "related_article_url": "https://www.nzz.ch/wirtschaft/apartheid-in-frankreich-ld.867571",
+    "created_at": "2025-11-10T12:46:19.877746"
+  },
+  {
+    "id": 425,
+    "article_id": "1399463",
+    "related_article_id": "650204",
+    "related_article_url": "https://www.nzz.ch/feuilleton/buecher/feldforschung-in-der-banlieue-ld.650204",
+    "created_at": "2025-11-10T12:46:19.904586"
+  },
+  {
+    "id": 426,
+    "article_id": "1399463",
+    "related_article_id": "876280",
+    "related_article_url": "https://www.nzz.ch/feuilleton/buecher/frankreich-als-krimi-ld.876280",
+    "created_at": "2025-11-10T12:46:19.911428"
+  },
+  {
+    "id": 427,
+    "article_id": "1399463",
+    "related_article_id": "788071",
+    "related_article_url": "https://www.nzz.ch/feuilleton/ein-franzoesisches-verbrechen-ld.788071",
+    "created_at": "2025-11-10T12:46:19.918489"
+  },
+  {
+    "id": 428,
+    "article_id": "1399463",
+    "related_article_id": "1353237",
+    "related_article_url": "https://www.nzz.ch/international/mehr-angriffe-auf-juden-in-frankreich-ld.1353237",
+    "created_at": "2025-11-10T12:46:19.926783"
+  },
+  {
+    "id": 429,
+    "article_id": "1399463",
+    "related_article_id": "1387925",
+    "related_article_url": "https://www.nzz.ch/meinung/neuer-und-alter-antisemitismus-ein-gang-durch-den-irrgarten-der-logik-des-ressentiments-ld.1387925",
+    "created_at": "2025-11-10T12:46:19.936639"
+  },
+  {
+    "id": 430,
+    "article_id": "1759810",
+    "related_article_id": "1759828",
+    "related_article_url": "https://www.nzz.ch/meinung/untitledkrieg-in-gaza-das-politische-kalkuel-der-hamas-koennte-aufgehen-ld.1759828",
+    "created_at": "2025-11-10T12:46:22.519741"
+  },
+  {
+    "id": 431,
+    "article_id": "1759810",
+    "related_article_id": "1759816",
+    "related_article_url": "https://www.nzz.ch/international/die-hamas-will-eine-annaeherung-israels-an-saudiarabien-verhindern-ld.1759816",
+    "created_at": "2025-11-10T12:46:22.544069"
+  },
+  {
+    "id": 432,
+    "article_id": "1759810",
+    "related_article_id": "1759798",
+    "related_article_url": "https://www.nzz.ch/fotografie/schwere-angriffe-der-hamas-treffen-die-israelische-bevoelkerung-ld.1759798",
+    "created_at": "2025-11-10T12:46:22.553047"
+  },
+  {
+    "id": 433,
+    "article_id": "1728087",
+    "related_article_id": "1726951",
+    "related_article_url": "https://www.nzz.ch/international/saudiarabien-der-kronprinz-plant-den-groessten-wuerfel-der-welt-ld.1726951",
+    "created_at": "2025-11-10T12:46:29.077909"
+  },
+  {
+    "id": 434,
+    "article_id": "1728087",
+    "related_article_id": "1669365",
+    "related_article_url": "https://www.nzz.ch/international/emirate-in-dubai-wird-der-arabische-traum-wahr-ld.1669365",
+    "created_at": "2025-11-10T12:46:29.104338"
+  },
+  {
+    "id": 435,
+    "article_id": "1728087",
+    "related_article_id": "1667774",
+    "related_article_url": "https://www.nzz.ch/international/die-emirate-sind-neuer-konkurrenz-aus-saudiarabien-ausgesetzt-ld.1667774",
+    "created_at": "2025-11-10T12:46:29.111639"
+  },
+  {
+    "id": 436,
+    "article_id": "1728087",
+    "related_article_id": "1602585",
+    "related_article_url": "https://www.nzz.ch/wirtschaft/die-pandemie-macht-der-jungen-weltstadt-dubai-das-leben-schwer-ld.1602585",
+    "created_at": "2025-11-10T12:46:29.120019"
+  },
+  {
+    "id": 437,
+    "article_id": "1722742",
+    "related_article_id": "1715893",
+    "related_article_url": "https://www.nzz.ch/feuilleton/interview-religionswisschenschaft-putin-ist-ein-sehr-aberglaeubischer-mensch-ld.1715893",
+    "created_at": "2025-11-10T12:46:34.279998"
+  },
+  {
+    "id": 438,
+    "article_id": "1722742",
+    "related_article_id": "1711147",
+    "related_article_url": "https://www.nzz.ch/feuilleton/milo-rau-ein-stadttheater-darf-nicht-die-tradition-pflegen-ld.1711147",
+    "created_at": "2025-11-10T12:46:34.308837"
+  },
+  {
+    "id": 439,
+    "article_id": "1722742",
+    "related_article_id": "1712509",
+    "related_article_url": "https://www.nzz.ch/feuilleton/bono-hat-seine-autobiografie-veroeffentlicht-ld.1712509",
+    "created_at": "2025-11-10T12:46:34.314988"
+  },
+  {
+    "id": 440,
+    "article_id": "1721387",
+    "related_article_id": "1719368",
+    "related_article_url": "https://www.nzz.ch/feuilleton/fall-maria-der-spiegel-muss-berichterstattung-zurueckziehen-ld.1719368",
+    "created_at": "2025-11-10T12:46:37.214228"
+  },
+  {
+    "id": 441,
+    "article_id": "1721387",
+    "related_article_id": "1715879",
+    "related_article_url": "https://www.nzz.ch/feuilleton/totes-fluechtlingsmaedchen-der-spiegel-evros-ld.1715879",
+    "created_at": "2025-11-10T12:46:37.244537"
+  },
+  {
+    "id": 442,
+    "article_id": "1721387",
+    "related_article_id": "1628754",
+    "related_article_url": "https://www.nzz.ch/feuilleton/relotius-revisited-der-ehemalige-spiegel-reporter-ist-zurueck-und-verbreitet-neue-maerchen-ld.1628754",
+    "created_at": "2025-11-10T12:46:37.252461"
+  },
+  {
+    "id": 443,
+    "article_id": "1884654",
+    "related_article_id": "1711886",
+    "related_article_url": "https://www.nzz.ch/gesellschaft/komm-suesser-schlaf-anleitung-fuer-eine-geruhsame-nacht-ld.1711886",
+    "created_at": "2025-11-10T12:46:39.984101"
+  },
+  {
+    "id": 444,
+    "article_id": "1884654",
+    "related_article_id": "1876741",
+    "related_article_url": "https://www.nzz.ch/wissenschaft/was-tun-um-besser-zu-schlafen-ld.1876741",
+    "created_at": "2025-11-10T12:46:40.016058"
+  },
+  {
+    "id": 445,
+    "article_id": "1884654",
+    "related_article_id": "1639284",
+    "related_article_url": "https://www.nzz.ch/technologie/besser-schlafen-koennen-schlaftracker-dabei-helfen-ld.1639284",
+    "created_at": "2025-11-10T12:46:40.026893"
+  },
+  {
+    "id": 446,
+    "article_id": "1722225",
+    "related_article_id": "1676222",
+    "related_article_url": "https://www.nzz.ch/panorama/videoblogger-drachenlord-zu-bewaehrungsstrafe-verurteilt-ld.1676222",
+    "created_at": "2025-11-10T12:46:42.883425"
+  },
+  {
+    "id": 447,
+    "article_id": "1722225",
+    "related_article_id": "1653053",
+    "related_article_url": "https://www.nzz.ch/panorama/fall-drachenlord-die-hilflosigkeit-der-justiz-bei-cybermobbing-ld.1653053",
+    "created_at": "2025-11-10T12:46:42.911394"
+  },
+  {
+    "id": 448,
+    "article_id": "1449227",
+    "related_article_id": "1796808",
+    "related_article_url": "https://www.nzz.ch/feuilleton/wir-basteln-uns-ein-feindbild-george-soros-schuld-ld.1796808",
+    "created_at": "2025-11-10T12:46:46.056806"
+  },
+  {
+    "id": 449,
+    "article_id": "1716793",
+    "related_article_id": "1727104",
+    "related_article_url": "https://www.nzz.ch/feuilleton/generation-j-zelda-biller-antwortet-ein-letztes-mal-ld.1727104",
+    "created_at": "2025-11-10T12:46:56.672837"
+  },
+  {
+    "id": 450,
+    "article_id": "1716793",
+    "related_article_id": "1726131",
+    "related_article_url": "https://www.nzz.ch/feuilleton/generation-j-dana-vowinckel-will-sich-nicht-mehr-rechtfertigen-ld.1726131",
+    "created_at": "2025-11-10T12:46:56.697806"
+  },
+  {
+    "id": 451,
+    "article_id": "1716793",
+    "related_article_id": "1724799",
+    "related_article_url": "https://www.nzz.ch/feuilleton/generation-j-zelda-biller-schreibt-ueber-den-holocaust-gedenktag-ld.1724799",
+    "created_at": "2025-11-10T12:46:56.709356"
+  },
+  {
+    "id": 452,
+    "article_id": "1716793",
+    "related_article_id": "1723757",
+    "related_article_url": "https://www.nzz.ch/feuilleton/generation-j-zitat-vowinckel-an-biller-ld.1723757",
+    "created_at": "2025-11-10T12:46:56.716953"
+  },
+  {
+    "id": 453,
+    "article_id": "1716793",
+    "related_article_id": "1721875",
+    "related_article_url": "https://www.nzz.ch/feuilleton/generation-j-zelda-biller-ueber-die-ewige-baustelle-tel-aviv-ld.1721875",
+    "created_at": "2025-11-10T12:46:56.724686"
+  },
+  {
+    "id": 454,
+    "article_id": "1676740",
+    "related_article_id": "1676155",
+    "related_article_url": "https://www.nzz.ch/pro/perspektiven/staerkt-der-ukraine-krieg-das-geschaeft-mit-soeldnern-ld.1676155",
+    "created_at": "2025-11-10T12:47:52.658800"
+  },
+  {
+    "id": 455,
+    "article_id": "1676740",
+    "related_article_id": "1613540",
+    "related_article_url": "https://www.nzz.ch/international/krieg-in-der-ukraine-die-neusten-entwicklungen-ld.1613540",
+    "created_at": "2025-11-10T12:47:52.701108"
+  },
+  {
+    "id": 456,
+    "article_id": "1759922",
+    "related_article_id": "1758883",
+    "related_article_url": "https://www.nzz.ch/feuilleton/jeff-goldblum-der-schauspieler-ist-jetzt-als-pianist-auf-tournee-ld.1758883",
+    "created_at": "2025-11-10T12:48:00.253399"
+  },
+  {
+    "id": 457,
+    "article_id": "1759922",
+    "related_article_id": "1757062",
+    "related_article_url": "https://www.nzz.ch/feuilleton/helene-fischer-im-zuercher-hallenstadion-ld.1757062",
+    "created_at": "2025-11-10T12:48:00.300888"
+  },
+  {
+    "id": 458,
+    "article_id": "1759922",
+    "related_article_id": "1755354",
+    "related_article_url": "https://www.nzz.ch/feuilleton/american-recordings-vor-20-jahren-ist-johnny-cash-gestorben-ld.1755354",
+    "created_at": "2025-11-10T12:48:00.309877"
+  },
+  {
+    "id": 459,
+    "article_id": "1879688",
+    "related_article_id": "1599401",
+    "related_article_url": "https://www.nzz.ch/gesellschaft/die-frau-die-kein-mann-mehr-sein-will-ein-transmann-bereut-ld.1599401",
+    "created_at": "2025-11-10T12:48:03.079055"
+  },
+  {
+    "id": 460,
+    "article_id": "1879688",
+    "related_article_id": "1841917",
+    "related_article_url": "https://www.nzz.ch/feuilleton/wie-sollen-medien-mit-biologischen-maennern-umgehen-die-sich-als-frauen-fuehlen-wenn-sie-sagen-tessa-ganserer-ist-ein-mann-koennte-das-probleme-geben-sagt-der-medienanwalt-ld.1841917",
+    "created_at": "2025-11-10T12:48:03.099190"
+  },
+  {
+    "id": 461,
+    "article_id": "1879688",
+    "related_article_id": "1585147",
+    "related_article_url": "https://www.nzz.ch/meinung/transgender-diagnosen-nehmen-zu-mit-teils-bedenklichen-folgen-ld.1585147",
+    "created_at": "2025-11-10T12:48:03.106751"
+  },
+  {
+    "id": 462,
+    "article_id": "1725651",
+    "related_article_id": "1725249",
+    "related_article_url": "https://www.nzz.ch/international/tuerkei-erdogan-trifft-im-erdbebengebiet-auf-trauer-und-wut-ld.1725249",
+    "created_at": "2025-11-10T12:48:05.966991"
+  },
+  {
+    "id": 463,
+    "article_id": "1725651",
+    "related_article_id": "1725394",
+    "related_article_url": "https://www.nzz.ch/international/erdbeben-in-der-tuerkei-auch-kulturgueter-sind-schwer-beschaedigt-ld.1725394",
+    "created_at": "2025-11-10T12:48:05.996836"
+  },
+  {
+    "id": 464,
+    "article_id": "1725651",
+    "related_article_id": "1724712",
+    "related_article_url": "https://www.nzz.ch/panorama/heftige-erdbeben-in-tuerkei-und-syrien-viele-tote-und-verletzte-ld.1724712",
+    "created_at": "2025-11-10T12:48:06.007018"
+  },
+  {
+    "id": 465,
+    "article_id": "1551880",
+    "related_article_id": "1536939",
+    "related_article_url": "https://www.nzz.ch/feuilleton/erlaubte-luegen-oder-kleiner-faktencheck-im-kinderbuch-ld.1536939",
+    "created_at": "2025-11-10T12:48:11.467563"
+  },
+  {
+    "id": 466,
+    "article_id": "1551880",
+    "related_article_id": "1471549",
+    "related_article_url": "https://www.nzz.ch/feuilleton/mira-gysi-und-die-kunst-der-sachbilderbuecher-fuer-kinder-ld.1471549",
+    "created_at": "2025-11-10T12:48:11.491817"
+  },
+  {
+    "id": 467,
+    "article_id": "1454532",
+    "related_article_id": "1454573",
+    "related_article_url": "https://www.nzz.ch/international/george-soros-trifft-mit-seiner-kritik-an-china-einen-wunden-punkt-ld.1454573",
+    "created_at": "2025-11-10T12:48:17.801634"
+  },
+  {
+    "id": 468,
+    "article_id": "1454532",
+    "related_article_id": "1454632",
+    "related_article_url": "https://www.nzz.ch/meinung/wef-bilanz-der-technologische-wandel-wird-unterschaetzt-ld.1454632",
+    "created_at": "2025-11-10T12:48:17.826765"
+  },
+  {
+    "id": 469,
+    "article_id": "1454532",
+    "related_article_id": "1437704",
+    "related_article_url": "https://www.nzz.ch/international/wenn-oesterreichs-kanzler-george-soros-empfaengt-ist-das-mehr-als-ein-arbeitsbesuch-ld.1437704",
+    "created_at": "2025-11-10T12:48:17.835727"
+  },
+  {
+    "id": 470,
+    "article_id": "1454532",
+    "related_article_id": "1452492",
+    "related_article_url": "https://www.nzz.ch/wirtschaft/wef-in-davos-prominenz-flugmeilen-und-morning-meditati-ld.1452492",
+    "created_at": "2025-11-10T12:48:17.844046"
+  },
+  {
+    "id": 471,
+    "article_id": "1702380",
+    "related_article_id": "1701794",
+    "related_article_url": "https://www.nzz.ch/feuilleton/woke-linke-realitaetsverweigerung-fuer-fortgeschrittene-ld.1701794",
+    "created_at": "2025-11-10T12:48:20.557438"
+  },
+  {
+    "id": 472,
+    "article_id": "1702380",
+    "related_article_id": "1680923",
+    "related_article_url": "https://www.nzz.ch/international/antisemitismus-wie-deutschlands-staatsanwaelte-troedeln-ld.1680923",
+    "created_at": "2025-11-10T12:48:20.586096"
+  },
+  {
+    "id": 473,
+    "article_id": "1702380",
+    "related_article_id": "1634730",
+    "related_article_url": "https://www.nzz.ch/feuilleton/holocaust-und-kolonialismus-erinnerungskultur-ist-nicht-verhandelbar-ld.1634730",
+    "created_at": "2025-11-10T12:48:20.599814"
+  },
+  {
+    "id": 474,
+    "article_id": "1702380",
+    "related_article_id": "1630963",
+    "related_article_url": "https://www.nzz.ch/feuilleton/im-geschichtsverstaendnis-der-gruenen-zeigt-sich-die-ganze-scheinmoral-ld.1630963",
+    "created_at": "2025-11-10T12:48:20.607343"
+  },
+  {
+    "id": 475,
+    "article_id": "1702380",
+    "related_article_id": "1699484",
+    "related_article_url": "https://www.nzz.ch/schweiz/zionistenkongress-peinlichkeiten-begleiten-das-jubilaeum-ld.1699484",
+    "created_at": "2025-11-10T12:48:20.616249"
+  },
+  {
+    "id": 476,
+    "article_id": "1702380",
+    "related_article_id": "1695607",
+    "related_article_url": "https://www.nzz.ch/meinung/lauwarm-und-die-documenta-unterwegs-zu-einem-voelkischen-kulturverstaendnis-ld.1695607",
+    "created_at": "2025-11-10T12:48:20.625030"
+  },
+  {
+    "id": 477,
+    "article_id": "1867004",
+    "related_article_id": "1854760",
+    "related_article_url": "https://www.nzz.ch/feuilleton/jeder-ist-ein-performancekuenstler-marina-abramovic-zeigt-im-kunsthaus-zuerich-wie-das-geht-ld.1854760",
+    "created_at": "2025-11-10T12:48:23.184384"
+  },
+  {
+    "id": 478,
+    "article_id": "1867004",
+    "related_article_id": "1853963",
+    "related_article_url": "https://www.nzz.ch/feuilleton/kunst-ist-leben-und-tod-marina-abramovic-geht-immer-bis-zum-aeussersten-ld.1853963",
+    "created_at": "2025-11-10T12:48:23.208325"
+  },
+  {
+    "id": 479,
+    "article_id": "1867004",
+    "related_article_id": "1858191",
+    "related_article_url": "https://www.nzz.ch/feuilleton/kunst-ist-traum-lautete-seine-losung-albert-welti-traumdeuter-menschlicher-abgruende-ld.1858191",
+    "created_at": "2025-11-10T12:48:23.216825"
+  },
+  {
+    "id": 480,
+    "article_id": "1723757",
+    "related_article_id": "1727104",
+    "related_article_url": "https://www.nzz.ch/feuilleton/generation-j-zelda-biller-antwortet-ein-letztes-mal-ld.1727104",
+    "created_at": "2025-11-10T12:48:26.398206"
+  },
+  {
+    "id": 481,
+    "article_id": "1723757",
+    "related_article_id": "1726131",
+    "related_article_url": "https://www.nzz.ch/feuilleton/generation-j-dana-vowinckel-will-sich-nicht-mehr-rechtfertigen-ld.1726131",
+    "created_at": "2025-11-10T12:48:26.424479"
+  },
+  {
+    "id": 482,
+    "article_id": "1723757",
+    "related_article_id": "1724799",
+    "related_article_url": "https://www.nzz.ch/feuilleton/generation-j-zelda-biller-schreibt-ueber-den-holocaust-gedenktag-ld.1724799",
+    "created_at": "2025-11-10T12:48:26.432549"
+  },
+  {
+    "id": 483,
+    "article_id": "1723757",
+    "related_article_id": "1721875",
+    "related_article_url": "https://www.nzz.ch/feuilleton/generation-j-zelda-biller-ueber-die-ewige-baustelle-tel-aviv-ld.1721875",
+    "created_at": "2025-11-10T12:48:26.442291"
+  },
+  {
+    "id": 484,
+    "article_id": "1723757",
+    "related_article_id": "1720922",
+    "related_article_url": "https://www.nzz.ch/feuilleton/generation-j-dana-vowinckel-ueber-den-alltaeglichen-rassismus-ld.1720922",
+    "created_at": "2025-11-10T12:48:26.450370"
+  },
+  {
+    "id": 485,
+    "article_id": "1868567",
+    "related_article_id": "1867321",
+    "related_article_url": "https://www.nzz.ch/feuilleton/er-sammelte-kunst-von-frauen-als-diese-kaum-beachtung-fand-ld.1867321",
+    "created_at": "2025-11-10T12:48:35.377970"
+  },
+  {
+    "id": 486,
+    "article_id": "1868567",
+    "related_article_id": "1854760",
+    "related_article_url": "https://www.nzz.ch/feuilleton/jeder-ist-ein-performancekuenstler-marina-abramovic-zeigt-im-kunsthaus-zuerich-wie-das-geht-ld.1854760",
+    "created_at": "2025-11-10T12:48:35.406224"
+  },
+  {
+    "id": 487,
+    "article_id": "1868567",
+    "related_article_id": "1866352",
+    "related_article_url": "https://www.nzz.ch/feuilleton/duane-hanson-uebertraegt-die-realitaet-ins-museum-und-verwischt-die-grenzen-zwischen-kunst-und-wirklichkeit-ld.1866352",
+    "created_at": "2025-11-10T12:48:35.414949"
+  },
+  {
+    "id": 488,
+    "article_id": "1712509",
+    "related_article_id": "1712090",
+    "related_article_url": "https://www.nzz.ch/feuilleton/bruce-springsteen-als-soulman-ld.1712090",
+    "created_at": "2025-11-10T12:48:38.176153"
+  },
+  {
+    "id": 489,
+    "article_id": "1712509",
+    "related_article_id": "1711147",
+    "related_article_url": "https://www.nzz.ch/feuilleton/milo-rau-ein-stadttheater-darf-nicht-die-tradition-pflegen-ld.1711147",
+    "created_at": "2025-11-10T12:48:38.208415"
+  },
+  {
+    "id": 490,
+    "article_id": "1712509",
+    "related_article_id": "1710702",
+    "related_article_url": "https://www.nzz.ch/feuilleton/jazznojazz-2022-ghost-note-und-eine-schweizer-ueberraschung-ld.1710702",
+    "created_at": "2025-11-10T12:48:38.219947"
+  }
+]

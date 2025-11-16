@@ -1,0 +1,13 @@
+{
+  "export_date": "2025-11-10T13:48:42.305476",
+  "articles_count": 10,
+  "related_articles_count": 490,
+  "authors_count": 39,
+  "associations_count": 22,
+  "files": {
+    "articles": "articles.json",
+    "related_articles": "related_articles.json",
+    "authors": "authors.json",
+    "article_author_associations": "article_author_associations.json"
+  }
+}

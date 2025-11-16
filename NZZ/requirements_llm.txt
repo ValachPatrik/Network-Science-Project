@@ -1,0 +1,10 @@
+# Additional requirements for LLM-based author classification
+# Install with: pip install -r requirements_llm.txt
+
+# LLM support via Ollama (much easier than llama-cpp-python!)
+ollama>=0.1.0
+
+# Note: You also need to install Ollama itself (not a Python package)
+# Download from: https://ollama.com/download
+# Then install the model: ollama pull deepseek-r1:latest
+

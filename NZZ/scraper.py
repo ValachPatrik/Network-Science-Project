@@ -26,10 +26,13 @@ from database import DatabaseManager
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Setup logging - create new log file for each run with timestamp
+# Save logs in log/ subfolder
 from datetime import datetime
+log_dir = os.path.join(SCRIPT_DIR, 'log')
+os.makedirs(log_dir, exist_ok=True)
 timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-log_file_path = os.path.join(SCRIPT_DIR, f'nzz_scraper_{timestamp}.log')
-error_log_path = os.path.join(SCRIPT_DIR, f'nzz_scraper_errors_{timestamp}.log')
+log_file_path = os.path.join(log_dir, f'nzz_scraper_{timestamp}.log')
+error_log_path = os.path.join(log_dir, f'nzz_scraper_errors_{timestamp}.log')
 
 # Create logger
 logger = logging.getLogger('nzz_scraper')
@@ -238,7 +241,10 @@ class NZZScraper:
         self._set_random_user_agent()
         
         # Threading for parallel processing
-        self.scraping_queue = Queue()  # Queue for articles to be scraped
+        # Single queue for all articles:
+        # - Articles from scrolling are added here (top priority - processed first)
+        # - Related articles are added here by scraper_v2 (bottom priority - processed after scrolling articles)
+        self.scraping_queue = Queue()  # Single queue for all articles to be scraped
         self.scraping_threads = []  # List of threads for batch scraping
         self.scraping_active = False  # Flag to control scraping threads
         self.batch_size = 50  # Process every 50 articles
@@ -522,7 +528,9 @@ class NZZScraper:
         oldest_article_date = None
         one_year_limit_reached = False
         
-        # Start multiple background scraping threads for parallel processing
+        # Start worker threads immediately (before scrolling starts)
+        # This allows articles to be processed as soon as they're added to the queue
+        logger.info(f"Starting {self.num_worker_threads} background scraping threads immediately...")
         self.scraping_active = True
         self.scraping_threads = []
         for i in range(self.num_worker_threads):
@@ -533,7 +541,7 @@ class NZZScraper:
             )
             thread.start()
             self.scraping_threads.append(thread)
-        logger.info(f"Started {self.num_worker_threads} background scraping threads for parallel processing")
+        logger.info(f"Started {self.num_worker_threads} background scraping threads (processing queue in real-time)")
         
         try:
             logger.info(f"Loading page: {self.articles_url}")
@@ -543,9 +551,10 @@ class NZZScraper:
             time.sleep(1)
             self.rate_limiter.wait(jitter=True)
             
-            logger.info("Starting infinite scroll with parallel batch scraping (every 50 articles)...")
+            logger.info("Starting infinite scroll - articles will be added to queue as they're found...")
             logger.info(f"Target: Articles from the last year (since {one_year_ago.date()})")
             logger.info("Stop condition: Only when 1 year of data is reached")
+            logger.info("Note: Articles from scrolling go to top of queue, related articles go to bottom")
             
             while not one_year_limit_reached:
                 # Scroll to bottom
@@ -565,7 +574,7 @@ class NZZScraper:
                 
                 current_articles = self._extract_articles_from_page_source(page_source)
                 
-                # Add new articles and check dates
+                # Add new articles and check dates - add to queue immediately (top priority)
                 new_articles_this_scroll = []
                 for article in current_articles:
                     article_id = article.get('id')
@@ -576,11 +585,15 @@ class NZZScraper:
                         # For now, add it and we'll get the date when scraping
                         article_date = article.get('date')
                         
-                        # Add article first, then check date
+                        # Add article to list and tracking sets
                         all_articles.append(article)
                         seen_urls.add(article_url)
                         seen_ids.add(article_id)
                         new_articles_this_scroll.append(article)
+                        
+                        # Add to queue immediately (scrolling articles - added at top of queue)
+                        # This is one of two places where articles are added to the queue
+                        self.scraping_queue.put(article)
                         
                         # If we have a date and it's older than 1 year, stop collecting
                         if article_date:
@@ -597,22 +610,58 @@ class NZZScraper:
                             if oldest_article_date is None or article_date < oldest_article_date:
                                 oldest_article_date = article_date
                 
-                # Add new articles to scraping queue (parallel processing)
+                # Log progress
                 if new_articles_this_scroll:
-                    for article in new_articles_this_scroll:
-                        self.scraping_queue.put(article)
                     logger.info(f"Found {len(all_articles)} articles so far. Added {len(new_articles_this_scroll)} to queue (queue size: {self.scraping_queue.qsize()})")
                 
                 # Break if 1 year limit reached
                 if one_year_limit_reached:
                     break
             
-            logger.info(f"Infinite scroll complete: Found {len(all_articles)} unique articles")
+            logger.info(f"Infinite scroll complete: Found {len(all_articles)} unique articles (all added to queue)")
             
             # Wait for scraping queue to be processed
+            # Related articles may be added to the queue as articles are scraped,
+            # so we need to keep processing until the queue is truly empty
             logger.info(f"Waiting for scraping queue to be processed (queue size: {self.scraping_queue.qsize()})...")
-            self.scraping_queue.join()  # Wait for all items to be processed
-            logger.info("All articles in queue have been processed")
+            
+            # Keep processing until queue is empty and no new items are being added
+            # This ensures related articles added during scraping are also processed
+            max_wait_iterations = 100  # Maximum iterations to wait for queue to stabilize
+            wait_iteration = 0
+            last_queue_size = self.scraping_queue.qsize()
+            stable_count = 0  # Count how many times queue size stayed the same
+            
+            while wait_iteration < max_wait_iterations:
+                current_queue_size = self.scraping_queue.qsize()
+                
+                if current_queue_size == 0:
+                    # Queue is empty, wait a bit to see if new items are added
+                    time.sleep(2)  # Wait 2 seconds
+                    if self.scraping_queue.qsize() == 0:
+                        stable_count += 1
+                        if stable_count >= 3:  # Queue empty for 3 consecutive checks
+                            logger.info("Queue is empty and stable, all articles processed")
+                            break
+                    else:
+                        stable_count = 0  # Reset if new items added
+                        logger.info(f"New items added to queue (size: {self.scraping_queue.qsize()}), continuing to process...")
+                else:
+                    # Queue still has items, wait for them to be processed
+                    stable_count = 0  # Reset stable count
+                    if current_queue_size != last_queue_size:
+                        logger.info(f"Queue size: {current_queue_size} (processing...)")
+                        last_queue_size = current_queue_size
+                    time.sleep(1)  # Wait 1 second before checking again
+                
+                wait_iteration += 1
+            
+            # Final wait for any remaining items
+            if self.scraping_queue.qsize() > 0:
+                logger.info(f"Final wait for remaining {self.scraping_queue.qsize()} items in queue...")
+                self.scraping_queue.join()  # Wait for all remaining items to be processed
+            
+            logger.info("All articles in queue have been processed (including related articles)")
             
         except Exception as e:
             logger.error(f"Error during infinite scroll: {str(e)}", exc_info=True)
@@ -719,7 +768,7 @@ class NZZScraper:
             try:
                 article_data = self.scrape_article(article_url, article_id)
                 if article_data and article_data.get('content'):
-                    # Check date - if older than 1 year, stop
+                    # Check date - if older than 1 year, skip this article (don't save)
                     article_date = article_data.get('article_date')
                     if article_date:
                         # Make sure both dates are timezone-aware for comparison
@@ -729,8 +778,9 @@ class NZZScraper:
                             article_date = article_date.replace(tzinfo=timezone.utc)
                         
                         if article_date < one_year_ago:
-                            logger.info(f"[{thread_short}] 1yr limit reached: {article_date.date()}")
-                            return
+                            logger.info(f"[{thread_short}] Skipping article {article_id} - older than 1 year ({article_date.date()})")
+                            skipped += 1
+                            continue
                     
                     # Final check before saving
                     if self.db.article_exists(article_id):
@@ -747,9 +797,11 @@ class NZZScraper:
                         article_date=article_data.get('article_date'),
                         article_updated=article_data.get('article_updated'),
                         author=article_data.get('author'),
+                        author_ids=article_data.get('author_ids'),
                         description=article_data.get('description'),
                         category=article_data.get('category'),
-                        scraped_at=article_data.get('scraped_at')
+                        scraped_at=article_data.get('scraped_at'),
+                        location=article_data.get('location')
                     )
                     successful += 1
                     title_short = article_data.get('title', 'Untitled')[:40]
@@ -837,7 +889,11 @@ class NZZScraper:
                         logger.warning(f"ConnectionError for {article_id} after {self.max_retries + 1} attempts, skipping: {str(e)}")
                         return None
                 except requests.exceptions.HTTPError as e:
-                    # For other HTTP errors (not 502/504), don't retry
+                    # Handle 404 errors gracefully (article deleted/moved)
+                    if r and r.status_code == 404:
+                        logger.warning(f"Article {article_id} not found (404) - likely deleted or moved: {article_url[:80]}...")
+                        return None
+                    # For other HTTP errors (not 502/504/404), don't retry
                     logger.error(f"HTTPError for {article_id}: {str(e)}", exc_info=True)
                     self.rate_limiter.increase_delay()
                     raise
@@ -1003,15 +1059,63 @@ class NZZScraper:
         
         return None
     
+    def _clean_author_name(self, name: str) -> str:
+        """Clean author name by removing parentheses and their contents.
+        
+        Args:
+            name: Author name string
+            
+        Returns:
+            Cleaned author name without parentheses and their contents
+        """
+        import re
+        # Remove parentheses and everything inside them
+        cleaned = re.sub(r'\([^)]*\)', '', name)
+        # Clean up extra spaces
+        cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+        return cleaned
+    
+    def _split_author_names(self, author_text: str) -> List[str]:
+        """Split author names by comma, 'und', or semicolon.
+        
+        Args:
+            author_text: String containing one or more author names
+            
+        Returns:
+            List of individual author names
+        """
+        import re
+        # Split by comma, semicolon, or "und" (case-insensitive)
+        # Use regex to split on these delimiters while preserving the text
+        parts = re.split(r'[,;]|\s+und\s+', author_text, flags=re.IGNORECASE)
+        # Clean each part and filter out empty strings
+        authors = []
+        for part in parts:
+            cleaned = part.strip()
+            if cleaned and len(cleaned) > 1:
+                authors.append(cleaned)
+        return authors
+    
     def _extract_author(self, soup: BeautifulSoup) -> Optional[str]:
-        """Extract article author."""
+        """Extract article author.
+        
+        Authors are split by comma, 'und', or semicolon and cleaned of parentheses.
+        Returns a comma-separated string of author names.
+        """
         # Try meta author tag
         meta_author = soup.find('meta', {'name': 'author'})
         if meta_author and meta_author.get('content'):
             author = meta_author.get('content', '').strip()
             if author:
-                logger.debug(f"Found author in meta tag: {author}")
-                return author
+                # Clean parentheses from author text
+                author = self._clean_author_name(author)
+                if author:
+                    # Split and rejoin to ensure proper formatting
+                    individual_authors = self._split_author_names(author)
+                    if individual_authors:
+                        author_string = ', '.join(individual_authors)
+                        logger.debug(f"Found author in meta tag: {author_string}")
+                        return author_string
         
         return None
     
@@ -1112,6 +1216,7 @@ class NZZScraper:
                             article_date=article_data.get('article_date'),
                             article_updated=article_data.get('article_updated'),
                             author=article_data.get('author'),
+                            author_ids=article_data.get('author_ids'),
                             description=article_data.get('description'),
                             category=article_data.get('category'),
                             scraped_at=article_data.get('scraped_at')

@@ -86,4 +86,20 @@ Articles are stored in `nzz_scraped_articles.db` SQLite database.
 
 ## Logs
 
-Check `nzz_scraper.log` for detailed operation logs.
+Log files are saved in the `log/` subfolder:
+- `nzz_scraper_YYYYMMDD_HHMMSS.log` - Main operation logs
+- `nzz_scraper_errors_YYYYMMDD_HHMMSS.log` - Error logs only
+
+## Documentation
+
+- **SETUP.md** - Installation and Ollama setup
+- **AUTHOR_PARSING.md** - Author parsing and normalization details
+- **FIXES_SUMMARY.md** - Recent fixes and improvements
+- **LLM_CALL_ANALYSIS.md** - LLM integration analysis
+
+## Debug Scripts
+
+Debug and test scripts are located in the `debug/` folder:
+- `test_1000_authors.py` - Large-scale author parsing test
+- `test_50_authors.py` - Smaller test
+- Other test and analysis scripts
