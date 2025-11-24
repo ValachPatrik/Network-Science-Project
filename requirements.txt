@@ -1,1 +1,39 @@
+# Core dependencies for Network Science Project
+# Install with: pip install -r requirements.txt
 
+# Data manipulation and analysis
+pandas>=2.3.3
+numpy>=2.3.5
+
+# Graph analysis and network visualization
+networkx>=3.6
+pyvis>=0.3.2
+matplotlib>=3.10.7
+
+# Database connectivity
+sqlalchemy>=2.0.44
+psycopg2-binary>=2.9.11
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# Graph layout algorithms
+fa2-modified>=0.4
+
+# Web scraping (for scraper scripts)
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+
+# Machine learning (for author network analysis)
+scikit-learn>=1.3.0
+
+# Optional: Community detection algorithms
+# Install these for advanced clustering features
+python-louvain>=0.16
+python-igraph>=0.11.0
+
+# Optional: Interactive visualizations
+plotly>=5.17.0
+
+# Optional: LLM support (see NZZ/requirements_llm.txt for details)
+# ollama>=0.1.0
