@@ -248,8 +248,7 @@ class ArticleGraphBuilder:
                                     self.G.add_edge(a1, a2, weight=1)
 
                 except Exception as e:
-                    field_name = "related_articles_filtered" if "related_articles_filtered" in row else "related_articles"
-                    print(f"Error parsing {field_name} for {source_authors}: {e}")
+                    print(f"Error parsing related_articles_filtered for {source_authors}: {e}")
 
         print(
             "Graph built with",
