@@ -110,9 +110,11 @@ class ArticleGraphBuilder:
             else:
                 total_to_load = total_count
             
-            # Only select columns we actually use: article_id, authors, related_articles
+            # Only select columns we actually use: article_id, authors, related_articles_filtered
+            # Use related_articles_filtered (filtered to only include valid article_ids)
+            # COALESCE provides fallback to related_articles if filtered column doesn't exist
             # This significantly reduces data transfer, especially avoiding large 'content' field
-            columns = "article_id, authors, related_articles"
+            columns = "article_id, authors, COALESCE(related_articles_filtered, related_articles) as related_articles_filtered"
             
             # If dataset is large, load in chunks
             if total_to_load > chunk_size:
@@ -220,9 +222,12 @@ class ArticleGraphBuilder:
             source_authors = author_map[source_id]
             # self.G.add_node(article)
 
-            if pd.notnull(row["related_articles"]):
+            # Use related_articles_filtered (which should contain only valid article_ids)
+            related_articles_field = row.get("related_articles_filtered")
+            
+            if pd.notnull(related_articles_field):
                 try:
-                    related_list = ast.literal_eval(row["related_articles"])
+                    related_list = ast.literal_eval(related_articles_field)
                     for target_id in related_list:
 
                         if target_id not in author_map:
@@ -243,7 +248,8 @@ class ArticleGraphBuilder:
                                     self.G.add_edge(a1, a2, weight=1)
 
                 except Exception as e:
-                    print(f"Error parsing related_articles for {source_authors}: {e}")
+                    field_name = "related_articles_filtered" if "related_articles_filtered" in row else "related_articles"
+                    print(f"Error parsing {field_name} for {source_authors}: {e}")
 
         print(
             "Graph built with",
