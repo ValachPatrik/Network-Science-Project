@@ -1,5 +1,11 @@
 # Core dependencies for Network Science Project
 # Install with: pip install -r requirements.txt
+#
+# For LLM features, see NZZ/requirements_llm.txt
+
+# ============================================================================
+# REQUIRED: Core dependencies
+# ============================================================================
 
 # Data manipulation and analysis
 pandas>=2.3.3
@@ -10,30 +16,41 @@ networkx>=3.6
 pyvis>=0.3.2
 matplotlib>=3.10.7
 
-# Database connectivity
+# Database connectivity (PostgreSQL/Supabase)
 sqlalchemy>=2.0.44
 psycopg2-binary>=2.9.11
 
-# Environment variables
+# Environment variables (.env file support)
 python-dotenv>=1.0.0
 
-# Graph layout algorithms
+# Graph layout algorithms (ForceAtlas2 for network visualization)
 fa2-modified>=0.4
 
 # Web scraping (for scraper scripts)
 beautifulsoup4>=4.12.0
 requests>=2.31.0
 
-# Machine learning (for author network analysis)
+# Machine learning (for TF-IDF and cosine similarity in author network analysis)
 scikit-learn>=1.3.0
 
-# Optional: Community detection algorithms
-# Install these for advanced clustering features
+# ============================================================================
+# OPTIONAL: Advanced features
+# ============================================================================
+
+# Community detection algorithms (for clustering in articles.py)
+# Required for --cluster option with louvain/leiden methods
 python-louvain>=0.16
+
+# igraph library (for Leiden algorithm clustering)
+# Required for --cluster leiden method
 python-igraph>=0.11.0
 
-# Optional: Interactive visualizations
+# Interactive visualizations (for some visualization scripts)
+# Used in NZZ/visuals/visualize_article_network.py
 plotly>=5.17.0
 
-# Optional: LLM support (see NZZ/requirements_llm.txt for details)
-# ollama>=0.1.0
+# LLM support (for author classification)
+# Note: You also need to install Ollama itself (not a Python package)
+# Download from: https://ollama.com/download
+# Then install the model: ollama pull deepseek-r1:latest
+ollama>=0.1.0
