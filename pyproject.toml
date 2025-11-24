@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "black>=25.11.0",
     "community>=1.0.0b1",
     "dotenv>=0.9.9",
     "fa2-modified>=0.4",
