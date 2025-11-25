@@ -7,6 +7,9 @@ import networkx as nx
 import logging
 from dotenv import load_dotenv
 from visualizer import GraphVisualizer
+from authors import AuthorsBuilder
+from collections import Counter
+import math
 
 
 logging.basicConfig(
@@ -60,6 +63,7 @@ class ArticleGraphBuilder:
         self.G = nx.Graph()
         self.components_sorted = None
         self.clusters = None  # Store clustering results
+        self.cluster_counts = {}
 
         # PostgreSQL connection parameters from environment
         self.user = os.getenv("user")
@@ -382,7 +386,13 @@ class ArticleGraphBuilder:
 
     def get_largest_component_graph(self):
 
-        largest_component = self.analyze_components()[0]
+        """Return a subgraph of the largest connected component."""
+
+        if self.components_sorted is None:
+            raise ValueError("Run analyze_components() first.")
+
+
+        largest_component = self.components_sorted[0]
 
         G_largest = self.G.subgraph(largest_component).copy()
 
@@ -496,13 +506,13 @@ class ArticleGraphBuilder:
                 self.clusters[node] = -1
 
         # Print cluster statistics
-        cluster_counts = {}
+        #cluster_counts = {}
         for cluster_id in self.clusters.values():
-            cluster_counts[cluster_id] = cluster_counts.get(cluster_id, 0) + 1
+            self.cluster_counts[cluster_id] = self.cluster_counts.get(cluster_id, 0) + 1
 
         print(f"\nClustering Results ({method}):")
         print(
-            f"Number of clusters: {len([c for c in cluster_counts.keys() if c >= 0])}"
+            f"Number of clusters: {len([c for c in self.cluster_counts.keys() if c >= 0])}"
         )
         print(
             f"Nodes in largest component: {len([n for n, c in self.clusters.items() if c >= 0])}"
@@ -530,7 +540,7 @@ class ArticleGraphBuilder:
 
         # Show top clusters by size
         sorted_clusters = sorted(
-            [(cid, count) for cid, count in cluster_counts.items() if cid >= 0],
+            [(cid, count) for cid, count in self.cluster_counts.items() if cid >= 0],
             key=lambda x: x[1],
             reverse=True,
         )[:10]
@@ -553,8 +563,185 @@ class ArticleGraphBuilder:
                 sample_str += f", ... ({count - 3} more)"
             print(f"  Cluster {cluster_id} (size {count}): {sample_str}")
 
-        return self.clusters
+        
 
+        return self.clusters, self.cluster_counts
+    
+    def map_clusters_to_authors(self, df_authors):
+        """Return a mapping of authors to their cluster IDs."""
+
+        print(df_authors.head())
+        if self.clusters is None:
+            raise ValueError("Run compute_clusters() first.")
+        
+        df_authors['cluster'] = df_authors['name'].map(self.clusters)
+
+        num_clusters = df_authors['cluster'].nunique()
+
+        print(f"There are {num_clusters} different clusters in the data frame.")
+
+
+        unclustered_names_df = df_authors[df_authors['cluster'].isna()]
+
+        unclustered_names = unclustered_names_df['name'].to_list()
+
+        self.check_unclustered_membership(unclustered_names=unclustered_names)
+
+        df_clustered = df_authors.dropna(subset=['cluster']).copy()
+        df_clustered['cluster'] = df_clustered['cluster'].astype(int)
+
+        num_clusters = df_clustered['cluster'].nunique()
+
+        print(f"There are {num_clusters} different clusters in the data frame.")
+
+        print(df_clustered['name'].nunique())
+        print(df_clustered.info())
+
+        a = self.get_resort_counts_per_cluster(df_clustered=df_clustered)
+
+        print(a)
+
+        self.format_cluster_summary(data=a)
+        self.print_detailed_counts(data=a)
+
+
+        
+
+        return self.clusters
+    
+
+    def get_resort_counts_per_cluster(self, df_clustered: pd.DataFrame) -> list[dict]:
+        """
+        Calculates the frequency of each unique resort within each cluster and 
+        returns the result as a list of dictionaries.
+        """
+        
+        # 1. Group by 'cluster' and then by 'resort' and count the occurrences
+        # This results in a Series with a MultiIndex: (cluster, resort)
+        counts_series = df_clustered.groupby(['cluster', 'resort'], dropna=False).size().sort_values(ascending=False)
+        
+        # 2. Convert the MultiIndex Series into a list of dictionaries
+        cluster_resort_counts = []
+        
+        # Iterate through the unique cluster IDs
+        for cluster_id, group in counts_series.groupby(level=0):
+            
+            # 'group' is a Series containing the counts for one cluster, 
+            # indexed by the resort name.
+            
+            # Convert the Series (index=resort, value=count) into a dictionary
+            resort_dict = group.droplevel(level=0).to_dict()
+            
+            # Create the final dictionary entry for this cluster
+            cluster_entry = {
+                'cluster_id': cluster_id,
+                'resort_counts': resort_dict
+            }
+            
+            cluster_resort_counts.append(cluster_entry)
+            
+        return cluster_resort_counts
+    
+
+    def get_most_frequent_resort(self, counts):
+        """Finds the most common resort(s), excluding nan."""
+        
+        # Filter out the nan key first
+        valid_counts = {k: v for k, v in counts.items() if not (isinstance(k, float) and math.isnan(k))}
+        
+        if not valid_counts:
+            return "None Defined", 0
+            
+        counter = Counter(valid_counts)
+        most_common = counter.most_common(2) # Get top 2 in case of ties
+        
+        display_parts = []
+        max_count = most_common[0][1]
+        
+        for resort, count in most_common:
+            if count == max_count:
+                display_parts.append(f"{resort} ({count})")
+            else:
+                break
+                
+        return ", ".join(display_parts), max_count
+
+    def format_cluster_summary(self, data: list[dict]):
+        """Calculates summary statistics and prints a markdown table."""
+        summary_data = []
+        
+        # Identify the correct key for NaN (the float NaN object)
+        nan_key = float('nan')
+        
+        for entry in data:
+            cluster_id = entry['cluster_id']
+            counts = entry['resort_counts']
+            
+            # Calculate Total Authors (Sum all counts)
+            total_authors = sum(counts.values())
+            
+            # Get count of authors with NO resort (NaN key)
+            no_resort_count = counts.get(nan_key, 0)
+            
+            # Get most frequent defined resort
+            most_frequent, max_count = self.get_most_frequent_resort(counts)
+            
+            summary_data.append({
+                'Cluster ID': cluster_id,
+                'Total Authors': total_authors,
+                'Authors with No Resort (NaN)': no_resort_count,
+                'Most Frequent Defined Resort (Count)': most_frequent,
+                'Unique Defined Resorts': len(counts) - (1 if nan_key in counts else 0)
+            })
+
+        df_summary = pd.DataFrame(summary_data)
+        
+        print("## 📊 Cluster Resort Distribution Summary (n={:,})".format(df_summary['Total Authors'].sum()))
+        print("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+        print(df_summary.to_markdown(index=False))
+
+    def print_detailed_counts(self, data: list[dict]):
+        """Prints the full, detailed breakdown of resort counts per cluster."""
+        
+        print("\n## 📝 Detailed Resort Counts per Cluster")
+        print("--------------------------------------")
+        
+        detailed_data = []
+        nan_key = float('nan')
+        
+        for entry in data:
+            cluster_id = entry['cluster_id']
+            counts = entry['resort_counts']
+            
+            # Sort resorts within the cluster by count (descending), keeping nan last
+            sorted_counts = sorted(
+                counts.items(), 
+                key=lambda item: (1 if (isinstance(item[0], float) and math.isnan(item[0])) else 0, -item[1])
+            )
+            
+            for resort, count in sorted_counts:
+                # Replace the float('nan') key with a readable string
+                resort_name = "NO RESORT (NaN)" if (isinstance(resort, float) and math.isnan(resort)) else resort
+                
+                detailed_data.append({
+                    'Cluster ID': cluster_id,
+                    'Resort': resort_name,
+                    'Count': count
+                })
+
+        df_detailed = pd.DataFrame(detailed_data)
+        print(df_detailed.to_markdown(index=False))
+    
+
+
+    
+
+    def check_unclustered_membership(self, unclustered_names):
+        """Check the component membership of unclustered authors."""
+        for name in unclustered_names:
+            component = self.component_of_node(name)
+            if component is not None:
+                print(f"Author '{name}' is in a component of size {len(component)}")
 
 
 
@@ -654,6 +841,7 @@ Examples:
     args = parser.parse_args()
 
     visualizer = GraphVisualizer()
+    authors = AuthorsBuilder()
 
     try:
         print("=" * 80)
@@ -688,6 +876,9 @@ Examples:
             )  # args.cluster is already the method name or 'louvain' if const
             try:
                 builder.compute_clusters(method=cluster_method)
+                #print(authors.df.head())
+                builder.map_clusters_to_authors(df_authors=authors.load_data(limit=10000))
+                #print(builder.clusters)
                 cluster_colors = builder.clusters
             except ImportError as e:
                 print(f"Warning: {e}")
