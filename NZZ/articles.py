@@ -559,31 +559,32 @@ class ArticleGraphBuilderV2:
             return []
         except Exception:
             return []
+    
 
-    def build_author_article_graph(self):
-        """Build graph with authors as nodes connected to articles.
-
-        Creates a bipartite-like graph where:
-        - Author nodes are from the authors table (using author ID as node ID)
-        - Articles are represented as edges or can be added as nodes too
-        - Edges connect authors to articles they wrote
-        """
+    def _ensure_data_loaded(self):
+        """Checks if articles and authors dataframes are loaded."""
         if self.articles_df is None or self.authors_df is None:
             raise ValueError("Data not loaded. Call load_data() first.")
+    
 
-        # Create mapping from author name (normalized) to author records
+    def _create_author_name_map(self):
+        """
+        Creates a map from normalized author name to a list of author records.
+        Used for robust author lookup across all graph types.
+        """
         name_to_author = {}
         for _, author in self.authors_df.iterrows():
             normalized_name = self._normalize_name(author["name"])
             if normalized_name:
-                # Store multiple authors with same name (list)
-                if normalized_name not in name_to_author:
-                    name_to_author[normalized_name] = []
-                name_to_author[normalized_name].append(author)
+                # Store all records matching the normalized name
+                name_to_author.setdefault(normalized_name, []).append(author)
+        return name_to_author
 
-        # Add all authors as nodes (use author ID if available, otherwise use name)
+    def _add_author_nodes(self):
+        """Adds all authors from self.authors_df as nodes to self.G."""
+        # Clear graph before starting a new build (optional, but good practice)
+        self.G.clear() 
         for _, author in self.authors_df.iterrows():
-            # Use author ID as node identifier, fallback to name
             node_id = (
                 f"author_{author['id']}"
                 if pd.notna(author["id"])
@@ -601,9 +602,44 @@ class ArticleGraphBuilderV2:
                 location=author["location"] if pd.notna(author["location"]) else None,
                 has_info=author["has_info"] if pd.notna(author["has_info"]) else 0,
             )
+    
+    def _map_articles_to_author_nodes(self, name_to_author):
+        """
+        Internal helper to create a mapping from article_id to a list of unique author node IDs.
+        """
+        article_to_authors = {}
+        for _, article in self.articles_df.iterrows():
+            article_id = article["article_id"]
+            author_names = self._parse_authors_list(article["authors"])
 
-        # Process articles and connect authors to articles
-        article_count = 0
+            author_nodes = []
+            seen_nodes = set()
+            for author_name in author_names:
+                normalized_name = self._normalize_name(author_name)
+                if normalized_name in name_to_author:
+                    for author_record in name_to_author[normalized_name]:
+                        node_id = (
+                            f"author_{author_record['id']}"
+                            if pd.notna(author_record["id"])
+                            else f"author_{author_record['name']}"
+                        )
+                        if node_id not in seen_nodes:
+                            author_nodes.append(node_id)
+                            seen_nodes.add(node_id)
+            
+            article_to_authors[article_id] = author_nodes
+        return article_to_authors
+    
+
+    def build_author_article_graph(self):
+        """
+        Builds a bipartite graph with Authors and Articles as nodes.
+        Edges connect authors to the articles they wrote.
+        """
+        self._ensure_data_loaded()
+        self._add_author_nodes() # Add all authors first
+        name_to_author = self._create_author_name_map()
+
         for _, article in self.articles_df.iterrows():
             article_id = article["article_id"]
             author_names = self._parse_authors_list(article["authors"])
@@ -615,24 +651,23 @@ class ArticleGraphBuilderV2:
             article_node_id = f"article_{article_id}"
             self.G.add_node(article_node_id, node_type="article", article_id=article_id)
 
-            # Connect each author to this article
+            # Connect authors to the article node
             for author_name in author_names:
                 normalized_name = self._normalize_name(author_name)
-                if normalized_name and normalized_name in name_to_author:
-                    # Connect to all matching authors (in case of duplicates)
+                if normalized_name in name_to_author:
                     for author_record in name_to_author[normalized_name]:
+                        # Determine the existing author node ID
                         author_node_id = (
                             f"author_{author_record['id']}"
                             if pd.notna(author_record["id"])
                             else f"author_{author_record['name']}"
                         )
 
+                        # Add edge with weight=1 (or increment if duplicates were somehow created)
                         if self.G.has_edge(author_node_id, article_node_id):
                             self.G[author_node_id][article_node_id]["weight"] += 1
                         else:
                             self.G.add_edge(author_node_id, article_node_id, weight=1)
-
-            article_count += 1
 
         print(
             f"Graph built with {len(self.G.nodes)} nodes ({len([n for n, d in self.G.nodes(data=True) if d.get('node_type') == 'author'])} authors, "
@@ -641,55 +676,27 @@ class ArticleGraphBuilderV2:
 
         return self.G
 
+
     def build_coauthorship_graph(self):
-        """Build author-author co-authorship graph based on articles.
-
-        Creates edges between authors who co-authored articles together.
         """
-        if self.articles_df is None or self.authors_df is None:
-            raise ValueError("Data not loaded. Call load_data() first.")
+        Builds a unipartite graph where nodes are Authors and edges represent co-authorship.
+        Edge weight is the number of co-authored articles.
+        """
+        self._ensure_data_loaded()
+        self._add_author_nodes() # Only author nodes needed for this graph
+        name_to_author = self._create_author_name_map()
 
-        # Create mapping from author name (normalized) to author records
-        name_to_author = {}
-        for _, author in self.authors_df.iterrows():
-            normalized_name = self._normalize_name(author["name"])
-            if normalized_name:
-                if normalized_name not in name_to_author:
-                    name_to_author[normalized_name] = []
-                name_to_author[normalized_name].append(author)
-
-        # Add all authors as nodes
-        for _, author in self.authors_df.iterrows():
-            node_id = (
-                f"author_{author['id']}"
-                if pd.notna(author["id"])
-                else f"author_{author['name']}"
-            )
-            self.G.add_node(
-                node_id,
-                node_type="author",
-                name=author["name"],
-                author_id=author["id"] if pd.notna(author["id"]) else None,
-                author_db_id=author["id"],
-                department=(
-                    author["department"] if pd.notna(author["department"]) else None
-                ),
-                location=author["location"] if pd.notna(author["location"]) else None,
-                has_info=author["has_info"] if pd.notna(author["has_info"]) else 0,
-            )
-
-        # Process articles and create co-authorship edges
         for _, article in self.articles_df.iterrows():
             author_names = self._parse_authors_list(article["authors"])
 
             if len(author_names) < 2:
-                continue  # Need at least 2 authors for co-authorship
+                continue
 
-            # Get all author nodes for this article
             article_author_nodes = []
             for author_name in author_names:
                 normalized_name = self._normalize_name(author_name)
-                if normalized_name and normalized_name in name_to_author:
+                if normalized_name in name_to_author:
+                    # Collect all author node IDs for this article
                     for author_record in name_to_author[normalized_name]:
                         node_id = (
                             f"author_{author_record['id']}"
@@ -697,17 +704,20 @@ class ArticleGraphBuilderV2:
                             else f"author_{author_record['name']}"
                         )
                         article_author_nodes.append(node_id)
-
-            # Create edges between all pairs of co-authors
+            
+            # Create edges between all pairs of co-authors (clique formation)
             for i in range(len(article_author_nodes)):
                 for j in range(i + 1, len(article_author_nodes)):
                     a1 = article_author_nodes[i]
                     a2 = article_author_nodes[j]
-
-                    if self.G.has_edge(a1, a2):
-                        self.G[a1][a2]["weight"] += 1
-                    else:
-                        self.G.add_edge(a1, a2, weight=1)
+                    
+                    # Ensure the edge is only created between authors (not duplicate nodes)
+                    if a1 != a2:
+                        # Increment weight if edge exists, otherwise create with weight 1
+                        if self.G.has_edge(a1, a2):
+                            self.G[a1][a2]["weight"] += 1
+                        else:
+                            self.G.add_edge(a1, a2, weight=1)
 
         print(
             f"Co-authorship graph built with {len(self.G.nodes)} author nodes and {len(self.G.edges)} edges."
@@ -715,86 +725,36 @@ class ArticleGraphBuilderV2:
 
         return self.G
 
+
     def build_related_graph(self):
-        """Build author-author graph based on related articles (similar to V1 but using authors table).
-
-        Creates edges between authors when their articles are related:
-        - If article A is related to article B, connect all authors of A to all authors of B
-        - Also connects co-authors within the same article (higher weight)
-        - Uses author IDs from the authors table as node identifiers
         """
-        if self.articles_df is None or self.authors_df is None:
-            raise ValueError("Data not loaded. Call load_data() first.")
+        Builds a highly-weighted Author-Author graph combining co-authorship (W=10) 
+        and related article connections (W=1).
+        """
+        self._ensure_data_loaded()
+        self._add_author_nodes()
+        name_to_author = self._create_author_name_map()
+        
+        # 1. Pre-calculate mapping from article ID to list of author node IDs
+        article_to_authors = self._map_articles_to_author_nodes(name_to_author)
 
-        # Create mapping from author name (normalized) to author records
-        name_to_author = {}
-        for _, author in self.authors_df.iterrows():
-            normalized_name = self._normalize_name(author["name"])
-            if normalized_name:
-                if normalized_name not in name_to_author:
-                    name_to_author[normalized_name] = []
-                name_to_author[normalized_name].append(author)
-
-        # Create mapping from article_id to list of author node IDs
-        article_to_authors = {}
-        for _, article in self.articles_df.iterrows():
-            article_id = article["article_id"]
-            author_names = self._parse_authors_list(article["authors"])
-
-            author_nodes = []
-            seen_nodes = set()  # Track seen nodes to avoid duplicates
-            for author_name in author_names:
-                normalized_name = self._normalize_name(author_name)
-                if normalized_name and normalized_name in name_to_author:
-                    for author_record in name_to_author[normalized_name]:
-                        node_id = (
-                            f"author_{author_record['id']}"
-                            if pd.notna(author_record["id"])
-                            else f"author_{author_record['name']}"
-                        )
-                        if node_id not in seen_nodes:
-                            author_nodes.append(node_id)
-                            seen_nodes.add(node_id)
-
-            article_to_authors[article_id] = author_nodes
-
-        # Add all authors as nodes
-        for _, author in self.authors_df.iterrows():
-            node_id = (
-                f"author_{author['id']}"
-                if pd.notna(author["id"])
-                else f"author_{author['name']}"
-            )
-            self.G.add_node(
-                node_id,
-                node_type="author",
-                name=author["name"],
-                author_id=author["id"] if pd.notna(author["id"]) else None,
-                author_db_id=author["id"],
-                department=(
-                    author["department"] if pd.notna(author["department"]) else None
-                ),
-                location=author["location"] if pd.notna(author["location"]) else None,
-                has_info=author["has_info"] if pd.notna(author["has_info"]) else 0,
-            )
-
-        # First, connect co-authors within the same article (weight = 10, like V1)
+        # 2. Connect co-authors within the same article (Weight = 10)
         for article_id, author_nodes in article_to_authors.items():
             if len(author_nodes) < 2:
                 continue
 
-            # Connect all pairs of co-authors
             for i in range(len(author_nodes)):
                 for j in range(i + 1, len(author_nodes)):
                     a1 = author_nodes[i]
                     a2 = author_nodes[j]
+                    
+                    if a1 != a2:
+                        if self.G.has_edge(a1, a2):
+                            self.G[a1][a2]["weight"] += 10
+                        else:
+                            self.G.add_edge(a1, a2, weight=10)
 
-                    if self.G.has_edge(a1, a2):
-                        self.G[a1][a2]["weight"] += 10
-                    else:
-                        self.G.add_edge(a1, a2, weight=10)
-
-        # Then, connect authors based on related articles (weight = 1, like V1)
+        # 3. Connect authors based on related articles (Weight = 1)
         for _, article in self.articles_df.iterrows():
             source_id = article["article_id"]
             source_authors = article_to_authors.get(source_id, [])
@@ -802,24 +762,23 @@ class ArticleGraphBuilderV2:
             if not source_authors:
                 continue
 
-            # Parse related articles
             related_articles_field = article.get("related_articles_filtered")
 
             if pd.notnull(related_articles_field):
                 try:
+                    # Note: ast.literal_eval is a critical dependency here
                     related_list = ast.literal_eval(related_articles_field)
                     for target_id in related_list:
-                        if target_id not in article_to_authors:
+                        target_authors = article_to_authors.get(target_id)
+                        if not target_authors:
                             continue
-
-                        target_authors = article_to_authors[target_id]
 
                         # Connect all authors of source article to all authors of target article
                         for a1 in source_authors:
                             for a2 in target_authors:
                                 if a1 == a2:
-                                    continue
-
+                                    continue # Don't connect an author to themselves
+                                
                                 if self.G.has_edge(a1, a2):
                                     self.G[a1][a2]["weight"] += 1
                                 else:
@@ -835,6 +794,8 @@ class ArticleGraphBuilderV2:
         )
 
         return self.G
+
+
 
     def analyze_components(self):
         """Compute connected components sorted by size."""
