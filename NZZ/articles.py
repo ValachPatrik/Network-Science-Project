@@ -64,6 +64,7 @@ class ArticleGraphBuilder:
         self.components_sorted = None
         self.clusters = None  # Store clustering results
         self.cluster_counts = {}
+        self.cluster_author_map = {}
 
         # PostgreSQL connection parameters from environment
         self.user = os.getenv("user")
@@ -543,10 +544,14 @@ class ArticleGraphBuilder:
             [(cid, count) for cid, count in self.cluster_counts.items() if cid >= 0],
             key=lambda x: x[1],
             reverse=True,
-        )[:10]
+        )
+
+        self.map_cluster_authors_to_id(sorted_clusters=sorted_clusters)
+        sorted_clusters_10 = sorted_clusters[:10]
+
 
         print("\nTop 10 clusters by size:")
-        for i, (cluster_id, count) in enumerate(sorted_clusters, 1):
+        for i, (cluster_id, count) in enumerate(sorted_clusters_10, 1):
             # Get sample nodes from this cluster
             cluster_nodes = [n for n, c in self.clusters.items() if c == cluster_id]
             sample_names = []
@@ -567,12 +572,49 @@ class ArticleGraphBuilder:
 
         return self.clusters, self.cluster_counts
     
+
+    def map_cluster_authors_to_id(self, sorted_clusters):
+
+        self.cluster_author_map = {}
+
+        # Iterate through the cluster IDs (ignoring the count)
+        for cluster_id, _ in sorted_clusters:
+            
+            # Filter self.clusters to find all authors assigned to the current cluster_id
+            cluster_authors = [
+                author_name
+                for author_name, assigned_id in self.clusters.items()
+                if assigned_id == cluster_id
+            ]
+            
+            # Ask why do we want to decode it to ascii with replacement?
+
+            # Sanitize author names: ensure they are strings and handle non-ASCII safely.
+            # sanitized_author_names = [
+            #     str(name).encode("ascii", "replace").decode("ascii")
+            #     for name in cluster_authors
+            # ]
+
+            
+            sanitized_author_names = [
+                str(name)
+                for name in cluster_authors
+            ]
+            
+            # Store the list of sanitized names under the cluster_id
+            self.cluster_author_map[cluster_id] = sanitized_author_names
+                
+        return self.cluster_author_map
+
+    
     def map_clusters_to_authors(self, df_authors):
         """Return a mapping of authors to their cluster IDs."""
 
         print(df_authors.head())
         if self.clusters is None:
             raise ValueError("Run compute_clusters() first.")
+        
+        print(self.cluster_counts)
         
         df_authors['cluster'] = df_authors['name'].map(self.clusters)
 
@@ -604,6 +646,8 @@ class ArticleGraphBuilder:
         self.format_cluster_summary(data=a)
         self.print_detailed_counts(data=a)
 
+        print(self.cluster_author_map)
+
 
         
 
@@ -618,7 +662,7 @@ class ArticleGraphBuilder:
         
         # 1. Group by 'cluster' and then by 'resort' and count the occurrences
         # This results in a Series with a MultiIndex: (cluster, resort)
-        counts_series = df_clustered.groupby(['cluster', 'resort'], dropna=False).size().sort_values(ascending=False)
+        counts_series = df_clustered.groupby(['cluster', 'resort'], dropna=True).size().sort_values(ascending=False)
         
         # 2. Convert the MultiIndex Series into a list of dictionaries
         cluster_resort_counts = []
@@ -685,13 +729,25 @@ class ArticleGraphBuilder:
             
             # Get most frequent defined resort
             most_frequent, max_count = self.get_most_frequent_resort(counts)
+
+            resort_count_list = []
             
+            for resort, count in counts.items():
+                if isinstance(resort, float) and math.isnan(resort):
+                    resort_name = "NO RESORT (NaN)"
+                    continue
+                resort_name = resort
+                resort_count_list.append(f"{resort_name}: {count}")
+
+            all_resort_counts_str = "; ".join(resort_count_list)
+
             summary_data.append({
                 'Cluster ID': cluster_id,
                 'Total Authors': total_authors,
                 'Authors with No Resort (NaN)': no_resort_count,
                 'Most Frequent Defined Resort (Count)': most_frequent,
-                'Unique Defined Resorts': len(counts) - (1 if nan_key in counts else 0)
+                'Unique Defined Resorts': len(counts) - (1 if nan_key in counts else 0),
+                #'All Defined Resorts (Count)': all_resort_counts_str
             })
 
         df_summary = pd.DataFrame(summary_data)
@@ -730,6 +786,7 @@ class ArticleGraphBuilder:
                 })
 
         df_detailed = pd.DataFrame(detailed_data)
+        print(df_detailed["Count"].sum())
         print(df_detailed.to_markdown(index=False))
     
 
@@ -893,6 +950,12 @@ Examples:
         if args.visualize:
             visualizer.visualize_existing_graph_interactive(
                 builder.get_largest_component_graph(),
+                show_names=True,
+                cluster_colors=cluster_colors,
+            )
+
+            visualizer.visualize_existing_graph_interactive(
+                G = builder.G.subgraph(builder.cluster_author_map[3]),
                 show_names=True,
                 cluster_colors=cluster_colors,
             )
