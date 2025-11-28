@@ -1,6 +1,7 @@
 import math
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+import matplotlib.colors as mcolors
 import networkx as nx
 import numpy as np
 from fa2_modified import ForceAtlas2
@@ -265,6 +266,42 @@ class GraphVisualizer:
         fig.canvas.mpl_connect("motion_notify_event", pan)
 
         update_labels()
+    
+    def _draw_centrality_graph(self, H, pos, node_sizes, centrality_measures, measure_name, figsize):
+        """
+        Draw graph where node color is based on a centrality measure.
+        """
+        fig, ax = plt.subplots(figsize=figsize)
+        
+        # 1. Prepare Node Coloring Data
+        # Get the centrality values in the same order as the nodes in H
+        node_values = [centrality_measures.get(node, 0) for node in H.nodes()]
+        
+        # 2. Draw Edges (Same logic as interactive draw)
+        nx.draw_networkx_edges(H, pos, edge_color="gray", width=0.2, alpha=0.5, ax=ax)
+        
+        # 3. Draw Nodes: Color by centrality values
+        nodes = nx.draw_networkx_nodes(
+            H, 
+            pos, 
+            node_size=node_sizes,
+            node_color=node_values, 
+            cmap=plt.cm.plasma, # Use plasma colormap for continuous data
+            alpha=0.7, 
+            ax=ax
+        )
+        
+        # 4. Color Normalization and Color Bar Setup
+        # Use SymLogNorm for better visibility of small centrality values
+        nodes.set_norm(mcolors.SymLogNorm(linthresh=0.01, linscale=1, base=10))
+        plt.colorbar(nodes, ax=ax, label=measure_name)
+
+        # 5. Final Plot Setup
+        ax.set_title(f"Network Graph colored by {measure_name}", fontsize=14)
+        ax.axis("off")
+        plt.tight_layout()
+
+        return fig, ax
 
     def visualize_existing_graph_interactive(
         self,
@@ -276,6 +313,9 @@ class GraphVisualizer:
         iterations=1000,
         show_names=False,
         cluster_colors=None,
+        measure_name=None,
+        centrality_measures=None,
+
     ):
         """
         Entry point: filter, layout, draw, interactivity.
@@ -288,8 +328,12 @@ class GraphVisualizer:
             return
 
         pos = self._calculate_layout(H, cluster_colors, iterations)
-
-        fig, ax = self._draw_graph(H, pos, node_sizes,
+        if centrality_measures is not None and measure_name is not None:
+            fig, ax = self._draw_centrality_graph(
+                H, pos, node_sizes, centrality_measures, measure_name, figsize
+            )
+        else:
+            fig, ax = self._draw_graph(H, pos, node_sizes,
                                    cluster_colors, figsize)
 
         self._setup_interactivity(

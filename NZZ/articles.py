@@ -8,6 +8,7 @@ import logging
 from dotenv import load_dotenv
 from visualizer import GraphVisualizer
 from authors import AuthorsBuilder
+from centralities import CentralityAnalysis
 from collections import Counter
 import math
 
@@ -545,9 +546,9 @@ class ArticleGraphBuilder:
             key=lambda x: x[1],
             reverse=True,
         )
-
-        self.map_cluster_authors_to_id(sorted_clusters=sorted_clusters)
+        
         sorted_clusters_10 = sorted_clusters[:10]
+        self._create_cluster_to_author_map(sorted_clusters=sorted_clusters)
 
 
         print("\nTop 10 clusters by size:")
@@ -573,7 +574,16 @@ class ArticleGraphBuilder:
         return self.clusters, self.cluster_counts
     
 
-    def map_cluster_authors_to_id(self, sorted_clusters):
+    def _create_cluster_to_author_map(self, sorted_clusters):
+        """
+        Creates a dictionary mapping each cluster ID to a list of author names belonging to that cluster. and sorted by cluster size.
+
+        Args:
+            sorted_clusters (list): A list of (cluster_id, count) tuples, typically sorted by count.
+
+        Returns:
+            dict: The self.cluster_author_map dictionary.
+        """
 
         self.cluster_author_map = {}
 
@@ -603,50 +613,81 @@ class ArticleGraphBuilder:
             
             # Store the list of sanitized names under the cluster_id
             self.cluster_author_map[cluster_id] = sanitized_author_names
+        
+
+        # Sort the cluster_author_map by cluster size in descending order
+
+        self.cluster_author_map = dict(sorted(self.cluster_author_map.items(), key=lambda item: len(item[1]), reverse=True))
+
                 
         return self.cluster_author_map
 
     
-    def map_clusters_to_authors(self, df_authors):
-        """Return a mapping of authors to their cluster IDs."""
+    def assign_clusters_to_dataframe(self, df_authors):
+        """
+        Assigns pre-computed cluster IDs to a DataFrame of authors and generates
+        a summary of the clustering results.
+
+        This method maps the 'self.clusters' dictionary (Author Name -> Cluster ID) 
+        onto the input DataFrame using the 'name' column, handles unclustered
+        entries, and triggers reporting functions.
+        Args:
+            df_authors (pd.DataFrame): DataFrame containing an 'name' and 'resort' column. 
+                                       This DF will be modified in place with a new 'cluster' column.
+
+        Returns:
+            dict: The original cluster dictionary (Author Name resort-> Cluster ID), self.clusters.
+
+        Raises:
+            ValueError: If 'self.clusters' (the clustering result) has not been computed yet.
+        """
 
         print(df_authors.head())
         if self.clusters is None:
             raise ValueError("Run compute_clusters() first.")
         
-        print(self.cluster_counts)
+        #print(self.cluster_counts)
         
+        # 1. Assign Clusters: Map cluster IDs to the DataFrame
         df_authors['cluster'] = df_authors['name'].map(self.clusters)
 
-        num_clusters = df_authors['cluster'].nunique()
+        # 2. Check Initial Cluster Count
+        total_clusters_with_unassigned = df_authors['cluster'].nunique(dropna=False)
+        print(f"Total unique clusters (including unassigned) found: {total_clusters_with_unassigned}")
+        
+        # 3. Handle Unclustered Authors
+        unclustered_df = df_authors[df_authors['cluster'].isna()]
+        unclustered_names = unclustered_df['name'].to_list()
 
-        print(f"There are {num_clusters} different clusters in the data frame.")
-
-
-        unclustered_names_df = df_authors[df_authors['cluster'].isna()]
-
-        unclustered_names = unclustered_names_df['name'].to_list()
-
+        # External check/logging for authors that were not clustered
         self.check_unclustered_membership(unclustered_names=unclustered_names)
 
+        # 4. Finalize Clustered DataFrame
+        # Create a copy with only successfully clustered rows
         df_clustered = df_authors.dropna(subset=['cluster']).copy()
+        
+        # Convert cluster IDs from float (due to potential NaN/dropna) to integer
+        # Note: 'cluster' column in df_authors remains float if NaN rows are present
         df_clustered['cluster'] = df_clustered['cluster'].astype(int)
 
-        num_clusters = df_clustered['cluster'].nunique()
+        # 5. Final Cluster Metrics
+        final_num_clusters = df_clustered['cluster'].nunique()
+        print(f"Final number of unique clusters analyzed: {final_num_clusters}")
 
-        print(f"There are {num_clusters} different clusters in the data frame.")
-
-        print(df_clustered['name'].nunique())
+        num_clustered_authors = df_clustered['name'].nunique()
+        print(f"Number of clustered unique authors: {num_clustered_authors}")
+        print("\nClustered DataFrame Info:")
         print(df_clustered.info())
 
-        a = self.get_resort_counts_per_cluster(df_clustered=df_clustered)
+        # 6. Generate Summary and Reports
+        # 'a' contains cluster summary data (e.g., counts per cluster/resort)
+        cluster_summary_data = self.get_resort_counts_per_cluster(df_clustered=df_clustered)
 
-        print(a)
+        # Print/Format the results using internal methods
+        self.format_cluster_summary(data=cluster_summary_data)
+        self.print_detailed_counts(data=cluster_summary_data)
 
-        self.format_cluster_summary(data=a)
-        self.print_detailed_counts(data=a)
-
-        print(self.cluster_author_map)
+        #print(self.cluster_author_map)
 
 
         
@@ -786,7 +827,7 @@ class ArticleGraphBuilder:
                 })
 
         df_detailed = pd.DataFrame(detailed_data)
-        print(df_detailed["Count"].sum())
+        #print(df_detailed["Count"].sum())
         print(df_detailed.to_markdown(index=False))
     
 
@@ -824,6 +865,20 @@ Examples:
   python articles.py --cluster greedy_modularity
   python articles.py --cluster label_propagation
   python articles.py --cluster asyn_lpa
+
+
+  # Use centralities with different methods, default is graph is largest component
+  python articles.py --centrality degree
+  python articles.py --centrality betweenness
+  python articles.py --centrality closeness
+  python articles.py --centrality eigenvector
+
+  # If clustering with different methods is used, we can caluculate centrality on different graphs, e.g., full_graph or top N clusters
+  python articles.py --cluster louvain --centrality degree --graph full_graph
+  python articles.py --cluster louvain --centrality degree --graph largest_cluster
+  python articles.py --cluster louvain --centrality degree --graph 3
+
+ 
   
   # Combine clustering with visualization
   python articles.py --cluster leiden --visualize
@@ -880,6 +935,21 @@ Examples:
     )
 
     parser.add_argument(
+        "--centrality",
+        type=str,
+        nargs="?",
+        default=None,
+        const = "degree",
+        choices=[
+        "degree",
+        "betweenness",
+        "closeness",
+        "eigenvector",
+    ],
+        help="Perform centrality analysis. Specify one or more measures (space-separated): degree, betweenness, closeness, eigenvector. By default, all are computed.",
+    )
+
+    parser.add_argument(
         "--cluster",
         type=str,
         nargs="?",
@@ -895,10 +965,20 @@ Examples:
         help="Perform community clustering analysis. Methods: louvain (default), leiden, greedy_modularity, label_propagation, asyn_lpa",
     )
 
+    parser.add_argument(
+        "--graph",
+        type=str,
+        nargs="?",
+        default="full_graph",
+        help="Specify which graph cluster to analyze. Options: 'full_graph', 'largest_cluster', or a **positive integer N** to analyze the top N largest clusters (e.g., '--graph 3'). Defaults to analyzing entire full graph.",
+    )
+
     args = parser.parse_args()
 
     visualizer = GraphVisualizer()
     authors = AuthorsBuilder()
+    
+
 
     try:
         print("=" * 80)
@@ -934,7 +1014,7 @@ Examples:
             try:
                 builder.compute_clusters(method=cluster_method)
                 #print(authors.df.head())
-                builder.map_clusters_to_authors(df_authors=authors.load_data(limit=10000))
+                builder.assign_clusters_to_dataframe(df_authors=authors.load_data(limit=10000))
                 #print(builder.clusters)
                 cluster_colors = builder.clusters
             except ImportError as e:
@@ -953,12 +1033,69 @@ Examples:
                 show_names=True,
                 cluster_colors=cluster_colors,
             )
+        if args.centrality is not None:
 
-            visualizer.visualize_existing_graph_interactive(
-                G = builder.G.subgraph(builder.cluster_author_map[3]),
-                show_names=True,
-                cluster_colors=cluster_colors,
+            centrality_method = (
+                args.centrality
             )
+            print(f"\nPerforming centrality analysis using method: {centrality_method}")
+            subgraphs = []
+            if args.graph is not None:
+                if args.graph == "full_graph" or args.cluster is None:
+                    G_centrality = builder.get_largest_component_graph()
+                    subgraphs.append(G_centrality)
+                elif args.graph == "largest_cluster":
+                    # G_centrality will be the subgraph of the authors in the largest cluster (list(values())[0])
+                    G_centrality =  builder.G.subgraph(list(builder.cluster_author_map.values())[0]).copy()
+                    subgraphs.append(G_centrality)
+                else:
+                    try:
+                        n_clusters = int(args.graph)
+                        if n_clusters <= 0:
+                            raise ValueError
+                        # Get top N clusters
+                        for graph in list(builder.cluster_author_map.values())[:n_clusters]:
+                            G_centrality = builder.G.subgraph(graph).copy()
+                            subgraphs.append(G_centrality)
+                    except ValueError:
+                        print(f"Invalid value for --graph: {args.graph}. Must be 'full_graph', 'largest_cluster', or a positive integer.")
+                        sys.exit(1)
+            for G_centrality in subgraphs:
+                centalities = CentralityAnalysis(G_centrality)
+                try:
+                    if centrality_method == "degree":
+                        centalities.compute_degree_centrality()
+                    elif centrality_method == "betweenness":
+                        centalities.compute_betweenness_centrality()
+                    elif centrality_method == "closeness":
+                        centalities.compute_closeness_centrality()
+                    elif centrality_method == "eigenvector":
+                        centalities.compute_eigenvector_centrality()
+                    else:
+                        print(f"Unknown centrality method: {centrality_method}. Skipping.")
+                        continue
+                except Exception as e:
+                    print(f"Error during centrality computation: {e}")
+                    print("Skipping centrality computation.")
+
+                for measure_name, measures in centalities.centrality_measures.items():
+                    print(f"\nTop 10 nodes by {measure_name} centrality:")
+                    sorted_measures = sorted(
+                        measures.items(), key=lambda x: x[1], reverse=True
+                    )[:10]
+                    for node, value in sorted_measures:
+                        print(f"  {node}: {value:.4f}")
+
+                    # Visualize centrality
+                    visualizer.visualize_existing_graph_interactive(
+                        G_centrality,
+                        show_names=True,
+                        measure_name=measure_name,
+                        centrality_measures=measures,
+                    )
+                
+                
+
 
     except KeyboardInterrupt:
         print("\n\nInterrupted by user.")
