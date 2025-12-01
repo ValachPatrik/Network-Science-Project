@@ -6,9 +6,14 @@ import pandas as pd
 import networkx as nx
 import logging
 from dotenv import load_dotenv
-from visualizer import GraphVisualizer
-from authors import AuthorsBuilder
-from centralities import CentralityAnalysis
+try:
+    from NZZ.visualizer import GraphVisualizer
+    from NZZ.authors import AuthorsBuilder
+    from NZZ.centralities import CentralityAnalysis
+except ImportError:
+    from visualizer import GraphVisualizer
+    from authors import AuthorsBuilder
+    from centralities import CentralityAnalysis
 from collections import Counter
 import math
 

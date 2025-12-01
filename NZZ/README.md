@@ -103,3 +103,7 @@ Debug and test scripts are located in the `debug/` folder:
 - `test_1000_authors.py` - Large-scale author parsing test
 - `test_50_authors.py` - Smaller test
 - Other test and analysis scripts
+
+## Network Analysis Baselines
+
+- `random_multilayer_baseline.py` builds a three-layer random author network that preserves the empirical degree of every author. Run it with `python -m NZZ.random_multilayer_baseline --limit 500 --top-k 15` to generate a baseline activity ranking, inspect the summaries printed to stdout, and optionally export the layers as GEXF for Gephi. Pass `--run-baseline` to `author_network.py` if you want that comparison to run automatically after building the empirical multilayer graph.
