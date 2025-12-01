@@ -305,6 +305,36 @@ class ArticleGraphBuilder:
             "edges.",
         )
 
+    def build_related_graph(self, reset_graph=True):
+        """Backward-compatible wrapper that builds the full author graph.
+
+        Older analysis scripts expect a single method that both creates co-author
+        edges (authors who wrote the same article) and adds edges derived from
+        related articles. The newer implementation split those responsibilities
+        into ``build_authors_graph`` and ``build_graph``. To avoid breaking the
+        existing scripts, this helper simply orchestrates those calls.
+
+        Args:
+            reset_graph (bool): When True, clear any previously constructed graph
+                before rebuilding it. Defaults to True to mimic the historical
+                behaviour of rebuilding from scratch.
+        """
+        if self.df is None:
+            raise ValueError("Data not loaded. Call load_data() first.")
+
+        if reset_graph:
+            self.G.clear()
+
+        # Reset analysis caches because the structure is about to change.
+        self.components_sorted = None
+        self.clusters = None
+        self.cluster_counts = {}
+        self.cluster_author_map = {}
+
+        # First add co-author edges, then connect authors through related pieces.
+        self.build_authors_graph()
+        self.build_graph()
+
     # === 3. Analyze connected components ===
     def analyze_components(self):
         """Compute connected components sorted by size."""
@@ -1010,7 +1040,7 @@ Examples:
         if args.cluster is not None:
             cluster_method = (
                 args.cluster
-            )  # args.cluster is already the method name or 'louvain' if const
+            )  # args.cluster contains the method name directly
             try:
                 builder.compute_clusters(method=cluster_method)
                 #print(authors.df.head())

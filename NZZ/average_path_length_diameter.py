@@ -1,5 +1,5 @@
 import networkx as nx
-from articles import ArticleGraphBuilderV2
+from articles import ArticleGraphBuilder
 import random
 import re
 import os
@@ -98,7 +98,7 @@ def compute_small_world_statistics(G):
 
 def main():
     print("\n LOADING BUILDER V2")
-    builder = ArticleGraphBuilderV2()
+    builder = ArticleGraphBuilder()
     builder.load_data(limit=None)
     builder.build_related_graph()
     builder.analyze_components()
@@ -170,13 +170,7 @@ def main():
         else:
             largest.nodes[node]["role"] = "Unknown"
 
-    # Print sample mapping
-    print("\n SAMPLE AUTHOR: ROLE MAPPINGS")
-    sample_nodes = list(largest.nodes())[:20]
-    for n in sample_nodes:
-        print(f"{largest.nodes[n].get('name')} :  {largest.nodes[n].get('role')}")
-
-    print("\nDONE.\n")
+    
 
     # Maybe we need to check the immressum html 
 

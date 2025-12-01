@@ -1,5 +1,5 @@
 import networkx as nx
-from articles import ArticleGraphBuilderV2
+from articles import ArticleGraphBuilder
 from visualizer import GraphVisualizer
 import community.community_louvain as community_louvain
 
@@ -94,7 +94,7 @@ def clean_graph_attributes(G):
 
 def main():
     print("\n=== LOADING BUILDER V2 ===")
-    builder = ArticleGraphBuilderV2()
+    builder = ArticleGraphBuilder()
 
     builder.load_data(limit=None)
     builder.build_related_graph()
@@ -121,19 +121,31 @@ def main():
     # DEFAULT CLUSTERING (resolution = 1.0)
 
     print("\n=== RUNNING LOUVAIN CLUSTERING (default resolution=1.0) ===")
-    clusters_default = builder.compute_clusters(method="louvain")
+    clusters_default_result = builder.compute_clusters(method="louvain")
+    # ``compute_clusters`` now returns a tuple (clusters, cluster_counts);
+    # keep backward compatibility by pulling out the mapping we need here.
+    if isinstance(clusters_default_result, tuple):
+        clusters_default = clusters_default_result[0]
+    else:
+        clusters_default = clusters_default_result
 
     # RESOLUTION TUNING (“Resorts”)
     
 
-    print("\n=== RUNNING LOUVAIN WITH CUSTOM RESOLUTIONS ===")
-    clusters_res05 = run_louvain_with_resolution(largest, resolution=0.5)
-    clusters_res15 = run_louvain_with_resolution(largest, resolution=1.5)
+    print("\n=== RUNNING LOUVAIN CLUSTERING (default resolution=1.0) ===")
+    clusters_default = builder.compute_clusters(method="louvain")
+    clusters_default_result = builder.compute_clusters(method="louvain")
+        # ``compute_clusters`` now returns a tuple (clusters, cluster_counts);
+        # keep backward compatibility by pulling out the mapping we need here.
+    if isinstance(clusters_default_result, tuple):
+            clusters_default = clusters_default_result[0]
+    else:
+            clusters_default = clusters_default_result
 
     print("\nCluster counts by resolution:")
-    print(f"  resolution=0.5 → {len(set(clusters_res05.values()))} clusters")
+    # print(f"  resolution=0.5 → {len(set(clusters_res05.values()))} clusters")
     print(f"  resolution=1.0 → {len(set(clusters_default.values()))} clusters (default)")
-    print(f"  resolution=1.5 → {len(set(clusters_res15.values()))} clusters")
+    # print(f"  resolution=1.5 → {len(set(clusters_res15.values()))} clusters")
 
     # CLUSTER QUALITY METRICS (Cluster coefficient, density, top authors)
 
