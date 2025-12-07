@@ -5,6 +5,7 @@ import argparse
 import pandas as pd
 import networkx as nx
 import logging
+from collections import defaultdict
 from dotenv import load_dotenv
 try:
     from NZZ.visualizer import GraphVisualizer
@@ -71,6 +72,8 @@ class ArticleGraphBuilder:
         self.clusters = None  # Store clustering results
         self.cluster_counts = {}
         self.cluster_author_map = {}
+
+        self.authors_to_category = {}
 
         # PostgreSQL connection parameters from environment
         self.user = os.getenv("user")
@@ -155,7 +158,7 @@ class ArticleGraphBuilder:
             # Use related_articles_filtered (filtered to only include valid article_ids)
             # COALESCE provides fallback to related_articles if filtered column doesn't exist
             # This significantly reduces data transfer, especially avoiding large 'content' field
-            columns = "article_id, authors, COALESCE(related_articles_filtered, related_articles) as related_articles_filtered"
+            columns = "article_id, authors, category, COALESCE(related_articles_filtered, related_articles) as related_articles_filtered"
 
             # If dataset is large, load in chunks
             if total_to_load > chunk_size:
@@ -728,6 +731,33 @@ class ArticleGraphBuilder:
         
 
         return self.clusters
+
+
+    def authors_to_category_mapping(self, G, df):
+        """
+        Creates a mapping of authors to their categories based on the provided DataFrame.
+
+        Args:
+            G (nx.Graph): The graph containing author nodes.
+            df (pd.DataFrame): DataFrame containing 'name' and 'category' columns.
+
+        Returns:
+            dict: A dictionary mapping author names to their categories.
+        """
+        author_category_counts = defaultdict(lambda: defaultdict(int))
+
+        for _, row in df.iterrows():
+            author_name_list = self._normalize_authors(row['authors'])
+            category = row['category']
+
+            for author_name in author_name_list:
+
+                if author_name in G.nodes:
+                    author_category_counts[author_name][category] += 1
+
+
+        return dict(author_category_counts)
+
     
 
     def get_resort_counts_per_cluster(self, df_clustered: pd.DataFrame) -> list[dict]:
@@ -1026,10 +1056,12 @@ Examples:
         # Build the graph (co-authorship + related articles)
         builder.build_authors_graph()
         builder.build_graph()
+        
 
         if args.analyze:
             builder.analyze_components()
             builder.highest_degree_node()
+            print(builder.authors_to_category_mapping(G=builder.get_largest_component_graph(), df=builder.df))
 
             if args.author:
                 builder.component_of_node(args.author)
