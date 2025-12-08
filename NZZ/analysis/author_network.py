@@ -345,6 +345,45 @@ def build_base_graph(limit: int | None) -> tuple[nx.Graph, Dict[str, int]]:
     return base_graph, degree_profile
 
 
+def build_empirical_multilayer(limit: int | None, combine_mode: str = "sum") -> tuple[Dict[str, nx.Graph], nx.Graph]:
+    """Build and return the empirical multilayer author graphs.
+
+    This helper mirrors the construction in ``main`` but exposes the
+    individual layers and the combined graph so they can be reused by
+    analysis scripts (e.g., assortativity calculations) without
+    reimplementing the pipeline.
+
+    Returns
+    -------
+    layers : dict[str, nx.Graph]
+        Dictionary with entries ``"coauthor"`` and ``"related"``.
+    combined : nx.Graph
+        Combined multilayer graph produced via ``combine_mode``.
+    """
+
+    builder = ArticleGraphBuilder()
+    builder.load_data(limit=limit)
+
+    df = builder.df.copy()
+    author_map = build_author_map(df, builder)
+    all_authors = sorted({author for authors in author_map.values() for author in authors})
+
+    multilayer = MultiLayerAuthorGraph()
+
+    coauthor_graph = build_coauthor_layer(author_map, all_authors)
+    summarize_graph("coauthor", coauthor_graph)
+    multilayer.add_layer("coauthor", coauthor_graph)
+
+    related_graph = build_related_layer(df, author_map, all_authors)
+    summarize_graph("related", related_graph)
+    multilayer.add_layer("related", related_graph)
+
+    combined_graph = multilayer.combine_layers(mode=combine_mode)
+    summarize_graph("combined", combined_graph)
+
+    return {"coauthor": coauthor_graph, "related": related_graph}, combined_graph
+
+
 def run_random_baseline(
     *,
     limit: int | None = None,
