@@ -106,6 +106,7 @@ class ArticleGraphBuilder:
         # Create SQLAlchemy engine for pandas compatibility
         self.engine = self._create_engine()
 
+
     def _create_engine(self):
         """Create SQLAlchemy engine for PostgreSQL (Supabase) connection.
 

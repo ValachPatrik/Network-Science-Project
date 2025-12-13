@@ -3,14 +3,7 @@ import logging
 
 import networkx as nx
 
-from articles import ArticleGraphBuilder
-from author_network import (
-    MultiLayerAuthorGraph,
-    build_author_map,
-    build_coauthor_layer,
-    build_related_layer,
-    summarize_graph,
-)
+from author_network import build_empirical_multilayer
 
 
 logger = logging.getLogger("assortativity_multilayer")
@@ -48,29 +41,10 @@ def compute_assortativity_for_graph(name: str, G: nx.Graph) -> None:
 
 
 def build_multilayer(limit: int | None, combine_mode: str = "sum") -> tuple[dict[str, nx.Graph], nx.Graph]:
-    """Build coauthor, related, and combined layers using the existing pipeline."""
-    builder = ArticleGraphBuilder()
-    builder.load_data(limit=limit)
-
-    df = builder.df.copy()
-    author_map = build_author_map(df, builder)
-    all_authors = sorted({author for authors in author_map.values() for author in authors})
-
-    multilayer = MultiLayerAuthorGraph()
-
-    coauthor = build_coauthor_layer(author_map, all_authors)
-    summarize_graph("coauthor (empirical)", coauthor)
-    multilayer.add_layer("coauthor", coauthor)
-
-    related = build_related_layer(df, author_map, all_authors)
-    summarize_graph("related (empirical)", related)
-    multilayer.add_layer("related", related)
-
-    logger.info("=== Multilayer network (empirical) ===")
-    combined = multilayer.combine_layers(mode=combine_mode)
-    summarize_graph("combined (empirical)", combined)
-
-    return {"coauthor": coauthor, "related": related}, combined
+    """Build coauthor, related, and combined layers using the multilayer pipeline."""
+    logger.info("=== Building empirical multilayer for assortativity analysis ===")
+    layers, combined = build_empirical_multilayer(limit=limit, combine_mode=combine_mode)
+    return layers, combined
 
 
 def parse_args() -> argparse.Namespace:
