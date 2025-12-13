@@ -56,10 +56,10 @@ except ImportError:
 load_dotenv()
 
 
-class ArticleGraphBuilder:
+class ArticleAnalyser:
     """Loads NZZ article data, builds a graph, and performs graph analysis."""
 
-    def __init__(self):
+    def __init__(self, G=nx.Graph()):
         """Initialize ArticleGraphBuilder with Supabase PostgreSQL connection."""
         if not HAS_SQLALCHEMY:
             raise ImportError(
@@ -67,7 +67,7 @@ class ArticleGraphBuilder:
             )
 
         self.df = None
-        self.G = nx.Graph()
+        self.G = G
         self.components_sorted = None
         self.clusters = None  # Store clustering results
         self.cluster_counts = {}
