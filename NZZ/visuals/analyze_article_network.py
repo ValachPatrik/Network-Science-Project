@@ -287,7 +287,7 @@ def main():
     logger.info("Article Network Connectivity Analysis")
     logger.info("="*80)
     
-    # Database path
+    # Database path (SQLite snapshot stored alongside this package)
     db_path = os.path.join(PARENT_DIR, 'nzz_scraped_articles.db')
     
     if not os.path.exists(db_path):
@@ -316,4 +316,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

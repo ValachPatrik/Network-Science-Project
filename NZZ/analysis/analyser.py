@@ -5,17 +5,25 @@ import argparse
 import pandas as pd
 import networkx as nx
 import logging
+from collections import defaultdict
 from dotenv import load_dotenv
 try:
-    from NZZ.visualizer import GraphVisualizer
-    from NZZ.authors import AuthorsBuilder
-    from NZZ.centralities import CentralityAnalysis
-except ImportError:
+    from .visualizer import GraphVisualizer
+    from .authors import AuthorsBuilder
+    from .centralities import CentralityAnalysis
+    from .article_graph_builder import ArticleGraphBuilder
+except ImportError:  # when executed as scripts without package context
     from visualizer import GraphVisualizer
     from authors import AuthorsBuilder
     from centralities import CentralityAnalysis
+    from article_graph_builder import ArticleGraphBuilder
 from collections import Counter
 import math
+
+try:
+    from .multilayer_network import MultiLayerAuthorGraph
+except ImportError:
+    from multilayer_network import MultiLayerAuthorGraph
 
 
 logging.basicConfig(
@@ -23,15 +31,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger("articles")
 
-try:
-    from sqlalchemy import create_engine
-
-    HAS_SQLALCHEMY = True
-except ImportError:
-    HAS_SQLALCHEMY = False
-    print(
-        "Error: SQLAlchemy is required. Install with: pip install sqlalchemy psycopg2-binary python-dotenv"
-    )
 
 try:
     import community.community_louvain as community_louvain
@@ -51,162 +50,25 @@ except ImportError:
     HAS_IGRAPH = False
     # igraph is optional, only needed for Infomap and Leiden
 
-# Load environment variables
-load_dotenv()
 
 
-class ArticleGraphBuilder:
+class ArticleAnalyser:
     """Loads NZZ article data, builds a graph, and performs graph analysis."""
 
-    def __init__(self):
+    def __init__(self, G=nx.Graph()):
         """Initialize ArticleGraphBuilder with Supabase PostgreSQL connection."""
-        if not HAS_SQLALCHEMY:
-            raise ImportError(
-                "SQLAlchemy is required. Install with: pip install sqlalchemy psycopg2-binary python-dotenv"
-            )
+
 
         self.df = None
-        self.G = nx.Graph()
+        self.G = G
         self.components_sorted = None
         self.clusters = None  # Store clustering results
         self.cluster_counts = {}
         self.cluster_author_map = {}
 
-        # PostgreSQL connection parameters from environment
-        self.user = os.getenv("user")
-        self.password = os.getenv("password")
-        self.host = os.getenv("host")
-        self.port = os.getenv("port", "5432")
-        self.dbname = os.getenv("dbname")
+        self.authors_to_category = {}
 
-        # Validate connection parameters
-        if not all([self.user, self.password, self.host, self.dbname]):
-            missing = []
-            if not self.user:
-                missing.append("user")
-            if not self.password:
-                missing.append("password")
-            if not self.host:
-                missing.append("host")
-            if not self.dbname:
-                missing.append("dbname")
-            raise ValueError(
-                f"Missing required database connection parameters: {', '.join(missing)}\n"
-                "Set the following in your .env file:\n"
-                "  user=postgres.[PROJECT-REF]\n"
-                "  password=[YOUR-PASSWORD]\n"
-                "  host=aws-0-[REGION].pooler.supabase.com\n"
-                "  port=6543 (Session mode) or 5432 (Transaction mode)\n"
-                "  dbname=postgres"
-            )
-
-        # Create SQLAlchemy engine for pandas compatibility
-        self.engine = self._create_engine()
-
-
-    def _create_engine(self):
-        """Create SQLAlchemy engine for PostgreSQL (Supabase) connection.
-
-        Returns:
-            sqlalchemy.engine.Engine: SQLAlchemy engine object
-        """
-        try:
-            # Build connection string for SQLAlchemy
-            connection_string = (
-                f"postgresql://{self.user}:{self.password}@"
-                f"{self.host}:{self.port}/{self.dbname}"
-            )
-            # Add connect_args to increase statement timeout (in milliseconds)
-            # Supabase default is often 20 seconds, we'll set it higher
-            engine = create_engine(
-                connection_string,
-                pool_pre_ping=True,
-                connect_args={
-                    "connect_timeout": 30,
-                    "options": "-c statement_timeout=300000",  # 5 minutes in milliseconds
-                },
-            )
-            return engine
-        except Exception as e:
-            raise ConnectionError(f"Failed to create database engine: {e}")
-
-    # === 1. Load data ===
-    def load_data(self, limit=None, chunk_size=10000):
-        """Load articles from Supabase PostgreSQL into a DataFrame.
-
-        Args:
-            limit (int, optional): Maximum number of rows to load. If None, loads all rows.
-            chunk_size (int): Number of rows to fetch per chunk when loading large datasets.
-
-        Returns:
-            pd.DataFrame: DataFrame containing articles
-        """
-        try:
-            # First, try to get total count
-            count_query = "SELECT COUNT(*) FROM articles"
-            total_count = pd.read_sql(count_query, self.engine).iloc[0, 0]
-            print(f"Total articles in database: {total_count:,}")
-
-            if limit:
-                total_to_load = min(limit, total_count)
-            else:
-                total_to_load = total_count
-
-            # Only select columns we actually use: article_id, authors, related_articles_filtered
-            # Use related_articles_filtered (filtered to only include valid article_ids)
-            # COALESCE provides fallback to related_articles if filtered column doesn't exist
-            # This significantly reduces data transfer, especially avoiding large 'content' field
-            columns = "article_id, authors, COALESCE(related_articles_filtered, related_articles) as related_articles_filtered"
-
-            # If dataset is large, load in chunks
-            if total_to_load > chunk_size:
-                print(f"Loading {total_to_load:,} rows in chunks of {chunk_size:,}...")
-                chunks = []
-                offset = 0
-
-                while offset < total_to_load:
-                    current_chunk_size = min(chunk_size, total_to_load - offset)
-                    query = (
-                        f"SELECT {columns} FROM articles "
-                        f"ORDER BY article_date DESC "
-                        f"LIMIT {current_chunk_size} OFFSET {offset}"
-                    )
-                    print(
-                        f"Loading chunk: rows {offset:,} to {offset + current_chunk_size:,}..."
-                    )
-                    chunk_df = pd.read_sql(query, self.engine)
-                    if len(chunk_df) == 0:
-                        break
-                    chunks.append(chunk_df)
-                    offset += len(chunk_df)
-                    print(
-                        f"  Loaded {len(chunk_df):,} rows (total: {sum(len(c) for c in chunks):,})"
-                    )
-
-                self.df = pd.concat(chunks, ignore_index=True)
-            else:
-                # Small dataset, load all at once
-                query = f"SELECT {columns} FROM articles ORDER BY article_date DESC"
-                if limit:
-                    query += f" LIMIT {limit}"
-                print("Loading data from Supabase...")
-                self.df = pd.read_sql(query, self.engine)
-
-            print("Columns found:", self.df.columns.tolist())
-            print(f"Loaded {len(self.df)} rows.")
-            return self.df
-        except Exception as e:
-            error_msg = str(e)
-            if (
-                "statement timeout" in error_msg.lower()
-                or "querycanceled" in error_msg.lower()
-            ):
-                print("Warning: Query timed out. This might be due to a large dataset.")
-                print(
-                    "Consider using load_data(limit=N) to load a subset of data first."
-                )
-            raise ConnectionError(f"Failed to load data from database: {e}")
-
+    
     def _normalize_authors(self, author_field):
         """
         Convert author field into a list of authors.
@@ -232,114 +94,8 @@ class ArticleGraphBuilder:
         # fallback: single author
         return [str(author_field).strip()]
 
-    def build_authors_graph(self):
 
-        for author_group in self.df["authors"]:
-            if pd.isna(author_group):
-                continue
 
-            # Convert string like '["Albert Steck", "Jürg Meier"]' into a Python list
-            try:
-                author_group = ast.literal_eval(author_group)
-            except Exception as e:
-                print(f"Error parsing related_articles for {author_group}: {e}")
-
-            for i in range(len(author_group)):
-                for j in range(i + 1, len(author_group)):
-                    # Add edge between author_group[i] and author_group[j]
-
-                    if self.G.has_edge(author_group[i], author_group[j]):
-                        self.G[author_group[i]][author_group[j]]["weight"] += 10
-                    else:
-                        self.G.add_edge(author_group[i], author_group[j], weight=10)
-
-    # === 2. Build graph ===
-    def build_graph(self):
-        """Build graph of articles and their related articles."""
-        if self.df is None:
-            raise ValueError("Data not loaded. Call load_data() first.")
-
-        author_map = {
-            row["article_id"]: self._normalize_authors(row["authors"])
-            for _, row in self.df.iterrows()
-        }
-
-        # Add all authors as nodes
-        all_authors = {a for authors in author_map.values() for a in authors}
-        self.G.add_nodes_from(all_authors)
-
-        for _, row in self.df.iterrows():
-            source_id = row["article_id"]
-            source_authors = author_map[source_id]
-            # self.G.add_node(article)
-
-            # Use related_articles_filtered (which should contain only valid article_ids)
-            related_articles_field = row.get("related_articles_filtered")
-
-            if pd.notnull(related_articles_field):
-                try:
-                    related_list = ast.literal_eval(related_articles_field)
-                    for target_id in related_list:
-
-                        if target_id not in author_map:
-                            continue
-
-                        target_authors = author_map[target_id]
-
-                        # print(target_authors)
-
-                        for a1 in source_authors:
-                            for a2 in target_authors:
-                                if a1 == a2:
-                                    continue
-
-                                if self.G.has_edge(a1, a2):
-                                    self.G[a1][a2]["weight"] += 1
-                                else:
-                                    self.G.add_edge(a1, a2, weight=1)
-
-                except Exception as e:
-                    print(
-                        f"Error parsing related_articles_filtered for {source_authors}: {e}"
-                    )
-
-        print(
-            "Graph built with",
-            len(self.G.nodes),
-            "nodes and",
-            len(self.G.edges),
-            "edges.",
-        )
-
-    def build_related_graph(self, reset_graph=True):
-        """Backward-compatible wrapper that builds the full author graph.
-
-        Older analysis scripts expect a single method that both creates co-author
-        edges (authors who wrote the same article) and adds edges derived from
-        related articles. The newer implementation split those responsibilities
-        into ``build_authors_graph`` and ``build_graph``. To avoid breaking the
-        existing scripts, this helper simply orchestrates those calls.
-
-        Args:
-            reset_graph (bool): When True, clear any previously constructed graph
-                before rebuilding it. Defaults to True to mimic the historical
-                behaviour of rebuilding from scratch.
-        """
-        if self.df is None:
-            raise ValueError("Data not loaded. Call load_data() first.")
-
-        if reset_graph:
-            self.G.clear()
-
-        # Reset analysis caches because the structure is about to change.
-        self.components_sorted = None
-        self.clusters = None
-        self.cluster_counts = {}
-        self.cluster_author_map = {}
-
-        # First add co-author edges, then connect authors through related pieces.
-        self.build_authors_graph()
-        self.build_graph()
 
     # === 3. Analyze connected components ===
     def analyze_components(self):
@@ -410,7 +166,7 @@ class ArticleGraphBuilder:
         print(f"Nodes not in largest component: {len(excluded)}")
         return excluded
 
-    def save_graph_to_gexf(self, filename="authors_graph.gexf"):
+    def save_graph_to_gexf(self, filename="authors_graph.gexf", graph: nx.Graph | None = None):
         """
         Save a NetworkX graph to a GEXF file.
 
@@ -419,7 +175,8 @@ class ArticleGraphBuilder:
         filename : str
             The name of the output GEXF file.
         """
-        nx.write_gexf(self.G, filename)
+        target = graph if graph is not None else self.G
+        nx.write_gexf(target, filename)
         print(f"Graph successfully saved to {filename}")
 
     def get_largest_component_graph(self):
@@ -729,6 +486,33 @@ class ArticleGraphBuilder:
         
 
         return self.clusters
+
+
+    def authors_to_category_mapping(self, G, df):
+        """
+        Creates a mapping of authors to their categories based on the provided DataFrame.
+
+        Args:
+            G (nx.Graph): The graph containing author nodes.
+            df (pd.DataFrame): DataFrame containing 'name' and 'category' columns.
+
+        Returns:
+            dict: A dictionary mapping author names to their categories.
+        """
+        author_category_counts = defaultdict(lambda: defaultdict(int))
+
+        for _, row in df.iterrows():
+            author_name_list = self._normalize_authors(row['authors'])
+            category = row['category']
+
+            for author_name in author_name_list:
+
+                if author_name in G.nodes:
+                    author_category_counts[author_name][category] += 1
+
+
+        return dict(author_category_counts)
+
     
 
     def get_resort_counts_per_cluster(self, df_clustered: pd.DataFrame) -> list[dict]:
@@ -1021,16 +805,25 @@ Examples:
         print("Using ArticleGraphBuilder")
         print("=" * 80)
 
-        builder = ArticleGraphBuilder()
-        builder.load_data(limit=args.limit)
+        data_builder = ArticleGraphBuilder()
+        data_builder.load_data(limit=args.limit)
+        data_builder.build_author_map()
 
-        # Build the graph (co-authorship + related articles)
-        builder.build_authors_graph()
-        builder.build_graph()
+        multilayer = MultiLayerAuthorGraph()
+        coauthor_graph = data_builder.build_coauthor_layer()
+        multilayer.add_layer("coauthor", coauthor_graph)
+        related_graph = data_builder.build_related_layer()
+        multilayer.add_layer("related", related_graph)
+        combined_graph = multilayer.combine_layers(mode="sum")
+
+        builder = ArticleAnalyser(G=combined_graph)
+        builder.df = data_builder.df
+        
 
         if args.analyze:
             builder.analyze_components()
             builder.highest_degree_node()
+            print(builder.authors_to_category_mapping(G=builder.get_largest_component_graph(), df=builder.df))
 
             if args.author:
                 builder.component_of_node(args.author)

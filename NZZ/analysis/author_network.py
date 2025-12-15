@@ -12,216 +12,20 @@ from typing import Dict, Iterable, List, Sequence
 
 import networkx as nx
 import pandas as pd
+from dotenv import load_dotenv
 
-from articles import ArticleGraphBuilder
-from visualizer import GraphVisualizer
+try:
+    from .article_graph_builder import ArticleGraphBuilder
+    from .visualizer import GraphVisualizer
+    from .multilayer_network import MultiLayerAuthorGraph, summarize_graph
+except ImportError:  # script-style execution
+    from article_graph_builder import ArticleGraphBuilder
+    from visualizer import GraphVisualizer
+    from multilayer_network import MultiLayerAuthorGraph, summarize_graph
 
 
 logger = logging.getLogger("author_network")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-
-
-def parse_related_articles(value: object) -> List[str]:
-    """Parse the related_articles field into a Python list."""
-    if value is None or (isinstance(value, float) and pd.isna(value)):
-        return []
-    if isinstance(value, list):
-        return value
-    if isinstance(value, str) and value.strip():
-        try:
-            parsed = ast.literal_eval(value)
-            if isinstance(parsed, list):
-                return parsed
-        except Exception:
-            logger.debug("Could not parse related_articles entry: %s", value)
-    return []
-
-
-def build_author_map(df: pd.DataFrame, builder: ArticleGraphBuilder) -> Dict[str, List[str]]:
-    """Return mapping of article_id -> normalized list of authors."""
-    author_map: Dict[str, List[str]] = {}
-    for row in df.itertuples(index=False):
-        authors = builder._normalize_authors(row.authors)
-        authors = [a for a in authors if isinstance(a, str) and a.strip()]
-        author_map[row.article_id] = authors
-    return author_map
-
-
-def build_coauthor_layer(author_map: Dict[str, Sequence[str]], all_authors: Iterable[str]) -> nx.Graph:
-    """Create the co-authorship layer where weights are joint article counts."""
-    import itertools
-
-    G = nx.Graph(layer="coauthor")
-    G.add_nodes_from(all_authors)
-
-    for authors in author_map.values():
-        unique_authors = sorted(set(a for a in authors if a))
-        if len(unique_authors) < 2:
-            continue
-        for a1, a2 in itertools.combinations(unique_authors, 2):
-            if G.has_edge(a1, a2):
-                G[a1][a2]["weight"] += 1
-            else:
-                G.add_edge(a1, a2, weight=1)
-
-    logger.info("Co-author layer: %s nodes, %s edges", G.number_of_nodes(), G.number_of_edges())
-    return G
-
-
-def build_related_layer(df: pd.DataFrame, author_map: Dict[str, Sequence[str]], all_authors: Iterable[str]) -> nx.Graph:
-    """Create the related-articles layer with weights equal to shared references."""
-    G = nx.Graph(layer="related")
-    G.add_nodes_from(all_authors)
-
-    if "related_articles_filtered" in df.columns:
-        related_column = "related_articles_filtered"
-    elif "related_articles" in df.columns:
-        related_column = "related_articles"
-    else:
-        logger.warning("No related articles column available; returning empty related layer.")
-        return G
-
-    for row in df.itertuples(index=False):
-        source_id = row.article_id
-        source_authors = author_map.get(source_id, [])
-        if not source_authors:
-            continue
-
-        related_field = getattr(row, related_column, None)
-        related_list = parse_related_articles(related_field)
-        if not related_list:
-            continue
-        for target_id in related_list:
-            target_authors = author_map.get(target_id, [])
-            if not target_authors:
-                continue
-            for a1 in source_authors:
-                for a2 in target_authors:
-                    if a1 == a2:
-                        continue
-                    if G.has_edge(a1, a2):
-                        G[a1][a2]["weight"] += 1
-                    else:
-                        G.add_edge(a1, a2, weight=1)
-
-    logger.info("Related-article layer: %s nodes, %s edges", G.number_of_nodes(), G.number_of_edges())
-    return G
-
-
-@dataclass
-class MultiLayerAuthorGraph:
-    """Container for managing distinct author network layers."""
-
-    layers: Dict[str, nx.Graph] = field(default_factory=dict)
-
-    def add_layer(self, name: str, graph: nx.Graph) -> None:
-        if not isinstance(graph, nx.Graph):
-            raise TypeError("Layer must be a NetworkX Graph instance.")
-        self.layers[name] = graph
-
-    def combine_layers(self, mode: str = "sum") -> nx.Graph:
-        """Combine all layers into a single weighted graph."""
-        if not self.layers:
-            raise ValueError("No layers available to combine.")
-
-        combined = nx.Graph(layer="combined")
-        node_membership: defaultdict[str, set] = defaultdict(set)
-
-        for name, layer in self.layers.items():
-            for node in layer.nodes():
-                combined.add_node(node)
-                node_membership[node].add(name)
-
-            for u, v, data in layer.edges(data=True):
-                weight = data.get("weight", 1)
-                if combined.has_edge(u, v):
-                    if mode == "sum":
-                        combined[u][v]["weight"] += weight
-                    elif mode == "max":
-                        combined[u][v]["weight"] = max(combined[u][v]["weight"], weight)
-                    else:
-                        raise ValueError(f"Unknown combination mode: {mode}")
-                    combined[u][v]["layers"].add(name)
-                else:
-                    combined.add_edge(u, v, weight=weight)
-                    combined[u][v]["layers"] = {name}
-
-        for node, names in node_membership.items():
-            combined.nodes[node]["layers"] = ",".join(sorted(names))
-
-        for u, v, data in combined.edges(data=True):
-            data["layers"] = ",".join(sorted(data["layers"]))
-
-        logger.info(
-            "Combined graph (%s mode): %s nodes, %s edges",
-            mode,
-            combined.number_of_nodes(),
-            combined.number_of_edges(),
-        )
-        return combined
-
-
-def summarize_graph(name: str, G: nx.Graph) -> None:
-    """Print quick stats about a graph/layer."""
-    components = list(nx.connected_components(G)) if G.number_of_nodes() else []
-    largest_component = max((len(c) for c in components), default=0)
-    density = nx.density(G) if G.number_of_nodes() > 1 else 0.0
-    isolated_nodes = len(list(nx.isolates(G)))
-
-    logger.info(
-        "%s → nodes: %s | edges: %s | largest component: %s | density: %.4f | isolates: %s",
-        name,
-        G.number_of_nodes(),
-        G.number_of_edges(),
-        largest_component,
-        density,
-        isolated_nodes,
-    )
-
-
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="Build a multilayer author network with separate co-author and related-article layers.",
-    )
-    parser.add_argument("--limit", type=int, default=None, help="Limit number of articles to load from the database.")
-    parser.add_argument(
-        "--layers",
-        nargs="+",
-        choices=["coauthor", "related"],
-        default=["coauthor", "related"],
-        help="Specify which layers to construct.",
-    )
-    parser.add_argument(
-        "--combine-mode",
-        choices=["sum", "max"],
-        default="sum",
-        help="How to merge weights across layers when building the combined view.",
-    )
-    parser.add_argument("--export", type=str, default=None, help="Optional path to export the combined graph to GEXF.")
-    parser.add_argument(
-        "--export-layers",
-        action="store_true",
-        help="When provided with --export, also export each individual layer.",
-    )
-    parser.add_argument("--visualize", action="store_true", help="Open an interactive visualization at the end.")
-    parser.add_argument(
-        "--visualize-target",
-        choices=["coauthor", "related", "combined"],
-        default="combined",
-        help="Which layer/graph to visualize when --visualize is enabled.",
-    )
-    parser.add_argument(
-        "--visualize-weight-threshold",
-        type=float,
-        default=0.0,
-        help="Minimum edge weight required to display an edge in the visualization.",
-    )
-    parser.add_argument(
-        "--run-baseline",
-        action="store_true",
-        help="Also generate the three-layer degree-preserving random baseline.",
-    )
-    return parser.parse_args()
 
 
 def degree_preserving_random_layer(
@@ -311,80 +115,11 @@ def maybe_export_layers(layers: Dict[str, nx.Graph], combined: nx.Graph | None, 
         logger.info("Saved %s", path)
 
 
-def build_base_graph(limit: int | None) -> tuple[nx.Graph, Dict[str, int]]:
-    builder = ArticleGraphBuilder()
-    builder.load_data(limit=limit)
 
-    df = builder.df.copy()
-    author_map = build_author_map(df, builder)
-    all_authors = sorted({author for authors in author_map.values() for author in authors})
-
-    multilayer = MultiLayerAuthorGraph()
-    coauthor = build_coauthor_layer(author_map, all_authors)
-    related = build_related_layer(df, author_map, all_authors)
-    multilayer.add_layer("coauthor", coauthor)
-    multilayer.add_layer("related", related)
-
-    summarize_graph("coauthor (empirical)", coauthor)
-    summarize_graph("related (empirical)", related)
-
-    combined_weighted = multilayer.combine_layers(mode="sum")
-    summarize_graph("combined (empirical)", combined_weighted)
-
-    base_graph = nx.Graph()
-    base_graph.add_nodes_from(combined_weighted.nodes())
-    base_graph.add_edges_from(combined_weighted.edges())
-
-    degree_profile = dict(base_graph.degree())
-    logger.info(
-        "Base graph contains %s authors and %s edges. Avg degree %.2f",
-        base_graph.number_of_nodes(),
-        base_graph.number_of_edges(),
-        (sum(degree_profile.values()) / max(len(degree_profile), 1)) if degree_profile else 0.0,
-    )
-    return base_graph, degree_profile
-
-
-def build_empirical_multilayer(limit: int | None, combine_mode: str = "sum") -> tuple[Dict[str, nx.Graph], nx.Graph]:
-    """Build and return the empirical multilayer author graphs.
-
-    This helper mirrors the construction in ``main`` but exposes the
-    individual layers and the combined graph so they can be reused by
-    analysis scripts (e.g., assortativity calculations) without
-    reimplementing the pipeline.
-
-    Returns
-    -------
-    layers : dict[str, nx.Graph]
-        Dictionary with entries ``"coauthor"`` and ``"related"``.
-    combined : nx.Graph
-        Combined multilayer graph produced via ``combine_mode``.
-    """
-
-    builder = ArticleGraphBuilder()
-    builder.load_data(limit=limit)
-
-    df = builder.df.copy()
-    author_map = build_author_map(df, builder)
-    all_authors = sorted({author for authors in author_map.values() for author in authors})
-
-    multilayer = MultiLayerAuthorGraph()
-
-    coauthor_graph = build_coauthor_layer(author_map, all_authors)
-    summarize_graph("coauthor", coauthor_graph)
-    multilayer.add_layer("coauthor", coauthor_graph)
-
-    related_graph = build_related_layer(df, author_map, all_authors)
-    summarize_graph("related", related_graph)
-    multilayer.add_layer("related", related_graph)
-
-    combined_graph = multilayer.combine_layers(mode=combine_mode)
-    summarize_graph("combined", combined_graph)
-
-    return {"coauthor": coauthor_graph, "related": related_graph}, combined_graph
 
 
 def run_random_baseline(
+    builder: ArticleGraphBuilder,
     *,
     limit: int | None = None,
     swaps_per_edge: int = 5,
@@ -395,7 +130,10 @@ def run_random_baseline(
     visualizer: GraphVisualizer | None = None,
     weight_threshold: float = 0.0,
 ) -> dict | None:
-    base_graph, degree_profile = build_base_graph(limit=limit)
+    temp_builder = ArticleGraphBuilder()
+    temp_builder.load_data(limit=limit)
+    temp_builder.build_author_map()
+    base_graph, degree_profile = temp_builder.build_base_graph(limit=None)
     if not base_graph.number_of_nodes():
         logger.error("No authors available. Nothing to randomise.")
         return None
@@ -411,7 +149,7 @@ def run_random_baseline(
             seed=layer_seed,
             layer_name=name,
         )
-        summarize_graph(name, random_layers[name])
+        builder.summarize_graph(name, random_layers[name])
 
     combined_random = MultiLayerAuthorGraph()
     for name, layer in random_layers.items():
@@ -439,21 +177,72 @@ def run_random_baseline(
     }
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Build a multilayer author network combining co-authorship and related-article edges.",
+    )
+    parser.add_argument("--limit", type=int, default=None, help="Limit number of articles fetched from Supabase.")
+    parser.add_argument(
+        "--layers",
+        nargs="+",
+        choices=["coauthor", "related"],
+        default=["coauthor", "related"],
+        help="Which empirical layers to construct.",
+    )
+    parser.add_argument(
+        "--combine-mode",
+        choices=["sum", "max"],
+        default="sum",
+        help="How to merge weights across layers when building the combined view.",
+    )
+    parser.add_argument(
+        "--visualize",
+        action="store_true",
+        help="Render the selected layer in the interactive visualizer.",
+    )
+    parser.add_argument(
+        "--visualize-target",
+        choices=["combined", "coauthor", "related"],
+        default="combined",
+        help="Which layer to visualize when --visualize is set.",
+    )
+    parser.add_argument(
+        "--visualize-weight-threshold",
+        type=float,
+        default=0.0,
+        help="Minimum edge weight shown in the visualization.",
+    )
+    parser.add_argument(
+        "--export",
+        type=str,
+        help="Path to export the combined graph as GEXF.",
+    )
+    parser.add_argument(
+        "--export-layers",
+        action="store_true",
+        help="Also export each individual layer when --export is used.",
+    )
+    parser.add_argument(
+        "--run-baseline",
+        action="store_true",
+        help="Generate the random degree-preserving baseline network.",
+    )
+    return parser.parse_args()
+
+
 def main() -> None:
     args = parse_args()
+    load_dotenv()
 
     builder = ArticleGraphBuilder()
     builder.load_data(limit=args.limit)
-
-    df = builder.df.copy()
-    author_map = build_author_map(df, builder)
-    all_authors = sorted({author for authors in author_map.values() for author in authors})
+    builder.build_author_map()
 
     multilayer = MultiLayerAuthorGraph()
 
     co_stats = {}
     if "coauthor" in args.layers:
-        coauthor_graph = build_coauthor_layer(author_map, all_authors)
+        coauthor_graph = builder.build_coauthor_layer()
         multilayer.add_layer("coauthor", coauthor_graph)
         summarize_graph("coauthor", coauthor_graph)
         co_stats = {
@@ -463,7 +252,7 @@ def main() -> None:
 
     related_stats = {}
     if "related" in args.layers:
-        related_graph = build_related_layer(df, author_map, all_authors)
+        related_graph = builder.build_related_layer()
         multilayer.add_layer("related", related_graph)
         summarize_graph("related", related_graph)
         related_stats = {
@@ -528,6 +317,7 @@ def main() -> None:
     if args.run_baseline:
         logger.info("=== Random multilayer baseline (degree-preserving) ===")
         baseline_result = run_random_baseline(
+            builder,
             limit=args.limit,
             top_k=20,
             visualize=args.visualize,
