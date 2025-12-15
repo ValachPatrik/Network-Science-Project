@@ -10,6 +10,7 @@ from centralities import CentralityAnalysis
 from article_graph_builder import ArticleGraphBuilder
 from analyser import ArticleAnalyser
 from authors import AuthorsBuilder
+from assortativity_multilayer import compute_assortativity_for_multilayer
 
 
 
@@ -137,6 +138,17 @@ Examples:
         parser.add_argument(
             "--graph", nargs="?", default="largest_component", 
             help="Which graph component to analyze for centrality/clustering (e.g., 'largest_cluster' or integer N). Defaults to 'largest_component' of the combined view.",
+        )
+        
+        parser.add_argument(
+            "--assortativity",
+            action="store_true",
+            help="Compute degree assortativity on each multilayer graph (coauthor, related) and the combined graph.",
+        )
+        parser.add_argument(
+            "--assortativity-full-graph",
+            action="store_true",
+            help="When set, compute assortativity on full graphs instead of restricting to the largest connected component.",
         )
         
         # Note: The original `--save` argument is merged into the `--export` argument for file saving consistency.
@@ -332,16 +344,25 @@ Examples:
                 self.analyser.degree_of_author(author_to_analyze)
                 self.analyser.nodes_not_in_largest()
             
-            # 7. Clustering
+            # 7. Assortativity on multilayer graphs
+            if args.assortativity:
+                largest_component_flag = not args.assortativity_full_graph
+                compute_assortativity_for_multilayer(
+                    layers=self.article_builder.graphs,
+                    combined=self.article_builder.combined_graph,
+                    largest_component=largest_component_flag,
+                )
+
+            # 8. Clustering
             cluster_colors = None
             if args.cluster is not None:
                 cluster_colors = self._run_clustering(args, G_combined) # Run clustering on the unweighted combined graph
 
-            # 8. Centrality
+            # 9. Centrality
             if args.centrality is not None:
                 self._run_centrality(args, cluster_colors)
 
-            # 9. Visualization (Final step)
+            # 10. Visualization (Final step)
             if args.visualize:
                 # Use the appropriate graph object (weighted or unweighted is determined by the Visualizer/Target choice)
                 G_target = self.article_builder.graphs.get(args.visualize_target) or self.article_builder.combined_graph
