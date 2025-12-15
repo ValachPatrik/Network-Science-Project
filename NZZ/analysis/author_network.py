@@ -1,10 +1,5 @@
 """Build a multilayer author network combining co-authorship and related-article edges."""
-"""python -m NZZ.analysis.author_network \
-  --visualize \
-  --visualize-target combined \
-  --visualize-weight-threshold 1 \
-  --run-baseline
-"""
+
 from __future__ import annotations
 
 import argparse
