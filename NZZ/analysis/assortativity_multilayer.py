@@ -1,13 +1,9 @@
-import argparse
 import logging
 
 import networkx as nx
 
-from author_network import build_empirical_multilayer
-
 
 logger = logging.getLogger("assortativity_multilayer")
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 
 def largest_component_subgraph(G: nx.Graph) -> nx.Graph:
@@ -40,48 +36,40 @@ def compute_assortativity_for_graph(name: str, G: nx.Graph) -> None:
         logger.info("%s: could not compute weighted assortativity (%s)", name, exc)
 
 
-def build_multilayer(limit: int | None, combine_mode: str = "sum") -> tuple[dict[str, nx.Graph], nx.Graph]:
-    """Build coauthor, related, and combined layers using the multilayer pipeline."""
-    logger.info("=== Building empirical multilayer for assortativity analysis ===")
-    layers, combined = build_empirical_multilayer(limit=limit, combine_mode=combine_mode)
-    return layers, combined
+def compute_assortativity_for_multilayer(
+    layers: dict[str, nx.Graph],
+    combined: nx.Graph,
+    *,
+    largest_component: bool = True,
+) -> None:
+    """Compute degree assortativity for all layers and the combined graph.
 
+    Parameters
+    ----------
+    layers : dict[str, nx.Graph]
+        Mapping from layer name (e.g. "coauthor", "related") to its graph.
+    combined : nx.Graph
+        Combined multilayer graph.
+    largest_component : bool, optional
+        If True, compute assortativity on the largest connected component
+        of each graph. If False, use the full graph.
+    """
 
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="Compute assortativity measures on the multilayer author network (coauthor, related, combined).",
-    )
-    parser.add_argument("--limit", type=int, default=None, help="Limit number of articles loaded from the database.")
-    parser.add_argument(
-        "--combine-mode",
-        choices=["sum", "max"],
-        default="sum",
-        help="How to merge edge weights across layers for the combined graph.",
-    )
-    parser.add_argument(
-        "--largest-component",
-        action="store_true",
-        help="Compute assortativity only on the largest connected component of each graph.",
-    )
-    return parser.parse_args()
-
-
-def main() -> None:
-    args = parse_args()
-
-    layers, combined = build_multilayer(limit=args.limit, combine_mode=args.combine_mode)
+    if not layers and combined is None:
+        logger.info("No graphs provided for assortativity computation; skipping.")
+        return
 
     logger.info("\n=== Assortativity on empirical multilayer ===")
 
     for name, G in layers.items():
-        target = largest_component_subgraph(G) if args.largest_component else G
-        suffix = " (largest component)" if args.largest_component else " (full graph)"
+        if G is None:
+            continue
+        target = largest_component_subgraph(G) if largest_component else G
+        suffix = " (largest component)" if largest_component else " (full graph)"
         compute_assortativity_for_graph(name + suffix, target)
 
-    target_combined = largest_component_subgraph(combined) if args.largest_component else combined
-    suffix_combined = " (largest component)" if args.largest_component else " (full graph)"
-    compute_assortativity_for_graph("combined" + suffix_combined, target_combined)
+    if combined is not None:
+        target_combined = largest_component_subgraph(combined) if largest_component else combined
+        suffix_combined = " (largest component)" if largest_component else " (full graph)"
+        compute_assortativity_for_graph("combined" + suffix_combined, target_combined)
 
-
-if __name__ == "__main__":
-    main()
