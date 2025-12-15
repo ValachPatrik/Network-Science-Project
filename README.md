@@ -5,23 +5,29 @@ This project contains scrapers for extracting articles from news websites.
 ## Project Structure
 
 ```
-projekt/
-├── ZEIT/              # ZEIT.de scraper
-│   ├── scraper.py     # Main scraper
-│   ├── database.py    # Database models
-│   ├── run_scraper.py # Run script
-│   ├── view_articles.py # View scraped articles
-│   ├── check_status.py # Check scraper status
-│   └── verify_scraper.py # Verify articles
-├── NZZ/               # NZZ.ch scraper
-│   ├── scraper.py     # Main scraper
-│   ├── database.py    # Database models
-│   ├── run_scraper.py # Run script
-│   ├── view_articles.py # View scraped articles
-│   └── clean_db.py    # Database cleanup script
-├── requirements.txt   # Python dependencies
-├── README.md          # This file
-└── QUICK_START.md     # Quick start guide
+Network-Science-Project/
+├── ZEIT/                   # ZEIT.de scraper
+│   ├── scraper.py          # Main scraper
+│   ├── database.py         # Database models
+│   ├── run_scraper.py      # Run scraper script
+│   ├── view_articles.py    # View scraped articles
+│   ├── check_status.py     # Check scraper status
+│   └── verify_scraper.py   # Verify articles
+├── NZZ/                    # NZZ.ch scraper and analysis
+│   ├── scraper/            # Scraping logic for NZZ
+│   ├── process/            # Processing and cleaning of scraped data
+│   ├── analysis/           # Network science analysis (multilayer, assortativity, etc.)
+│   ├── visuals/            # Visualizations and exported graph files
+│   ├── debug/              # Debugging helpers and scripts
+│   ├── gephi/              # Gephi project files (if any)
+│   ├── test_data/          # Test data for experiments
+│   ├── database.py         # Database models
+│   ├── run_scraper.py      # Run scraper script
+│   ├── view_articles.py    # View scraped articles
+│   └── clean_db.py         # Database cleanup script
+├── requirements.txt        # Python dependencies
+├── README.md               # This file
+└── QUICK_START.md          # Quick start guide
 ```
 
 ## Installation
