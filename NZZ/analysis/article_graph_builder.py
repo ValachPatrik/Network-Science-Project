@@ -8,7 +8,10 @@ from collections import defaultdict
 
 import logging
 
-from multilayer_network import MultiLayerAuthorGraph
+try:
+    from .multilayer_network import MultiLayerAuthorGraph
+except ImportError:
+    from multilayer_network import MultiLayerAuthorGraph
 
 
 # Conditional imports based on your new code's requirements
