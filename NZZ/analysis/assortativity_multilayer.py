@@ -11,7 +11,6 @@ from article_graph_builder import ArticleGraphBuilder
 
 
 logger = logging.getLogger("assortativity_multilayer")
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 
 def largest_component_subgraph(G: nx.Graph) -> nx.Graph:
