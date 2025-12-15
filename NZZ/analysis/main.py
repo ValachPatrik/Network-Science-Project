@@ -1,3 +1,12 @@
+"""python NZZ/analysis/main.py \
+  --limit 2000 \
+  --visualize \
+  --visualize-target combined \
+  --visualize-weight-threshold 1 \
+  --export NZZ/author_multilayer.gexf
+"""
+
+
 import argparse
 import sys
 from typing import List, Optional, Dict, Any

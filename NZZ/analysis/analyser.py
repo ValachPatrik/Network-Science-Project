@@ -159,7 +159,7 @@ class ArticleAnalyser:
         print(f"Nodes not in largest component: {len(excluded)}")
         return excluded
 
-    def save_graph_to_gexf(self, filename="authors_graph.gexf"):
+    def save_graph_to_gexf(self, filename="authors_graph.gexf", graph: nx.Graph | None = None):
         """
         Save a NetworkX graph to a GEXF file.
 
@@ -168,7 +168,8 @@ class ArticleAnalyser:
         filename : str
             The name of the output GEXF file.
         """
-        nx.write_gexf(self.G, filename)
+        target = graph if graph is not None else self.G
+        nx.write_gexf(target, filename)
         print(f"Graph successfully saved to {filename}")
 
     def get_largest_component_graph(self):

@@ -3,19 +3,17 @@
 from __future__ import annotations
 
 import argparse
-import ast
 import logging
 from collections import defaultdict
-from dataclasses import dataclass, field
 from statistics import mean
-from typing import Dict, Iterable, List, Sequence
+from typing import Dict, List
 
 import networkx as nx
-import pandas as pd
+from dotenv import load_dotenv
 
 from article_graph_builder import ArticleGraphBuilder
 from visualizer import GraphVisualizer
-from multilayer_network import MultiLayerAuthorGraph
+from multilayer_network import MultiLayerAuthorGraph, summarize_graph
 
 
 logger = logging.getLogger("author_network")
@@ -113,6 +111,7 @@ def maybe_export_layers(layers: Dict[str, nx.Graph], combined: nx.Graph | None, 
 
 
 def run_random_baseline(
+    builder: ArticleGraphBuilder,
     *,
     limit: int | None = None,
     swaps_per_edge: int = 5,
@@ -123,7 +122,7 @@ def run_random_baseline(
     visualizer: GraphVisualizer | None = None,
     weight_threshold: float = 0.0,
 ) -> dict | None:
-    base_graph, degree_profile = build_base_graph(limit=limit)
+    base_graph, degree_profile = builder.build_base_graph(limit=limit)
     if not base_graph.number_of_nodes():
         logger.error("No authors available. Nothing to randomise.")
         return None
@@ -139,7 +138,7 @@ def run_random_baseline(
             seed=layer_seed,
             layer_name=name,
         )
-        builder.summarize_graph(name, random_layers[name])
+        summarize_graph(name, random_layers[name])
 
     combined_random = MultiLayerAuthorGraph()
     for name, layer in random_layers.items():
@@ -167,21 +166,75 @@ def run_random_baseline(
     }
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Limit the number of articles loaded from the database.",
+    )
+    parser.add_argument(
+        "--layers",
+        nargs="+",
+        choices=["coauthor", "related"],
+        default=["coauthor", "related"],
+        help="Which layers to build.",
+    )
+    parser.add_argument(
+        "--combine-mode",
+        choices=["sum", "max"],
+        default="sum",
+        help="How to combine layers into the final graph.",
+    )
+    parser.add_argument(
+        "--visualize",
+        action="store_true",
+        help="Render the selected graph in the interactive visualizer.",
+    )
+    parser.add_argument(
+        "--visualize-target",
+        choices=["combined", "coauthor", "related"],
+        default="combined",
+        help="Which layer to visualize when --visualize is set.",
+    )
+    parser.add_argument(
+        "--visualize-weight-threshold",
+        type=float,
+        default=0.0,
+        help="Minimum edge weight for visualization filtering.",
+    )
+    parser.add_argument(
+        "--export",
+        type=str,
+        help="Path to save the combined graph as GEXF.",
+    )
+    parser.add_argument(
+        "--export-layers",
+        action="store_true",
+        help="Also export each individual layer when --export is used.",
+    )
+    parser.add_argument(
+        "--run-baseline",
+        action="store_true",
+        help="Generate a random degree-preserving baseline for comparison.",
+    )
+    return parser.parse_args()
+
+
 def main() -> None:
     args = parse_args()
 
+    load_dotenv()
     builder = ArticleGraphBuilder()
     builder.load_data(limit=args.limit)
-
-    df = builder.df.copy()
-    author_map = build_author_map(df, builder)
-    all_authors = sorted({author for authors in author_map.values() for author in authors})
+    builder.build_author_map()
 
     multilayer = MultiLayerAuthorGraph()
 
     co_stats = {}
     if "coauthor" in args.layers:
-        coauthor_graph = build_coauthor_layer(author_map, all_authors)
+        coauthor_graph = builder.build_coauthor_layer()
         multilayer.add_layer("coauthor", coauthor_graph)
         summarize_graph("coauthor", coauthor_graph)
         co_stats = {
@@ -191,7 +244,7 @@ def main() -> None:
 
     related_stats = {}
     if "related" in args.layers:
-        related_graph = build_related_layer(df, author_map, all_authors)
+        related_graph = builder.build_related_layer()
         multilayer.add_layer("related", related_graph)
         summarize_graph("related", related_graph)
         related_stats = {
@@ -256,6 +309,7 @@ def main() -> None:
     if args.run_baseline:
         logger.info("=== Random multilayer baseline (degree-preserving) ===")
         baseline_result = run_random_baseline(
+            builder,
             limit=args.limit,
             top_k=20,
             visualize=args.visualize,

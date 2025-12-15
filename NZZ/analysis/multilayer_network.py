@@ -1,4 +1,4 @@
-"""Shared helpers for multilayer author graphs."""
+"""Shared helpers for multilayer author graphs. We use it through author_network.py and other analysis scripts."""
 
 from __future__ import annotations
 
