@@ -8,15 +8,22 @@ import logging
 from collections import defaultdict
 from dotenv import load_dotenv
 try:
-    from NZZ.visualizer import GraphVisualizer
-    from NZZ.authors import AuthorsBuilder
-    from NZZ.centralities import CentralityAnalysis
-except ImportError:
+    from .visualizer import GraphVisualizer
+    from .authors import AuthorsBuilder
+    from .centralities import CentralityAnalysis
+    from .article_graph_builder import ArticleGraphBuilder
+except ImportError:  # when executed as scripts without package context
     from visualizer import GraphVisualizer
     from authors import AuthorsBuilder
     from centralities import CentralityAnalysis
+    from article_graph_builder import ArticleGraphBuilder
 from collections import Counter
 import math
+
+try:
+    from .multilayer_network import MultiLayerAuthorGraph
+except ImportError:
+    from multilayer_network import MultiLayerAuthorGraph
 
 
 logging.basicConfig(
@@ -159,7 +166,7 @@ class ArticleAnalyser:
         print(f"Nodes not in largest component: {len(excluded)}")
         return excluded
 
-    def save_graph_to_gexf(self, filename="authors_graph.gexf"):
+    def save_graph_to_gexf(self, filename="authors_graph.gexf", graph: nx.Graph | None = None):
         """
         Save a NetworkX graph to a GEXF file.
 
@@ -168,7 +175,8 @@ class ArticleAnalyser:
         filename : str
             The name of the output GEXF file.
         """
-        nx.write_gexf(self.G, filename)
+        target = graph if graph is not None else self.G
+        nx.write_gexf(target, filename)
         print(f"Graph successfully saved to {filename}")
 
     def get_largest_component_graph(self):
@@ -797,12 +805,19 @@ Examples:
         print("Using ArticleGraphBuilder")
         print("=" * 80)
 
-        builder = ArticleGraphBuilder()
-        builder.load_data(limit=args.limit)
+        data_builder = ArticleGraphBuilder()
+        data_builder.load_data(limit=args.limit)
+        data_builder.build_author_map()
 
-        # Build the graph (co-authorship + related articles)
-        builder.build_authors_graph()
-        builder.build_graph()
+        multilayer = MultiLayerAuthorGraph()
+        coauthor_graph = data_builder.build_coauthor_layer()
+        multilayer.add_layer("coauthor", coauthor_graph)
+        related_graph = data_builder.build_related_layer()
+        multilayer.add_layer("related", related_graph)
+        combined_graph = multilayer.combine_layers(mode="sum")
+
+        builder = ArticleAnalyser(G=combined_graph)
+        builder.df = data_builder.df
         
 
         if args.analyze:

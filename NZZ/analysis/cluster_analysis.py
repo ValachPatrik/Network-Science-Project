@@ -1,9 +1,13 @@
+"""python NZZ/analysis/cluster_analysis.py
+"""
+
+"""it's about discovering and characterizing clusters/sections (Louvain + metrics)"""
+
 import networkx as nx
-from articles import ArticleGraphBuilder
+from article_graph_builder import ArticleGraphBuilder
 from visualizer import GraphVisualizer
 import community.community_louvain as community_louvain
-
-
+from dotenv import load_dotenv
 import re
 
 def run_louvain_with_resolution(G, resolution):
@@ -13,6 +17,16 @@ def run_louvain_with_resolution(G, resolution):
         weight="weight",
         resolution=resolution
     )
+
+
+def largest_component_subgraph(G: nx.Graph) -> nx.Graph:
+    """Return the largest connected component as a new graph."""
+    if G.number_of_nodes() == 0:
+        return nx.Graph()
+    if nx.is_connected(G):
+        return G.copy()
+    nodes = max(nx.connected_components(G), key=len)
+    return G.subgraph(nodes).copy()
 
 
 #  AUTHOR NAME CLEANING 
@@ -94,13 +108,14 @@ def clean_graph_attributes(G):
 
 def main():
     print("\n=== LOADING BUILDER V2 ===")
+    load_dotenv()
     builder = ArticleGraphBuilder()
 
     builder.load_data(limit=None)
-    builder.build_related_graph()
-    builder.analyze_components()
-
-    largest = builder.get_largest_component_graph()
+    builder.build_author_map()
+    related_graph = builder.build_related_layer()
+    builder.summarize_graph("related (cluster input)", related_graph)
+    largest = largest_component_subgraph(related_graph)
 
     # CLEAN AUTHOR NAMES
 
@@ -120,27 +135,8 @@ def main():
 
     # DEFAULT CLUSTERING (resolution = 1.0)
 
-    print("\n=== RUNNING LOUVAIN CLUSTERING (default resolution=1.0) ===")
-    clusters_default_result = builder.compute_clusters(method="louvain")
-    # ``compute_clusters`` now returns a tuple (clusters, cluster_counts);
-    # keep backward compatibility by pulling out the mapping we need here.
-    if isinstance(clusters_default_result, tuple):
-        clusters_default = clusters_default_result[0]
-    else:
-        clusters_default = clusters_default_result
-
-    # RESOLUTION TUNING (“Resorts”)
-    
-
-    print("\n=== RUNNING LOUVAIN CLUSTERING (default resolution=1.0) ===")
-    clusters_default = builder.compute_clusters(method="louvain")
-    clusters_default_result = builder.compute_clusters(method="louvain")
-        # ``compute_clusters`` now returns a tuple (clusters, cluster_counts);
-        # keep backward compatibility by pulling out the mapping we need here.
-    if isinstance(clusters_default_result, tuple):
-            clusters_default = clusters_default_result[0]
-    else:
-            clusters_default = clusters_default_result
+    print("\n=== RUNNING LOUVAIN CLUSTERING (resolution=1.0) ===")
+    clusters_default = run_louvain_with_resolution(largest, resolution=1.0)
 
     print("\nCluster counts by resolution:")
     # print(f"  resolution=0.5 → {len(set(clusters_res05.values()))} clusters")

@@ -1,13 +1,14 @@
 import networkx as nx
-from articles import ArticleGraphBuilder
+from article_graph_builder import ArticleGraphBuilder
 import random
 import re
 import os
 from bs4 import BeautifulSoup
 from difflib import get_close_matches
+from dotenv import load_dotenv
 
 
-# 0) PARSE NZZ IMPRESSUM (extract people : roles)
+# PARSE NZZ IMPRESSUM (extract people : roles)
 
 def parse_impressum(html_path):
     """
@@ -57,8 +58,6 @@ def parse_impressum(html_path):
 
 
 
-# (Your existing code remains unchanged below)
-
 def binarize_graph(G):
     """Convert weighted graph into an unweighted graph:
        Edge exists if weight > 0."""
@@ -67,6 +66,16 @@ def binarize_graph(G):
         if data.get("weight", 0) > 0:
             B.add_edge(u, v)
     return B
+
+
+def largest_component_subgraph(G: nx.Graph) -> nx.Graph:
+    """Return a copy of the largest connected component."""
+    if G.number_of_nodes() == 0:
+        return nx.Graph()
+    if nx.is_connected(G):
+        return G.copy()
+    largest_nodes = max(nx.connected_components(G), key=len)
+    return G.subgraph(largest_nodes).copy()
 
 
 def compute_small_world_statistics(G):
@@ -98,12 +107,14 @@ def compute_small_world_statistics(G):
 
 def main():
     print("\n LOADING BUILDER V2")
+    load_dotenv()
     builder = ArticleGraphBuilder()
     builder.load_data(limit=None)
-    builder.build_related_graph()
-    builder.analyze_components()
+    builder.build_author_map()
+    related_graph = builder.build_related_layer()
+    builder.summarize_graph("related (analysis)", related_graph)
 
-    largest = builder.get_largest_component_graph()
+    largest = largest_component_subgraph(related_graph)
     print(f"\nNodes in largest component: {largest.number_of_nodes()}")
     print(f"Edges in largest component: {largest.number_of_edges()}")
 
@@ -153,9 +164,7 @@ def main():
     print("\n MATCHING AUTHORS TO ROLES (Fuzzy Matching)")
 
     for node in largest.nodes():
-        author_raw = largest.nodes[node].get("name", "")
-        if not author_raw:
-            continue
+        author_raw = largest.nodes[node].get("name") or str(node)
 
         # Exact match first
         if author_raw in impressum_roles:
