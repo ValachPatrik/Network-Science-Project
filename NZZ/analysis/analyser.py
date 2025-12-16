@@ -66,6 +66,7 @@ class ArticleAnalyser:
         self.cluster_author_map = {}
 
         self.authors_to_category = {}
+        self.raw_data_categories = {}
 
     def _normalize_authors(self, author_field):
         """
@@ -225,7 +226,7 @@ class ArticleAnalyser:
                 raise ImportError(
                     "python-louvain is required for Louvain clustering. Install with: pip install python-louvain"
                 )
-            partition = community_louvain.best_partition(G_cluster, weight="weight")
+            partition = community_louvain.best_partition(G_cluster, weight="weight",random_state=42)
 
         elif method == "leiden":
             if not HAS_IGRAPH:
@@ -236,7 +237,7 @@ class ArticleAnalyser:
                     raise ImportError(
                         "Neither igraph nor python-louvain available. Install with: pip install python-igraph or pip install python-louvain"
                     )
-                partition = community_louvain.best_partition(G_cluster, weight="weight")
+                partition = community_louvain.best_partition(G_cluster, weight="weight", random_state=42)
             else:
                 # Convert NetworkX graph to igraph
                 # Create mapping from node names to indices
@@ -262,7 +263,7 @@ class ArticleAnalyser:
         elif method == "greedy_modularity":
             # NetworkX greedy modularity communities
             communities = nx.community.greedy_modularity_communities(
-                G_cluster, weight="weight"
+                G_cluster, weight="weight", random_state=42
             )
             for cluster_id, community in enumerate(communities):
                 for node in community:
@@ -432,7 +433,7 @@ class ArticleAnalyser:
         # print(self.cluster_counts)
 
         # 1. Assign Clusters: Map cluster IDs to the DataFrame
-        df_authors["cluster"] = df_authors["name"].map(self.clusters)
+        df_authors["cluster"] = df_authors["Author"].map(self.clusters)
 
         # 2. Check Initial Cluster Count
         total_clusters_with_unassigned = df_authors["cluster"].nunique(dropna=False)
@@ -442,10 +443,10 @@ class ArticleAnalyser:
 
         # 3. Handle Unclustered Authors
         unclustered_df = df_authors[df_authors["cluster"].isna()]
-        unclustered_names = unclustered_df["name"].to_list()
+        unclustered_names = unclustered_df["Author"].to_list()
 
         # External check/logging for authors that were not clustered
-        self.check_unclustered_membership(unclustered_names=unclustered_names)
+        #self.check_unclustered_membership(unclustered_names=unclustered_names)
 
         # 4. Finalize Clustered DataFrame
         # Create a copy with only successfully clustered rows
@@ -459,7 +460,7 @@ class ArticleAnalyser:
         final_num_clusters = df_clustered["cluster"].nunique()
         print(f"Final number of unique clusters analyzed: {final_num_clusters}")
 
-        num_clustered_authors = df_clustered["name"].nunique()
+        num_clustered_authors = df_clustered["Author"].nunique()
         print(f"Number of clustered unique authors: {num_clustered_authors}")
         print("\nClustered DataFrame Info:")
         print(df_clustered.info())
@@ -472,13 +473,14 @@ class ArticleAnalyser:
 
         # Print/Format the results using internal methods
         self.format_cluster_summary(data=cluster_summary_data)
-        self.print_detailed_counts(data=cluster_summary_data)
+        
+        #self.print_detailed_counts(data=cluster_summary_data)
 
         # print(self.cluster_author_map)
 
-        return self.clusters
+        return cluster_summary_data
 
-    def authors_to_category_mapping(self, G, df):
+    def authors_to_category_mapping(self, G: nx.Graph, df: pd.DataFrame) -> dict:
         """
         Creates a mapping of authors to their categories based on the provided DataFrame.
 
@@ -499,8 +501,55 @@ class ArticleAnalyser:
 
                 if author_name in G.nodes:
                     author_category_counts[author_name][category] += 1
+        
+        self.raw_data_categories = dict(author_category_counts)
 
-        return dict(author_category_counts)
+        return self.raw_data_categories
+
+    def create_author_section_table(self, sort_by: list = ['Author', 'Count'], ascending: list = [True, False]) -> pd.DataFrame:
+        """
+        Flattens the nested data, creates a DataFrame, sorts it, and returns the result.
+
+        Args:
+            sort_by (list): Columns to sort the DataFrame by.
+            ascending (list): Sort order for the corresponding columns.
+
+        Returns:
+            pd.DataFrame: A DataFrame with 'Author', 'Resort', and 'Count' columns.
+        """
+        records = []
+        for author, sections in self.raw_data_categories.items():
+            for section, count in sections.items():
+                # Replace None section with a string representation
+                section_name = 'Unspecified' if section is None else section
+                records.append({'Author': author, 'Resort': section_name, 'Count': count})
+
+        # Create the DataFrame
+        df = pd.DataFrame(records)
+
+        # Sort the DataFrame
+        df_sorted = df.sort_values(by=sort_by, ascending=ascending).reset_index(drop=True)
+
+        return df_sorted
+    
+    def highest_count_section_per_author(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Finds the section with the highest count for each author from a CSV formatted string.
+        """
+        
+        # Find the index of the row with the maximum 'Count' for each 'Author'
+        # This is done by grouping by 'Author' and then finding the index of the maximum value 
+        # in the 'Count' column for each group.
+        idx_max = df.groupby(['Author'])['Count'].idxmax()
+        
+        # Use the indices to select the corresponding rows from the original DataFrame
+        result_df = df.loc[idx_max].reset_index(drop=True)
+        
+        
+        # Sort by 'Author'
+        result_df = result_df.sort_values(by='Author').reset_index(drop=True)
+        
+        return result_df
 
     def get_resort_counts_per_cluster(self, df_clustered: pd.DataFrame) -> list[dict]:
         """
@@ -511,7 +560,7 @@ class ArticleAnalyser:
         # 1. Group by 'cluster' and then by 'resort' and count the occurrences
         # This results in a Series with a MultiIndex: (cluster, resort)
         counts_series = (
-            df_clustered.groupby(["cluster", "resort"], dropna=True)
+            df_clustered.groupby(["cluster", "Resort"], dropna=True)
             .size()
             .sort_values(ascending=False)
         )
@@ -617,7 +666,7 @@ class ArticleAnalyser:
         )
         print(df_summary.to_markdown(index=False))
 
-    def print_detailed_counts(self, data: list[dict]):
+    def print_detailed_counts(self, data: list[dict])-> pd.DataFrame:
         """Prints the full, detailed breakdown of resort counts per cluster."""
 
         print("\n## 📝 Detailed Resort Counts per Cluster")
@@ -653,14 +702,10 @@ class ArticleAnalyser:
 
         df_detailed = pd.DataFrame(detailed_data)
         # print(df_detailed["Count"].sum())
-        print(df_detailed.to_markdown(index=False))
+        #print(df_detailed.to_markdown(index=False))
+        return df_detailed
 
-    def check_unclustered_membership(self, unclustered_names):
-        """Check the component membership of unclustered authors."""
-        for name in unclustered_names:
-            component = self.component_of_node(name)
-            if component is not None:
-                print(f"Author '{name}' is in a component of size {len(component)}")
+
 
 
 # === Example Usage ===
@@ -671,40 +716,40 @@ if __name__ == "__main__":
         epilog="""
 Examples:
   # Build and analyze the graph
-  python articles.py
+  python analyser.py
   
   # Limit to 1000 articles and save to GEXF
-  python articles.py --limit 1000 --save graph.gexf
+  python analyser.py --limit 1000 --save graph.gexf
   
   # Visualize the graph interactively
-  python articles.py --visualize
+  python analyser.py --visualize
   
   # Use clustering with different methods
-  python articles.py --cluster louvain
-  python articles.py --cluster leiden
-  python articles.py --cluster greedy_modularity
-  python articles.py --cluster label_propagation
-  python articles.py --cluster asyn_lpa
+  python analyser.py --cluster louvain
+  python analyser.py --cluster leiden
+  python analyser.py --cluster greedy_modularity
+  python analyser.py --cluster label_propagation
+  python analyser.py --cluster asyn_lpa
 
 
   # Use centralities with different methods, default is graph is largest component
-  python articles.py --centrality degree
-  python articles.py --centrality betweenness
-  python articles.py --centrality closeness
-  python articles.py --centrality eigenvector
+  python analyser.py --centrality degree
+  python analyser.py --centrality betweenness
+  python analyser.py --centrality closeness
+  python analyser.py --centrality eigenvector
 
   # If clustering with different methods is used, we can caluculate centrality on different graphs, e.g., full_graph or top N clusters
-  python articles.py --cluster louvain --centrality degree --graph full_graph
-  python articles.py --cluster louvain --centrality degree --graph largest_cluster
-  python articles.py --cluster louvain --centrality degree --graph 3
+  python analyser.py --cluster louvain --centrality degree --graph full_graph
+  python analyser.py --cluster louvain --centrality degree --graph largest_cluster
+  python analyser.py --cluster louvain --centrality degree --graph 3
 
  
   
   # Combine clustering with visualization
-  python articles.py --cluster leiden --visualize
+  python analyser.py --cluster leiden --visualize
   
   # Analyze specific author
-  python articles.py --author "Eric Gujer"
+  python analyser.py --author "Eric Gujer"
         """,
     )
 
@@ -816,22 +861,23 @@ Examples:
 
         builder = ArticleAnalyser(G=combined_graph)
         builder.df = data_builder.df
-
+        df_table = pd.DataFrame()
         if args.analyze:
             builder.analyze_components()
             builder.highest_degree_node()
-            print(
-                builder.authors_to_category_mapping(
-                    G=builder.get_largest_component_graph(), df=builder.df
-                )
-            )
+            builder.authors_to_category_mapping(
+                    G=builder.get_largest_component_graph(), df=builder.df)
+            df_table = builder.create_author_section_table()
+            print("## 📊 Author Article Counts by Section")
+            print(df_table.to_markdown(index=False))
+            df_table.to_csv('author_section_counts.csv', index=False)
+
+
+
 
             if args.author:
                 builder.component_of_node(args.author)
                 builder.degree_of_author(args.author)
-            else:
-                builder.component_of_node("Eric Gujer")
-                builder.degree_of_author("Eric Gujer")
 
             builder.nodes_not_in_largest()
 
@@ -843,10 +889,20 @@ Examples:
             )  # args.cluster contains the method name directly
             try:
                 builder.compute_clusters(method=cluster_method)
-                # print(authors.df.head())
-                builder.assign_clusters_to_dataframe(
-                    df_authors=authors.load_data(limit=10000)
-                )
+                cluster_summary = builder.assign_clusters_to_dataframe(
+                    df_authors=df_table)
+                builder.print_detailed_counts(data=cluster_summary).to_csv('detailed_cluster_resort_counts.csv', index=False)
+                
+                
+                df_filtered = builder.highest_count_section_per_author(df=df_table)
+
+                cluster_summary=builder.assign_clusters_to_dataframe(
+                    df_authors=df_filtered)
+                
+                builder.print_detailed_counts(data=cluster_summary).to_csv('filtered_cluster_resort_counts.csv', index=False)
+
+
+                
                 # print(builder.clusters)
                 cluster_colors = builder.clusters
             except ImportError as e:

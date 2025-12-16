@@ -178,6 +178,7 @@ def compute_measures(
             result[name] = method()
         except Exception as exc:
             logger.error("Failed to compute %s centrality: %s", name, exc)
+    print(result)
     return result
 
 
