@@ -1,4 +1,5 @@
 """Test script for Ollama-based LLM classifier."""
+
 from llm_classifier import LLMLocationClassifier
 
 # Initialize classifier
@@ -32,7 +33,7 @@ print("=" * 80)
 
 for term, context in test_cases:
     result = classifier.classify_term(term, context)
-    status = "OK" if result['type'] != 'unknown' else "FAIL"
+    status = "OK" if result["type"] != "unknown" else "FAIL"
     print(f"\n{status} Term: '{term}' (Context: '{context}')")
     print(f"   Type: {result['type']}")
     print(f"   Confidence: {result['confidence']:.2f}")
@@ -45,9 +46,10 @@ print("=" * 80)
 locations = ["Lugano", "Innsbruck", "Oerlikon", "Buenos Aires", "Wuhan", "Dusseldorf"]
 for loc in locations:
     is_loc = classifier.is_location(loc)
-    print(f"{'OK' if is_loc else 'FAIL'} {loc}: {'Location' if is_loc else 'Not a location'}")
+    print(
+        f"{'OK' if is_loc else 'FAIL'} {loc}: {'Location' if is_loc else 'Not a location'}"
+    )
 
 print("\n" + "=" * 80)
 print("Test Complete")
 print("=" * 80)
-

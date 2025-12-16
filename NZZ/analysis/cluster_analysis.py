@@ -1,5 +1,4 @@
-"""python NZZ/analysis/cluster_analysis.py
-"""
+"""python NZZ/analysis/cluster_analysis.py"""
 
 """it's about discovering and characterizing clusters/sections (Louvain + metrics)"""
 
@@ -10,13 +9,10 @@ import community.community_louvain as community_louvain
 from dotenv import load_dotenv
 import re
 
+
 def run_louvain_with_resolution(G, resolution):
     """Run Louvain clustering with a custom resolution parameter."""
-    return community_louvain.best_partition(
-        G,
-        weight="weight",
-        resolution=resolution
-    )
+    return community_louvain.best_partition(G, weight="weight", resolution=resolution)
 
 
 def largest_component_subgraph(G: nx.Graph) -> nx.Graph:
@@ -29,16 +25,33 @@ def largest_component_subgraph(G: nx.Graph) -> nx.Graph:
     return G.subgraph(nodes).copy()
 
 
-#  AUTHOR NAME CLEANING 
+#  AUTHOR NAME CLEANING
 
 LOCATION_PREFIXES = [
-    "Beirut", "Peking", "Genf", "Paris", "Bangkok", "Tokyo", "Tokio",
-    "Nairobi", "London", "Saalbach", "Helsinki", "Ramallah"
+    "Beirut",
+    "Peking",
+    "Genf",
+    "Paris",
+    "Bangkok",
+    "Tokyo",
+    "Tokio",
+    "Nairobi",
+    "London",
+    "Saalbach",
+    "Helsinki",
+    "Ramallah",
 ]
 
 NOISE_PATTERNS = [
-    r"^NZZ", r"Redaktion", r"Bildredaktion", r"Chefredaktion",
-    r"Interview", r"Visuals", r"Magazin", r"Fol.o", r"Geschichte",
+    r"^NZZ",
+    r"Redaktion",
+    r"Bildredaktion",
+    r"Chefredaktion",
+    r"Interview",
+    r"Visuals",
+    r"Magazin",
+    r"Fol.o",
+    r"Geschichte",
 ]
 
 
@@ -81,6 +94,7 @@ def clean_author_name(name: str) -> str:
 
 #  CLEAN GRAPH ATTRIBUTES FOR GEXF EXPORT
 
+
 def clean_graph_attributes(G):
     import math
     import numpy as np
@@ -105,6 +119,7 @@ def clean_graph_attributes(G):
 
 
 #  MAIN SCRIPT
+
 
 def main():
     print("\n=== LOADING BUILDER V2 ===")
@@ -140,7 +155,9 @@ def main():
 
     print("\nCluster counts by resolution:")
     # print(f"  resolution=0.5 → {len(set(clusters_res05.values()))} clusters")
-    print(f"  resolution=1.0 → {len(set(clusters_default.values()))} clusters (default)")
+    print(
+        f"  resolution=1.0 → {len(set(clusters_default.values()))} clusters (default)"
+    )
     # print(f"  resolution=1.5 → {len(set(clusters_res15.values()))} clusters")
 
     # CLUSTER QUALITY METRICS (Cluster coefficient, density, top authors)
@@ -154,7 +171,6 @@ def main():
     # - Low coefficient: authors collaborate mostly 1-to-1, not in groups
     # - High coefficient: authors tend to co-author inside tightly knit
     #   groups where everyone works with everyone else.
-
 
     coeffs = nx.clustering(largest, weight="weight")
 
@@ -185,7 +201,6 @@ def main():
     # - High density (0.5–1.0): very small teams that collaborate heavily,
     #       often indicating a specific niche team or fixed project group
 
-
     cluster_densities = {}
     for cid in set(clusters_default.values()):
         if cid < 0:
@@ -202,16 +217,13 @@ def main():
     # - often correspond to senior journalists, editors,
     #   or writers involved in cross-desk projects
 
-
     top_authors = {}
     for cid in set(clusters_default.values()):
         if cid < 0:
             continue
         nodes = [n for n, c in clusters_default.items() if c == cid]
         top_nodes = sorted(nodes, key=lambda x: largest.degree(x), reverse=True)[:5]
-        top_authors[cid] = [
-            largest.nodes[n].get("name", n) for n in top_nodes
-        ]
+        top_authors[cid] = [largest.nodes[n].get("name", n) for n in top_nodes]
 
     print("\n=== CLUSTER REPORT ===")
     for cid in sorted(cluster_avg_coeff.keys()):
@@ -220,9 +232,8 @@ def main():
         print(f"  Density: {cluster_densities[cid]:.4f}")
         print(f"  Top Authors: {', '.join(top_authors[cid])}")
 
-   
     # Save to GEXF
-    
+
     print("\nCleaning graph for GEXF export...")
     clean_graph_attributes(largest)
 
@@ -234,7 +245,6 @@ def main():
 
     print(" Saved: author_clusters_louvain.gexf")
     print(" Saved: author_clusters_with_colors.gexf")
-
 
     # Visualization
 

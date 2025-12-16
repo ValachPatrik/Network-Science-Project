@@ -1,4 +1,5 @@
 """Script to run the NZZ scraper v2."""
+
 from scraper_v2 import NZZScraperV2
 
 if __name__ == "__main__":
@@ -9,6 +10,5 @@ if __name__ == "__main__":
         clean_articles=True,
         clean_authors=True,
         clean_related_articles=True,
-        clean_article_author_associations=True
+        clean_article_author_associations=True,
     )
-

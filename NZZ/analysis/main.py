@@ -21,7 +21,7 @@ COMMAND_MODULES = {
     "assortativity": "NZZ.analysis.assortativity_multilayer",
     "average-path": "NZZ.analysis.average_path_length_diameter",
     "centralities": "NZZ.analysis.centralities",
-    "analyser": "NZZ.analysis.analyser"
+    "analyser": "NZZ.analysis.analyser",
 }
 
 # Default arguments we want to inject when running everything sequentially.

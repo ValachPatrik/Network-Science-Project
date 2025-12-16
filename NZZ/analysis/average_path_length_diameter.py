@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 
 # PARSE NZZ IMPRESSUM (extract people : roles)
 
+
 def parse_impressum(html_path):
     """
     Reads impressum.html and extracts a dictionary:
@@ -57,10 +58,9 @@ def parse_impressum(html_path):
     return role_map
 
 
-
 def binarize_graph(G):
     """Convert weighted graph into an unweighted graph:
-       Edge exists if weight > 0."""
+    Edge exists if weight > 0."""
     B = nx.Graph()
     for u, v, data in G.edges(data=True):
         if data.get("weight", 0) > 0:
@@ -99,10 +99,8 @@ def compute_small_world_statistics(G):
         "C_real": C_real,
         "L_rand": L_rand,
         "C_rand": C_rand,
-        "small_world": (L_real / L_rand < 2) and (C_real / C_rand > 2)
+        "small_world": (L_real / L_rand < 2) and (C_real / C_rand > 2),
     }
-
-
 
 
 def main():
@@ -133,7 +131,7 @@ def main():
     print(f"Average Path Length: {avg_path:.4f}")
 
     # 3) DIAMETER
-    
+
     print("\n DIAMETER")
     if nx.is_connected(B):
         diameter = nx.diameter(B)
@@ -172,16 +170,17 @@ def main():
             continue
 
         # Fuzzy match
-        candidates = get_close_matches(author_raw, impressum_roles.keys(), n=1, cutoff=0.82)
+        candidates = get_close_matches(
+            author_raw, impressum_roles.keys(), n=1, cutoff=0.82
+        )
         if candidates:
             match = candidates[0]
             largest.nodes[node]["role"] = impressum_roles[match]
         else:
             largest.nodes[node]["role"] = "Unknown"
 
-    
+    # Maybe we need to check the immressum html
 
-    # Maybe we need to check the immressum html 
 
 if __name__ == "__main__":
     main()

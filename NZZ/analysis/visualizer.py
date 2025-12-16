@@ -149,22 +149,39 @@ class GraphVisualizer:
 
             if inter_cluster_edges:
                 nx.draw_networkx_edges(
-                    H, pos, edgelist=inter_cluster_edges,
-                    edge_color="lightgray", width=0.15, alpha=0.3, ax=ax, style="dashed"
+                    H,
+                    pos,
+                    edgelist=inter_cluster_edges,
+                    edge_color="lightgray",
+                    width=0.15,
+                    alpha=0.3,
+                    ax=ax,
+                    style="dashed",
                 )
 
             if intra_cluster_edges:
                 nx.draw_networkx_edges(
-                    H, pos, edgelist=intra_cluster_edges,
-                    edge_color="gray", width=0.3, alpha=0.6, ax=ax
+                    H,
+                    pos,
+                    edgelist=intra_cluster_edges,
+                    edge_color="gray",
+                    width=0.3,
+                    alpha=0.6,
+                    ax=ax,
                 )
 
         else:
-            nx.draw_networkx_edges(H, pos, edge_color="gray", width=0.2, alpha=0.5, ax=ax)
+            nx.draw_networkx_edges(
+                H, pos, edge_color="gray", width=0.2, alpha=0.5, ax=ax
+            )
 
         nx.draw_networkx_nodes(
-            H, pos, node_size=node_sizes,
-            node_color=node_colors_mapped, alpha=0.7, ax=ax
+            H,
+            pos,
+            node_size=node_sizes,
+            node_color=node_colors_mapped,
+            alpha=0.7,
+            ax=ax,
         )
 
         ax.set_title(title, fontsize=14)
@@ -174,8 +191,7 @@ class GraphVisualizer:
         return fig, ax
 
     def _setup_interactivity(
-        self, fig, ax, H, pos, node_weights,
-        label_top_n, show_names
+        self, fig, ax, H, pos, node_weights, label_top_n, show_names
     ):
         """
         Scroll zoom + pan + dynamic label updates.
@@ -194,7 +210,8 @@ class GraphVisualizer:
 
             top_nodes = sorted(
                 [(n, node_weights[n]) for n in visible_nodes],
-                key=lambda x: x[1], reverse=True
+                key=lambda x: x[1],
+                reverse=True,
             )[:label_top_n]
 
             labels = {}
@@ -223,8 +240,7 @@ class GraphVisualizer:
             scale_factor = (
                 1 / base_scale
                 if event.button == "up"
-                else base_scale if event.button == "down"
-                else 1
+                else base_scale if event.button == "down" else 1
             )
 
             new_width = (cur_xlim[1] - cur_xlim[0]) * scale_factor
@@ -233,18 +249,18 @@ class GraphVisualizer:
             relx = (cur_xlim[1] - xdata) / (cur_xlim[1] - cur_xlim[0])
             rely = (cur_ylim[1] - ydata) / (cur_ylim[1] - cur_ylim[0])
 
-            ax.set_xlim([xdata - new_width * (1 - relx),
-                         xdata + new_width * relx])
-            ax.set_ylim([ydata - new_height * (1 - rely),
-                         ydata + new_height * rely])
+            ax.set_xlim([xdata - new_width * (1 - relx), xdata + new_width * relx])
+            ax.set_ylim([ydata - new_height * (1 - rely), ydata + new_height * rely])
 
             update_labels()
             fig.canvas.draw_idle()
 
         def pan(event):
             if (
-                event.button == 1 and event.inaxes == ax
-                and pan.prev_x is not None and pan.prev_y is not None
+                event.button == 1
+                and event.inaxes == ax
+                and pan.prev_x is not None
+                and pan.prev_y is not None
             ):
                 dx = -event.xdata + pan.prev_x
                 dy = -event.ydata + pan.prev_y
@@ -266,31 +282,33 @@ class GraphVisualizer:
         fig.canvas.mpl_connect("motion_notify_event", pan)
 
         update_labels()
-    
-    def _draw_centrality_graph(self, H, pos, node_sizes, centrality_measures, measure_name, figsize):
+
+    def _draw_centrality_graph(
+        self, H, pos, node_sizes, centrality_measures, measure_name, figsize
+    ):
         """
         Draw graph where node color is based on a centrality measure.
         """
         fig, ax = plt.subplots(figsize=figsize)
-        
+
         # 1. Prepare Node Coloring Data
         # Get the centrality values in the same order as the nodes in H
         node_values = [centrality_measures.get(node, 0) for node in H.nodes()]
-        
+
         # 2. Draw Edges (Same logic as interactive draw)
         nx.draw_networkx_edges(H, pos, edge_color="gray", width=0.2, alpha=0.5, ax=ax)
-        
+
         # 3. Draw Nodes: Color by centrality values
         nodes = nx.draw_networkx_nodes(
-            H, 
-            pos, 
+            H,
+            pos,
             node_size=node_sizes,
-            node_color=node_values, 
-            cmap=plt.cm.plasma, # Use plasma colormap for continuous data
-            alpha=0.7, 
-            ax=ax
+            node_color=node_values,
+            cmap=plt.cm.plasma,  # Use plasma colormap for continuous data
+            alpha=0.7,
+            ax=ax,
         )
-        
+
         # 4. Color Normalization and Color Bar Setup
         # Use SymLogNorm for better visibility of small centrality values
         nodes.set_norm(mcolors.SymLogNorm(linthresh=0.01, linscale=1, base=10))
@@ -315,7 +333,6 @@ class GraphVisualizer:
         cluster_colors=None,
         measure_name=None,
         centrality_measures=None,
-
     ):
         """
         Entry point: filter, layout, draw, interactivity.
@@ -333,12 +350,10 @@ class GraphVisualizer:
                 H, pos, node_sizes, centrality_measures, measure_name, figsize
             )
         else:
-            fig, ax = self._draw_graph(H, pos, node_sizes,
-                                   cluster_colors, figsize)
+            fig, ax = self._draw_graph(H, pos, node_sizes, cluster_colors, figsize)
 
         self._setup_interactivity(
-            fig, ax, H, pos, node_weights,
-            label_top_n, show_names
+            fig, ax, H, pos, node_weights, label_top_n, show_names
         )
 
         plt.show(block=True)
