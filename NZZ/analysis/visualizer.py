@@ -124,19 +124,38 @@ class GraphVisualizer:
     def _draw_graph(self, H, pos, node_sizes, cluster_colors, figsize):
         """
         Draw graph using NetworkX + Matplotlib.
+        Modified to include a cluster legend if cluster_colors is provided.
         """
         fig, ax = plt.subplots(figsize=figsize)
 
         if cluster_colors is not None:
+            # --- Cluster Color Mapping ---
             node_colors = [cluster_colors.get(node, 0) for node in H.nodes()]
             cmap = cm.get_cmap("tab20")
+            
+            # Map node colors to the colormap. We use modulo 20 to cycle through tab20 colors.
             node_colors_mapped = [cmap(c % 20) for c in node_colors]
             title = "Weighted Network Graph (Clustered)"
-        else:
-            node_colors_mapped = "skyblue"
-            title = "Weighted Network Graph"
 
-        if cluster_colors is not None:
+            # --- Legend Setup ---
+            unique_cluster_ids = sorted(list(set(cluster_colors.values())))
+            
+            # Use small scatter points as legend handles
+            legend_handles = []
+            legend_labels = []
+
+            # Only create legend entries for identified clusters (>= 0)
+            for cluster_id in unique_cluster_ids:
+                if cluster_id >= 0:
+                    color = cmap(cluster_id % 20)
+                    legend_handles.append(plt.Line2D([0], [0], marker='o', color='w', 
+                                                    markerfacecolor=color, markersize=7, 
+                                                    label=f'Cluster {cluster_id}'))
+                    legend_labels.append(f'Cluster {cluster_id}')
+    
+
+
+            # --- Edge Drawing (Clustered) ---
             intra_cluster_edges = []
             inter_cluster_edges = []
             for u, v in H.edges():
@@ -169,12 +188,26 @@ class GraphVisualizer:
                     alpha=0.6,
                     ax=ax,
                 )
+            
+            # Add the legend outside the plot area
+            if legend_handles:
+                # Place legend to the right of the axes
+                ax.legend(handles=legend_handles, labels=legend_labels, 
+                          title="Clusters", loc='upper left', bbox_to_anchor=(0.99, 1.00),
+                          frameon=False, fontsize=7)
+
 
         else:
+            # --- Default Color Mapping & Title ---
+            node_colors_mapped = "skyblue"
+            title = "Weighted Network Graph"
+            
+            # --- Edge Drawing (Unclustered) ---
             nx.draw_networkx_edges(
                 H, pos, edge_color="gray", width=0.2, alpha=0.5, ax=ax
             )
 
+        # --- Node Drawing ---
         nx.draw_networkx_nodes(
             H,
             pos,
@@ -184,8 +217,12 @@ class GraphVisualizer:
             ax=ax,
         )
 
+        # --- Final Plot Setup ---
         ax.set_title(title, fontsize=14)
         ax.axis("off")
+        
+        # Use fig.tight_layout() to ensure the title and the legend (outside the axes) 
+        # fit within the figure's bounds.
         plt.tight_layout()
 
         return fig, ax

@@ -5,37 +5,35 @@ import argparse
 import pandas as pd
 import networkx as nx
 import logging
-from collections import defaultdict
+from collections import defaultdict, Counter
 from dotenv import load_dotenv
+import math
 
+# Use the package structure for imports first, fall back for script execution
 try:
     from .visualizer import GraphVisualizer
     from .authors import AuthorsBuilder
     from .centralities import CentralityAnalysis
     from .article_graph_builder import ArticleGraphBuilder
-except ImportError:  # when executed as scripts without package context
+    from .multilayer_network import MultiLayerAuthorGraph
+except ImportError:
+    # when executed as scripts without package context (assuming local files)
     from visualizer import GraphVisualizer
     from authors import AuthorsBuilder
     from centralities import CentralityAnalysis
     from article_graph_builder import ArticleGraphBuilder
-from collections import Counter
-import math
-
-try:
-    from .multilayer_network import MultiLayerAuthorGraph
-except ImportError:
     from multilayer_network import MultiLayerAuthorGraph
 
-
+# Setup logging
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
-logger = logging.getLogger("articles")
+logger = logging.getLogger("ArticleAnalyser")
 
 
+# External library checks (Kept as is, they are crucial for functionality)
 try:
     import community.community_louvain as community_louvain
-
     HAS_COMMUNITY = True
 except ImportError:
     HAS_COMMUNITY = False
@@ -45,547 +43,26 @@ except ImportError:
 
 try:
     import igraph as ig
-
     HAS_IGRAPH = True
 except ImportError:
     HAS_IGRAPH = False
     # igraph is optional, only needed for Infomap and Leiden
 
-
-class ArticleAnalyser:
-    """Loads NZZ article data, builds a graph, and performs graph analysis."""
-
-    def __init__(self, G=nx.Graph()):
-        """Initialize ArticleGraphBuilder with Supabase PostgreSQL connection."""
-
-        self.df = None
-        self.G = G
-        self.components_sorted = None
-        self.clusters = None  # Store clustering results
-        self.cluster_counts = {}
-        self.cluster_author_map = {}
-
-        self.authors_to_category = {}
-        self.raw_data_categories = {}
-
-    def _normalize_authors(self, author_field):
-        """
-        Convert author field into a list of authors.
-        Handles your format:
-        '["Alain Zucker", "Martin Berz"]'
-        '["Alain Zucker"]'
-        """
-        if pd.isna(author_field):
-            return []
-
-        if isinstance(author_field, list):
-            # Already a list
-            return [a.strip() for a in author_field]
-
-        if isinstance(author_field, str):
-            try:
-                parsed = ast.literal_eval(author_field)
-                if isinstance(parsed, list):
-                    return [a.strip() for a in parsed]
-            except Exception:
-                pass
-
-        # fallback: single author
-        return [str(author_field).strip()]
-
-    # === 3. Analyze connected components ===
-    def analyze_components(self):
-        """Compute connected components sorted by size."""
-        components = list(nx.connected_components(self.G))
-        self.components_sorted = sorted(components, key=len, reverse=True)
-
-        print("Graph connected?", nx.is_connected(self.G))
-        print("Number of components:", len(self.components_sorted))
-
-        for i, comp in enumerate(self.components_sorted, 1):
-            # Safely print component info, handling Unicode characters
-            comp_size = len(comp)
-            # Show first few nodes as sample (with safe encoding)
-            sample_nodes = list(comp)[:5]
-            sample_str = ", ".join(
-                [
-                    str(node).encode("ascii", "replace").decode("ascii")
-                    for node in sample_nodes
-                ]
-            )
-            if comp_size > 5:
-                sample_str += f", ... ({comp_size - 5} more)"
-            print(f"Component {i} (size {comp_size}): {sample_str}")
-
-        return self.components_sorted
-
-    # === 4. Find node with highest degree ===
-    def highest_degree_node(self):
-        """Return node with the most edges."""
-        node, degree = max(self.G.degree, key=lambda x: x[1])
-        print(f"Highest-degree node: {node} (degree {degree})")
-        return node, degree
-
-    def degree_of_author(self, author_name: str):
-        if author_name not in self.G:
-            print(f"Author '{author_name}' not found in graph.")
-            return None
-
-        deg = self.G.degree[author_name]
-        print(f"Degree of '{author_name}': {deg}")
-        return deg
-
-    # === 5. Find the component containing a specific node ===
-    def component_of_node(self, node_id: str):
-        """Return component containing the given node."""
-        if self.components_sorted is None:
-            raise ValueError("Run analyze_components() first.")
-
-        for comp in self.components_sorted:
-            if node_id in comp:
-                print(f"Node {node_id} is in a component of size {len(comp)}")
-                return comp
-
-        print(f"Node {node_id} not found.")
-        return None
-
-    # === 6. Get nodes not in the largest component ===
-    def nodes_not_in_largest(self):
-        """Return all nodes not in the largest connected component."""
-        if self.components_sorted is None:
-            raise ValueError("Run analyze_components() first.")
-
-        largest = self.components_sorted[0]
-        all_nodes = set(self.G.nodes)
-
-        excluded = all_nodes - largest
-        print(f"Nodes not in largest component: {len(excluded)}")
-        return excluded
-
-    def save_graph_to_gexf(
-        self, filename="authors_graph.gexf", graph: nx.Graph | None = None
-    ):
-        """
-        Save a NetworkX graph to a GEXF file.
-
-        Parameters:
-        -----------
-        filename : str
-            The name of the output GEXF file.
-        """
-        target = graph if graph is not None else self.G
-        nx.write_gexf(target, filename)
-        print(f"Graph successfully saved to {filename}")
-
-    def get_largest_component_graph(self):
-        """Return a subgraph of the largest connected component."""
-
-        if self.components_sorted is None:
-            raise ValueError("Run analyze_components() first.")
-
-        largest_component = self.components_sorted[0]
-
-        G_largest = self.G.subgraph(largest_component).copy()
-
-        return G_largest
-
-    def compute_clusters(self, method="louvain"):
-        """Compute community clusters using specified algorithm.
-
-        Available methods:
-        - 'louvain': Louvain algorithm (modularity optimization)
-        - 'leiden': Leiden algorithm (improved Louvain, requires igraph)
-        - 'greedy_modularity': Greedy modularity communities (NetworkX)
-        - 'label_propagation': Label propagation algorithm (NetworkX)
-        - 'asyn_lpa': Asynchronous label propagation (NetworkX)
-
-        Args:
-            method (str): Clustering algorithm to use (default: 'louvain')
-
-        Returns:
-            dict: Mapping of node -> cluster_id
-        """
-        if len(self.G.nodes()) == 0:
-            print("Warning: Graph is empty. Cannot compute clusters.")
-            return {}
-
-        # Use the largest component for clustering if graph is disconnected
-        if not nx.is_connected(self.G):
-            print("Graph is disconnected. Computing clusters on largest component...")
-            G_cluster = self.get_largest_component_graph()
-        else:
-            G_cluster = self.G
-
-        print(f"\nComputing clusters using {method} algorithm...")
-
-        # Compute partition based on method
-        partition = {}
-
-        if method == "louvain":
-            if not HAS_COMMUNITY:
-                raise ImportError(
-                    "python-louvain is required for Louvain clustering. Install with: pip install python-louvain"
-                )
-            partition = community_louvain.best_partition(G_cluster, weight="weight",random_state=42)
-
-        elif method == "leiden":
-            if not HAS_IGRAPH:
-                print(
-                    "Warning: igraph not available. Falling back to Louvain algorithm."
-                )
-                if not HAS_COMMUNITY:
-                    raise ImportError(
-                        "Neither igraph nor python-louvain available. Install with: pip install python-igraph or pip install python-louvain"
-                    )
-                partition = community_louvain.best_partition(G_cluster, weight="weight", random_state=42)
-            else:
-                # Convert NetworkX graph to igraph
-                # Create mapping from node names to indices
-                node_list = list(G_cluster.nodes())
-                node_to_idx = {node: idx for idx, node in enumerate(node_list)}
-
-                # Create igraph graph
-                edges = [(node_to_idx[u], node_to_idx[v]) for u, v in G_cluster.edges()]
-                weights = [
-                    G_cluster[u][v].get("weight", 1) for u, v in G_cluster.edges()
-                ]
-                g_ig = ig.Graph(edges, edge_attrs={"weight": weights})
-
-                # Run Leiden algorithm
-                leiden_partition = g_ig.community_leiden(
-                    weights="weight", resolution_parameter=1.0
-                )
-
-                # Convert back to node->cluster_id mapping
-                for idx, cluster_id in enumerate(leiden_partition.membership):
-                    partition[node_list[idx]] = cluster_id
-
-        elif method == "greedy_modularity":
-            # NetworkX greedy modularity communities
-            communities = nx.community.greedy_modularity_communities(
-                G_cluster, weight="weight", random_state=42
-            )
-            for cluster_id, community in enumerate(communities):
-                for node in community:
-                    partition[node] = cluster_id
-
-        elif method == "label_propagation":
-            # NetworkX label propagation
-            communities = nx.community.label_propagation_communities(G_cluster)
-            for cluster_id, community in enumerate(communities):
-                for node in community:
-                    partition[node] = cluster_id
-
-        elif method == "asyn_lpa":
-            # NetworkX asynchronous label propagation
-            communities = nx.community.asyn_lpa_communities(G_cluster, weight="weight")
-            for cluster_id, community in enumerate(communities):
-                for node in community:
-                    partition[node] = cluster_id
-
-        else:
-            raise ValueError(
-                f"Unknown clustering method: {method}. Available methods: louvain, leiden, greedy_modularity, label_propagation, asyn_lpa"
-            )
-
-        # Extend partition to all nodes (nodes not in largest component get cluster -1)
-        self.clusters = {}
-        for node in self.G.nodes():
-            if node in partition:
-                self.clusters[node] = partition[node]
-            else:
-                self.clusters[node] = -1
-
-        # Print cluster statistics
-        # cluster_counts = {}
-        for cluster_id in self.clusters.values():
-            self.cluster_counts[cluster_id] = self.cluster_counts.get(cluster_id, 0) + 1
-
-        print(f"\nClustering Results ({method}):")
-        print(
-            f"Number of clusters: {len([c for c in self.cluster_counts.keys() if c >= 0])}"
-        )
-        print(
-            f"Nodes in largest component: {len([n for n, c in self.clusters.items() if c >= 0])}"
-        )
-
-        # Calculate modularity if possible
-        try:
-            if method in ["louvain", "leiden", "greedy_modularity"]:
-                # Create communities list for modularity calculation
-                communities_list = []
-                for cluster_id in set(self.clusters.values()):
-                    if cluster_id >= 0:
-                        community = [
-                            n for n, c in self.clusters.items() if c == cluster_id
-                        ]
-                        communities_list.append(community)
-
-                if communities_list:
-                    modularity = nx.community.modularity(
-                        G_cluster, communities_list, weight="weight"
-                    )
-                    print(f"Modularity: {modularity:.4f}")
-        except Exception as e:
-            print(f"Could not calculate modularity: {e}")
-
-        # Show top clusters by size
-        sorted_clusters = sorted(
-            [(cid, count) for cid, count in self.cluster_counts.items() if cid >= 0],
-            key=lambda x: x[1],
-            reverse=True,
-        )
-
-        sorted_clusters_10 = sorted_clusters[:10]
-        self._create_cluster_to_author_map(sorted_clusters=sorted_clusters)
-
-        print("\nTop 10 clusters by size:")
-        for i, (cluster_id, count) in enumerate(sorted_clusters_10, 1):
-            # Get sample nodes from this cluster
-            cluster_nodes = [n for n, c in self.clusters.items() if c == cluster_id]
-            sample_names = []
-            for node in cluster_nodes[:3]:
-                # In V1, nodes are author names directly
-                sample_names.append(str(node))
-            sample_str = ", ".join(
-                [
-                    str(n).encode("ascii", "replace").decode("ascii")
-                    for n in sample_names
-                ]
-            )
-            if count > 3:
-                sample_str += f", ... ({count - 3} more)"
-            print(f"  Cluster {cluster_id} (size {count}): {sample_str}")
-
-        return self.clusters, self.cluster_counts
-
-    def _create_cluster_to_author_map(self, sorted_clusters):
-        """
-        Creates a dictionary mapping each cluster ID to a list of author names belonging to that cluster. and sorted by cluster size.
-
-        Args:
-            sorted_clusters (list): A list of (cluster_id, count) tuples, typically sorted by count.
-
-        Returns:
-            dict: The self.cluster_author_map dictionary.
-        """
-
-        self.cluster_author_map = {}
-
-        # Iterate through the cluster IDs (ignoring the count)
-        for cluster_id, _ in sorted_clusters:
-
-            # Filter self.clusters to find all authors assigned to the current cluster_id
-            cluster_authors = [
-                author_name
-                for author_name, assigned_id in self.clusters.items()
-                if assigned_id == cluster_id
-            ]
-
-            # Ask why do we want to decode it to ascii with replacement?
-
-            # Sanitize author names: ensure they are strings and handle non-ASCII safely.
-            # sanitized_author_names = [
-            #     str(name).encode("ascii", "replace").decode("ascii")
-            #     for name in cluster_authors
-            # ]
-
-            sanitized_author_names = [str(name) for name in cluster_authors]
-
-            # Store the list of sanitized names under the cluster_id
-            self.cluster_author_map[cluster_id] = sanitized_author_names
-
-        # Sort the cluster_author_map by cluster size in descending order
-
-        self.cluster_author_map = dict(
-            sorted(
-                self.cluster_author_map.items(),
-                key=lambda item: len(item[1]),
-                reverse=True,
-            )
-        )
-
-        return self.cluster_author_map
-
-    def assign_clusters_to_dataframe(self, df_authors):
-        """
-        Assigns pre-computed cluster IDs to a DataFrame of authors and generates
-        a summary of the clustering results.
-
-        This method maps the 'self.clusters' dictionary (Author Name -> Cluster ID)
-        onto the input DataFrame using the 'name' column, handles unclustered
-        entries, and triggers reporting functions.
-        Args:
-            df_authors (pd.DataFrame): DataFrame containing an 'name' and 'resort' column.
-                                       This DF will be modified in place with a new 'cluster' column.
-
-        Returns:
-            dict: The original cluster dictionary (Author Name resort-> Cluster ID), self.clusters.
-
-        Raises:
-            ValueError: If 'self.clusters' (the clustering result) has not been computed yet.
-        """
-
-        print(df_authors.head())
-        if self.clusters is None:
-            raise ValueError("Run compute_clusters() first.")
-
-        # print(self.cluster_counts)
-
-        # 1. Assign Clusters: Map cluster IDs to the DataFrame
-        df_authors["cluster"] = df_authors["Author"].map(self.clusters)
-
-        # 2. Check Initial Cluster Count
-        total_clusters_with_unassigned = df_authors["cluster"].nunique(dropna=False)
-        print(
-            f"Total unique clusters (including unassigned) found: {total_clusters_with_unassigned}"
-        )
-
-        # 3. Handle Unclustered Authors
-        unclustered_df = df_authors[df_authors["cluster"].isna()]
-        unclustered_names = unclustered_df["Author"].to_list()
-
-        # External check/logging for authors that were not clustered
-        #self.check_unclustered_membership(unclustered_names=unclustered_names)
-
-        # 4. Finalize Clustered DataFrame
-        # Create a copy with only successfully clustered rows
-        df_clustered = df_authors.dropna(subset=["cluster"]).copy()
-
-        # Convert cluster IDs from float (due to potential NaN/dropna) to integer
-        # Note: 'cluster' column in df_authors remains float if NaN rows are present
-        df_clustered["cluster"] = df_clustered["cluster"].astype(int)
-
-        # 5. Final Cluster Metrics
-        final_num_clusters = df_clustered["cluster"].nunique()
-        print(f"Final number of unique clusters analyzed: {final_num_clusters}")
-
-        num_clustered_authors = df_clustered["Author"].nunique()
-        print(f"Number of clustered unique authors: {num_clustered_authors}")
-        print("\nClustered DataFrame Info:")
-        print(df_clustered.info())
-
-        # 6. Generate Summary and Reports
-        # 'a' contains cluster summary data (e.g., counts per cluster/resort)
-        cluster_summary_data = self.get_resort_counts_per_cluster(
-            df_clustered=df_clustered
-        )
-
-        # Print/Format the results using internal methods
-        self.format_cluster_summary(data=cluster_summary_data)
-        
-        #self.print_detailed_counts(data=cluster_summary_data)
-
-        # print(self.cluster_author_map)
-
-        return cluster_summary_data
-
-    def authors_to_category_mapping(self, G: nx.Graph, df: pd.DataFrame) -> dict:
-        """
-        Creates a mapping of authors to their categories based on the provided DataFrame.
-
-        Args:
-            G (nx.Graph): The graph containing author nodes.
-            df (pd.DataFrame): DataFrame containing 'name' and 'category' columns.
-
-        Returns:
-            dict: A dictionary mapping author names to their categories.
-        """
-        author_category_counts = defaultdict(lambda: defaultdict(int))
-
-        for _, row in df.iterrows():
-            author_name_list = self._normalize_authors(row["authors"])
-            category = row["category"]
-
-            for author_name in author_name_list:
-
-                if author_name in G.nodes:
-                    author_category_counts[author_name][category] += 1
-        
-        self.raw_data_categories = dict(author_category_counts)
-
-        return self.raw_data_categories
-
-    def create_author_section_table(self, sort_by: list = ['Author', 'Count'], ascending: list = [True, False]) -> pd.DataFrame:
-        """
-        Flattens the nested data, creates a DataFrame, sorts it, and returns the result.
-
-        Args:
-            sort_by (list): Columns to sort the DataFrame by.
-            ascending (list): Sort order for the corresponding columns.
-
-        Returns:
-            pd.DataFrame: A DataFrame with 'Author', 'Resort', and 'Count' columns.
-        """
-        records = []
-        for author, sections in self.raw_data_categories.items():
-            for section, count in sections.items():
-                # Replace None section with a string representation
-                section_name = 'Unspecified' if section is None else section
-                records.append({'Author': author, 'Resort': section_name, 'Count': count})
-
-        # Create the DataFrame
-        df = pd.DataFrame(records)
-
-        # Sort the DataFrame
-        df_sorted = df.sort_values(by=sort_by, ascending=ascending).reset_index(drop=True)
-
-        return df_sorted
-    
-    def highest_count_section_per_author(self, df: pd.DataFrame) -> pd.DataFrame:
-        """
-        Finds the section with the highest count for each author from a CSV formatted string.
-        """
-        
-        # Find the index of the row with the maximum 'Count' for each 'Author'
-        # This is done by grouping by 'Author' and then finding the index of the maximum value 
-        # in the 'Count' column for each group.
-        idx_max = df.groupby(['Author'])['Count'].idxmax()
-        
-        # Use the indices to select the corresponding rows from the original DataFrame
-        result_df = df.loc[idx_max].reset_index(drop=True)
-        
-        
-        # Sort by 'Author'
-        result_df = result_df.sort_values(by='Author').reset_index(drop=True)
-        
-        return result_df
-
-    def get_resort_counts_per_cluster(self, df_clustered: pd.DataFrame) -> list[dict]:
-        """
-        Calculates the frequency of each unique resort within each cluster and
-        returns the result as a list of dictionaries.
-        """
-
-        # 1. Group by 'cluster' and then by 'resort' and count the occurrences
-        # This results in a Series with a MultiIndex: (cluster, resort)
-        counts_series = (
-            df_clustered.groupby(["cluster", "Resort"], dropna=True)
-            .size()
-            .sort_values(ascending=False)
-        )
-
-        # 2. Convert the MultiIndex Series into a list of dictionaries
-        cluster_resort_counts = []
-
-        # Iterate through the unique cluster IDs
-        for cluster_id, group in counts_series.groupby(level=0):
-
-            # 'group' is a Series containing the counts for one cluster,
-            # indexed by the resort name.
-
-            # Convert the Series (index=resort, value=count) into a dictionary
-            resort_dict = group.droplevel(level=0).to_dict()
-
-            # Create the final dictionary entry for this cluster
-            cluster_entry = {"cluster_id": cluster_id, "resort_counts": resort_dict}
-
-            cluster_resort_counts.append(cluster_entry)
-
-        return cluster_resort_counts
-
-    def get_most_frequent_resort(self, counts):
-        """Finds the most common resort(s), excluding nan."""
+# ==============================================================================
+# 1. New Reporting/Data Manipulation Class
+# ==============================================================================
+
+class ArticleReporter:
+    """Handles the creation and formatting of analysis reports, 
+    especially for cluster and article section/category distribution."""
+
+    def __init__(self, clusters: dict = None):
+        """Initializes the reporter with clustering results."""
+        self.clusters = clusters
+        self.nan_key = float("nan")
+
+    def _get_most_frequent_section(self, counts: dict):
+        """Finds the most common section(s), excluding the NaN key."""
 
         # Filter out the nan key first
         valid_counts = {
@@ -603,83 +80,106 @@ class ArticleAnalyser:
         display_parts = []
         max_count = most_common[0][1]
 
-        for resort, count in most_common:
+        for section, count in most_common:
             if count == max_count:
-                display_parts.append(f"{resort} ({count})")
+                display_parts.append(f"{section} ({count})")
             else:
                 break
 
         return ", ".join(display_parts), max_count
 
-    def format_cluster_summary(self, data: list[dict]):
+    def get_section_counts_per_cluster(self, df_clustered: pd.DataFrame) -> list[dict]:
+        """
+        Calculates the frequency of each unique article section within each cluster and
+        returns the result as a list of dictionaries.
+        """
+        # Ensure 'cluster' column is present and valid
+        if 'cluster' not in df_clustered.columns:
+            logger.error("DataFrame must contain a 'cluster' column.")
+            return []
+        
+        # 1. Group by 'cluster' and then by 'Resort' (renamed to 'Section') and count the occurrences
+        # This results in a Series with a MultiIndex: (cluster, Section)
+        counts_series = (
+            df_clustered.groupby(["cluster", "Resort"], dropna=True)
+            .size()
+            .sort_values(ascending=False)
+        )
+
+        # 2. Convert the MultiIndex Series into a list of dictionaries
+        cluster_section_counts = []
+
+        # Iterate through the unique cluster IDs
+        for cluster_id, group in counts_series.groupby(level=0):
+
+            # 'group' is a Series containing the counts for one cluster,
+            # indexed by the section name.
+            
+            # Convert the Series (index=Section, value=count) into a dictionary
+            section_dict = group.droplevel(level=0).to_dict()
+
+            # Create the final dictionary entry for this cluster
+            cluster_entry = {"cluster_id": cluster_id, "section_counts": section_dict}
+
+            cluster_section_counts.append(cluster_entry)
+
+        return cluster_section_counts
+
+    def format_cluster_summary(self, cluster_section_data: list[dict]):
         """Calculates summary statistics and prints a markdown table."""
         summary_data = []
 
-        # Identify the correct key for NaN (the float NaN object)
-        nan_key = float("nan")
-
-        for entry in data:
+        for entry in cluster_section_data:
             cluster_id = entry["cluster_id"]
-            counts = entry["resort_counts"]
+            counts = entry["section_counts"]
 
             # Calculate Total Authors (Sum all counts)
             total_authors = sum(counts.values())
 
-            # Get count of authors with NO resort (NaN key)
-            no_resort_count = counts.get(nan_key, 0)
+            # Get count of authors with NO section (NaN key)
+            no_section_count = counts.get(self.nan_key, 0)
 
-            # Get most frequent defined resort
-            most_frequent, max_count = self.get_most_frequent_resort(counts)
-
-            resort_count_list = []
-
-            for resort, count in counts.items():
-                if isinstance(resort, float) and math.isnan(resort):
-                    resort_name = "NO RESORT (NaN)"
-                    continue
-                resort_name = resort
-                resort_count_list.append(f"{resort_name}: {count}")
-
-            all_resort_counts_str = "; ".join(resort_count_list)
+            # Get most frequent defined section
+            most_frequent, max_count = self._get_most_frequent_section(counts)
 
             summary_data.append(
                 {
                     "Cluster ID": cluster_id,
                     "Total Authors": total_authors,
-                    "Authors with No Resort (NaN)": no_resort_count,
-                    "Most Frequent Defined Resort (Count)": most_frequent,
-                    "Unique Defined Resorts": len(counts)
-                    - (1 if nan_key in counts else 0),
-                    #'All Defined Resorts (Count)': all_resort_counts_str
+                    "Authors with No Section (NaN)": no_section_count,
+                    "Most Frequent Defined Section (Count)": most_frequent,
+                    "Unique Defined Sections": len(counts)
+                    - (1 if self.nan_key in counts else 0),
                 }
             )
 
         df_summary = pd.DataFrame(summary_data)
 
+        print(df_summary.head())
+
         print(
-            "## 📊 Cluster Resort Distribution Summary (n={:,})".format(
+            "## 📊 Cluster Section Distribution Summary (n={:,})".format(
                 df_summary["Total Authors"].sum()
             )
         )
-        print(
-            "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
-        )
+        print("-" * 150)
         print(df_summary.to_markdown(index=False))
 
-    def print_detailed_counts(self, data: list[dict])-> pd.DataFrame:
-        """Prints the full, detailed breakdown of resort counts per cluster."""
+        return df_summary
 
-        print("\n## 📝 Detailed Resort Counts per Cluster")
-        print("--------------------------------------")
+    def print_detailed_counts(self, cluster_section_data: list[dict]) -> pd.DataFrame:
+        """Prints the full, detailed breakdown of section counts per cluster and returns the DataFrame."""
+
+        print("\n## 📝 Detailed Section Counts per Cluster")
+        print("-" * 50)
 
         detailed_data = []
-        nan_key = float("nan")
 
-        for entry in data:
+        for entry in cluster_section_data:
             cluster_id = entry["cluster_id"]
-            counts = entry["resort_counts"]
+            counts = entry["section_counts"]
 
-            # Sort resorts within the cluster by count (descending), keeping nan last
+            # Sort sections within the cluster by count (descending), keeping nan last
             sorted_counts = sorted(
                 counts.items(),
                 key=lambda item: (
@@ -688,28 +188,411 @@ class ArticleAnalyser:
                 ),
             )
 
-            for resort, count in sorted_counts:
+            for section, count in sorted_counts:
                 # Replace the float('nan') key with a readable string
-                resort_name = (
-                    "NO RESORT (NaN)"
-                    if (isinstance(resort, float) and math.isnan(resort))
-                    else resort
+                section_name = (
+                    "NO SECTION (NaN)"
+                    if (isinstance(section, float) and math.isnan(section))
+                    else section
                 )
 
                 detailed_data.append(
-                    {"Cluster ID": cluster_id, "Resort": resort_name, "Count": count}
+                    {"Cluster ID": cluster_id, "Section": section_name, "Count": count}
                 )
 
         df_detailed = pd.DataFrame(detailed_data)
-        # print(df_detailed["Count"].sum())
-        #print(df_detailed.to_markdown(index=False))
+        # print(df_detailed.to_markdown(index=False)) # Optional: Print to console
         return df_detailed
 
 
+# ==============================================================================
+# 2. Refactored ArticleAnalyser Class
+# ==============================================================================
+
+class ArticleAnalyser:
+    """Loads NZZ article data, builds a graph, and performs graph analysis."""
+
+    def __init__(self, G: nx.Graph = nx.Graph()):
+        """Initialize ArticleGraphBuilder with a NetworkX graph."""
+
+        self.df = None
+        self.G = G
+        self.components_sorted = None
+        self.clusters = None  # Mapping: Node -> Cluster ID
+        self.cluster_counts = {} # Mapping: Cluster ID -> Node Count
+        self.cluster_author_map = {} # Mapping: Cluster ID -> List[Author Names]
+
+        self.raw_data_categories = {} # Mapping: Author -> {Category: Count}
+        self.reporter = ArticleReporter() # Initialize the new reporter
+
+    def _normalize_authors(self, author_field):
+        """
+        Convert author field into a list of authors.
+        Handles your format: '["Alain Zucker", "Martin Berz"]'
+        """
+        if pd.isna(author_field):
+            return []
+
+        if isinstance(author_field, list):
+            return [a.strip() for a in author_field]
+
+        if isinstance(author_field, str):
+            try:
+                parsed = ast.literal_eval(author_field)
+                if isinstance(parsed, list):
+                    return [a.strip() for a in parsed]
+            except Exception:
+                pass
+
+        # fallback: single author
+        return [str(author_field).strip()]
+
+    # === 3. Analyze connected components ===
+    def analyze_components(self):
+        """Compute connected components sorted by size."""
+        if not self.G.nodes:
+            logger.warning("Graph is empty. Cannot analyze components.")
+            return []
+
+        components = list(nx.connected_components(self.G))
+        self.components_sorted = sorted(components, key=len, reverse=True)
+
+        print("Graph connected?", nx.is_connected(self.G))
+        print("Number of components:", len(self.components_sorted))
+
+        for i, comp in enumerate(self.components_sorted, 1):
+            comp_size = len(comp)
+            # Use safe string conversion for display
+            sample_nodes = [str(node) for node in list(comp)[:5]]
+            sample_str = ", ".join(sample_nodes)
+            if comp_size > 5:
+                sample_str += f", ... ({comp_size - 5} more)"
+            print(f"Component {i} (size {comp_size}): {sample_str}")
+
+        return self.components_sorted
+
+    # ... (highest_degree_node, degree_of_author, component_of_node, nodes_not_in_largest remain the same) ...
+    def highest_degree_node(self):
+        """Return node with the most edges."""
+        if not self.G.degree:
+            return None, 0
+        node, degree = max(self.G.degree, key=lambda x: x[1])
+        print(f"Highest-degree node: {node} (degree {degree})")
+        return node, degree
+
+    def degree_of_author(self, author_name: str):
+        if author_name not in self.G:
+            print(f"Author '{author_name}' not found in graph.")
+            return None
+        deg = self.G.degree[author_name]
+        print(f"Degree of '{author_name}': {deg}")
+        return deg
+
+    def component_of_node(self, node_id: str):
+        """Return component containing the given node."""
+        if self.components_sorted is None:
+            raise ValueError("Run analyze_components() first.")
+
+        for comp in self.components_sorted:
+            if node_id in comp:
+                print(f"Node {node_id} is in a component of size {len(comp)}")
+                return comp
+
+        print(f"Node {node_id} not found.")
+        return None
+
+    def nodes_not_in_largest(self):
+        """Return all nodes not in the largest connected component."""
+        if self.components_sorted is None:
+            raise ValueError("Run analyze_components() first.")
+
+        largest = self.components_sorted[0]
+        all_nodes = set(self.G.nodes)
+
+        excluded = all_nodes - largest
+        print(f"Nodes not in largest component: {len(excluded)}")
+        return excluded
+    # ... (End of minor analysis methods) ...
 
 
-# === Example Usage ===
+    def save_graph_to_gexf(
+        self, filename="authors_graph.gexf", graph: nx.Graph | None = None
+    ):
+        """Save a NetworkX graph to a GEXF file."""
+        target = graph if graph is not None else self.G
+        nx.write_gexf(target, filename)
+        print(f"Graph successfully saved to {filename}")
+
+    def get_largest_component_graph(self):
+        """Return a subgraph of the largest connected component."""
+        if self.components_sorted is None:
+            self.analyze_components() # Ensure components are computed
+        
+        if not self.components_sorted:
+            return nx.Graph()
+
+        largest_component = self.components_sorted[0]
+        G_largest = self.G.subgraph(largest_component).copy()
+        return G_largest
+
+    def compute_clusters(self, method="louvain"):
+        """Compute community clusters using specified algorithm.
+        
+        This method is cleaned up and only focuses on the graph algorithm.
+        """
+        if len(self.G.nodes()) == 0:
+            logger.warning("Graph is empty. Cannot compute clusters.")
+            return {}, {}
+
+        # Use the largest component for clustering if graph is disconnected
+        if not nx.is_connected(self.G):
+            print("Graph is disconnected. Computing clusters on largest component...")
+            G_cluster = self.get_largest_component_graph()
+        else:
+            G_cluster = self.G
+        
+        if len(G_cluster.nodes) < 2:
+            logger.warning("Largest component is too small for clustering.")
+            return {}, {}
+
+        print(f"\nComputing clusters using {method} algorithm...")
+
+        partition = {}
+
+        if method == "louvain":
+            if not HAS_COMMUNITY:
+                raise ImportError(
+                    "python-louvain is required for Louvain clustering. Install with: pip install python-louvain"
+                )
+            partition = community_louvain.best_partition(G_cluster, weight="weight", random_state=42)
+
+        elif method == "leiden":
+            if not HAS_IGRAPH:
+                print(
+                    "Warning: igraph not available. Falling back to Louvain algorithm."
+                )
+                if not HAS_COMMUNITY:
+                    raise ImportError(
+                        "Neither igraph nor python-louvain available. Install with: pip install python-igraph or pip install python-louvain"
+                    )
+                partition = community_louvain.best_partition(G_cluster, weight="weight", random_state=42)
+            else:
+                # Igrah conversion logic (kept as is, it's efficient)
+                node_list = list(G_cluster.nodes())
+                node_to_idx = {node: idx for idx, node in enumerate(node_list)}
+                edges = [(node_to_idx[u], node_to_idx[v]) for u, v in G_cluster.edges()]
+                weights = [
+                    G_cluster[u][v].get("weight", 1) for u, v in G_cluster.edges()
+                ]
+                g_ig = ig.Graph(edges, edge_attrs={"weight": weights})
+                leiden_partition = g_ig.community_leiden(
+                    weights="weight", resolution_parameter=1.0
+                )
+                for idx, cluster_id in enumerate(leiden_partition.membership):
+                    partition[node_list[idx]] = cluster_id
+
+        elif method == "greedy_modularity":
+            communities = nx.community.greedy_modularity_communities(
+                G_cluster, weight="weight", random_state=42
+            )
+            for cluster_id, community in enumerate(communities):
+                for node in community:
+                    partition[node] = cluster_id
+
+        elif method == "label_propagation":
+            communities = nx.community.label_propagation_communities(G_cluster)
+            for cluster_id, community in enumerate(communities):
+                for node in community:
+                    partition[node] = cluster_id
+
+        elif method == "asyn_lpa":
+            communities = nx.community.asyn_lpa_communities(G_cluster, weight="weight")
+            for cluster_id, community in enumerate(communities):
+                for node in community:
+                    partition[node] = cluster_id
+
+        else:
+            raise ValueError(
+                f"Unknown clustering method: {method}."
+            )
+
+        # Extend partition to all nodes (nodes not in largest component get cluster -1)
+        self.clusters = {}
+        self.cluster_counts = {}
+        for node in self.G.nodes():
+            cluster_id = partition.get(node, -1)
+            self.clusters[node] = cluster_id
+            self.cluster_counts[cluster_id] = self.cluster_counts.get(cluster_id, 0) + 1
+
+
+        # Print cluster statistics
+        print(f"\nClustering Results ({method}):")
+        # Filter for actual clusters (ID >= 0)
+        actual_clusters = {cid: count for cid, count in self.cluster_counts.items() if cid >= 0}
+
+        print(
+            f"Number of clusters: {len(actual_clusters)}"
+        )
+        print(
+            f"Nodes in largest component: {sum(actual_clusters.values())}"
+        )
+
+        # Calculate modularity if possible
+        try:
+            if method in ["louvain", "leiden", "greedy_modularity"]:
+                communities_list = [
+                    [n for n, c in self.clusters.items() if c == cid]
+                    for cid in actual_clusters.keys()
+                ]
+
+                if communities_list:
+                    # Note: Modularity should be calculated on the graph that was clustered (G_cluster)
+                    modularity = nx.community.modularity(
+                        G_cluster, communities_list, weight="weight"
+                    )
+                    print(f"Modularity: {modularity:.4f}")
+        except Exception as e:
+            logger.error(f"Could not calculate modularity: {e}")
+
+        # Show top clusters by size and build the map
+        sorted_clusters = sorted(
+            [(cid, count) for cid, count in actual_clusters.items()],
+            key=lambda x: x[1],
+            reverse=True,
+        )
+
+        self._build_cluster_author_map(sorted_clusters=sorted_clusters)
+
+        print("\nTop 10 clusters by size:")
+        for i, (cluster_id, count) in enumerate(sorted_clusters[:10], 1):
+            sample_names = [str(n) for n in self.cluster_author_map[cluster_id][:3]]
+            sample_str = ", ".join(sample_names)
+            if count > 3:
+                sample_str += f", ... ({count - 3} more)"
+            print(f"  Cluster {cluster_id} (size {count}): {sample_str}")
+
+        return self.clusters, self.cluster_counts
+
+    def _build_cluster_author_map(self, sorted_clusters: list):
+        """
+        Creates a dictionary mapping each cluster ID to a list of author names belonging to that cluster, 
+        using the provided sorted list to ensure the map is ordered by size.
+        (Renamed and simplified)
+        """
+        self.cluster_author_map = {}
+        
+        for cluster_id, _ in sorted_clusters:
+            # Filter self.clusters to find all authors assigned to the current cluster_id
+            cluster_authors = [
+                author_name
+                for author_name, assigned_id in self.clusters.items()
+                if assigned_id == cluster_id
+            ]
+
+            # Store the list of names (no unnecessary encoding/decoding)
+            self.cluster_author_map[cluster_id] = [str(name) for name in cluster_authors]
+
+        # Since sorted_clusters is already sorted by size, the dictionary iteration order 
+        # (in modern Python) will maintain this. No need for re-sorting here.
+        return self.cluster_author_map
+
+    def assign_clusters_to_dataframe(self, df_authors: pd.DataFrame):
+        """
+        Assigns pre-computed cluster IDs to a DataFrame of authors and delegates 
+        the reporting to ArticleReporter. (Refactored to use ArticleReporter)
+        """
+        if self.clusters is None:
+            raise ValueError("Run compute_clusters() first.")
+        
+        self.reporter.clusters = self.clusters # Pass clusters to the reporter
+
+        # 1. Assign Clusters: Map cluster IDs to the DataFrame
+        # Assumes df_authors has an 'Author' column
+        df_authors["cluster"] = df_authors["Author"].map(self.clusters)
+
+        # 2. Check Initial Cluster Count
+        total_clusters_with_unassigned = df_authors["cluster"].nunique(dropna=False)
+        print(
+            f"Total unique clusters (including unassigned) found: {total_clusters_with_unassigned}"
+        )
+
+        # 3. Finalize Clustered DataFrame
+        df_clustered = df_authors.dropna(subset=["cluster"]).copy()
+        df_clustered["cluster"] = df_clustered["cluster"].astype(int)
+
+        # 4. Final Cluster Metrics
+        final_num_clusters = df_clustered["cluster"].nunique()
+        print(f"Final number of unique clusters analyzed: {final_num_clusters}")
+
+        num_clustered_authors = df_clustered["Author"].nunique()
+        print(f"Number of clustered unique authors: {num_clustered_authors}")
+        
+        logger.info(f"Clustered DataFrame Info:\n{df_clustered.info()}")
+
+        # 5. Generate Summary and Reports (Delegated to Reporter)
+        cluster_section_data = self.reporter.get_section_counts_per_cluster(
+            df_clustered=df_clustered
+        )
+
+        self.reporter.format_cluster_summary(cluster_section_data)
+        
+        return cluster_section_data
+
+    # === Data Preparation Methods (Renamed 'resort' to 'category/section') ===
+    
+    def authors_to_category_mapping(self, G: nx.Graph, df: pd.DataFrame) -> dict:
+        """
+        Creates a mapping of authors to their article sections/categories based on the provided DataFrame.
+        """
+        author_category_counts = defaultdict(lambda: defaultdict(int))
+
+        for _, row in df.iterrows():
+            author_name_list = self._normalize_authors(row["authors"])
+            category = row["category"]
+
+            for author_name in author_name_list:
+
+                if author_name in G.nodes:
+                    author_category_counts[author_name][category] += 1
+        
+        self.raw_data_categories = dict(author_category_counts)
+        return self.raw_data_categories
+
+    def create_author_section_table(self, sort_by: list = ['Author', 'Count'], ascending: list = [True, False]) -> pd.DataFrame:
+        """
+        Flattens the nested data, creates a DataFrame, sorts it, and returns the result.
+        (Renamed 'Resort' to 'Section' in the logic, but the DF column name 'Resort' is maintained 
+         to match the input expectation of `assign_clusters_to_dataframe` from `df_table`).
+        """
+        records = []
+        for author, sections in self.raw_data_categories.items():
+            for section, count in sections.items():
+                section_name = 'Unspecified' if section is None else section
+                # Note: Keeping 'Resort' as column name here to match original usage pattern with assign_clusters_to_dataframe
+                records.append({'Author': author, 'Resort': section_name, 'Count': count}) 
+
+        df = pd.DataFrame(records)
+        df_sorted = df.sort_values(by=sort_by, ascending=ascending).reset_index(drop=True)
+        return df_sorted
+    
+    def highest_count_section_per_author(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Finds the section with the highest count for each author.
+        """
+        if df.empty:
+            return pd.DataFrame()
+            
+        # Find the index of the row with the maximum 'Count' for each 'Author'
+        idx_max = df.groupby(['Author'])['Count'].idxmax()
+        
+        # Select the corresponding rows and sort by 'Author'
+        result_df = df.loc[idx_max].sort_values(by='Author').reset_index(drop=True)
+        
+        return result_df
+
+
 if __name__ == "__main__":
+    # --- The main block remains but is updated to use the new structure ---
     parser = argparse.ArgumentParser(
         description="Build and analyze article-author networks from NZZ database",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -752,7 +635,6 @@ Examples:
   python analyser.py --author "Eric Gujer"
         """,
     )
-
     parser.add_argument(
         "--limit",
         type=int,
@@ -840,6 +722,7 @@ Examples:
 
     args = parser.parse_args()
 
+    # Assuming these classes exist as per imports
     visualizer = GraphVisualizer()
     authors = AuthorsBuilder()
 
@@ -862,18 +745,20 @@ Examples:
         builder = ArticleAnalyser(G=combined_graph)
         builder.df = data_builder.df
         df_table = pd.DataFrame()
+
         if args.analyze:
             builder.analyze_components()
             builder.highest_degree_node()
+            
+            # Use largest component for category mapping
+            G_largest = builder.get_largest_component_graph() 
             builder.authors_to_category_mapping(
-                    G=builder.get_largest_component_graph(), df=builder.df)
+                    G=G_largest, df=builder.df)
+            
             df_table = builder.create_author_section_table()
-            print("## 📊 Author Article Counts by Section")
-            print(df_table.to_markdown(index=False))
+            #print("## 📊 Author Article Counts by Section")
+            #print(df_table.to_markdown(index=False))
             df_table.to_csv('author_section_counts.csv', index=False)
-
-
-
 
             if args.author:
                 builder.component_of_node(args.author)
@@ -884,76 +769,97 @@ Examples:
         # Compute clusters if requested
         cluster_colors = None
         if args.cluster is not None:
-            cluster_method = (
-                args.cluster
-            )  # args.cluster contains the method name directly
+            cluster_method = args.cluster
             try:
                 builder.compute_clusters(method=cluster_method)
-                cluster_summary = builder.assign_clusters_to_dataframe(
-                    df_authors=df_table)
-                builder.print_detailed_counts(data=cluster_summary).to_csv('detailed_cluster_resort_counts.csv', index=False)
                 
-                
-                df_filtered = builder.highest_count_section_per_author(df=df_table)
+                cluster_summary_data = builder.assign_clusters_to_dataframe(df_authors=df_table.copy())
+                builder.reporter.print_detailed_counts(cluster_section_data=cluster_summary_data).to_csv('detailed_cluster_resort_counts.csv', index=False)
 
-                cluster_summary=builder.assign_clusters_to_dataframe(
-                    df_authors=df_filtered)
-                
-                builder.print_detailed_counts(data=cluster_summary).to_csv('filtered_cluster_resort_counts.csv', index=False)
+                # Filter to highest count section per author for summary
+                df_filtered = builder.highest_count_section_per_author(df=df_table.copy())
+                cluster_summary_data_filtered = builder.assign_clusters_to_dataframe(df_authors=df_filtered)
+                builder.reporter.print_detailed_counts(cluster_section_data=cluster_summary_data_filtered).to_csv('filtered_cluster_resort_counts.csv', index=False)
 
-
-                
-                # print(builder.clusters)
+                # Use the clusters for visualization
                 cluster_colors = builder.clusters
             except ImportError as e:
                 print(f"Warning: {e}")
                 print("Skipping clustering.")
             except Exception as e:
                 print(f"Error during clustering: {e}")
+                import traceback
+                traceback.print_exc()
                 print("Skipping clustering.")
 
         if args.save:
             builder.save_graph_to_gexf(filename=args.save)
 
         if args.visualize:
-            visualizer.visualize_existing_graph_interactive(
-                builder.get_largest_component_graph(),
-                show_names=True,
-                cluster_colors=cluster_colors,
-            )
-        if args.centrality is not None:
+            # Visualize the largest component by default
+            G_visualize = builder.get_largest_component_graph()
+            if G_visualize.nodes:
+                visualizer.visualize_existing_graph_interactive(
+                    G_visualize,
+                    show_names=True,
+                    cluster_colors=cluster_colors,
+                )
 
+        # Centrality Analysis
+        if args.centrality is not None:
             centrality_method = args.centrality
             print(f"\nPerforming centrality analysis using method: {centrality_method}")
             subgraphs = []
+            
+            # Logic to determine which subgraph(s) to analyze (based on --graph argument)
             if args.graph is not None:
                 if args.graph == "full_graph" or args.cluster is None:
-                    G_centrality = builder.get_largest_component_graph()
-                    subgraphs.append(G_centrality)
+                    # Analyze the Largest Component
+                    subgraphs.append(builder.get_largest_component_graph())
+                    graph_names = ["Largest Component"]
+                elif builder.clusters is None:
+                    print("Clustering required for '--graph largest_cluster' or integer N.")
+                    sys.exit(1)
                 elif args.graph == "largest_cluster":
-                    # G_centrality will be the subgraph of the authors in the largest cluster (list(values())[0])
-                    G_centrality = builder.G.subgraph(
-                        list(builder.cluster_author_map.values())[0]
-                    ).copy()
+                    # Analyze the Largest Cluster
+                    if not builder.cluster_author_map: 
+                         print("Cluster map is empty. Cannot analyze largest cluster.")
+                         sys.exit(1)
+                    largest_cluster_nodes = list(builder.cluster_author_map.values())[0]
+                    G_centrality = builder.G.subgraph(largest_cluster_nodes).copy()
                     subgraphs.append(G_centrality)
+                    graph_names = ["Largest Cluster"]
                 else:
                     try:
+                        # Analyze top N clusters
                         n_clusters = int(args.graph)
                         if n_clusters <= 0:
                             raise ValueError
-                        # Get top N clusters
-                        for graph in list(builder.cluster_author_map.values())[
-                            :n_clusters
-                        ]:
-                            G_centrality = builder.G.subgraph(graph).copy()
+                        
+                        cluster_list = list(builder.cluster_author_map.items())
+                        graph_names = []
+                        for cluster_id, nodes in cluster_list[:n_clusters]:
+                            G_centrality = builder.G.subgraph(nodes).copy()
                             subgraphs.append(G_centrality)
+                            graph_names.append(f"Cluster {cluster_id}")
+                            
                     except ValueError:
                         print(
                             f"Invalid value for --graph: {args.graph}. Must be 'full_graph', 'largest_cluster', or a positive integer."
                         )
                         sys.exit(1)
-            for G_centrality in subgraphs:
+            
+            
+            # Perform Centrality Calculation and Visualization
+            for G_centrality, name in zip(subgraphs, graph_names):
+                
+                if not G_centrality.nodes:
+                    print(f"Skipping centrality for '{name}': Graph is empty.")
+                    continue
+
                 centalities = CentralityAnalysis(G_centrality)
+                print(f"\n--- Centrality for {name} ---")
+                
                 try:
                     if centrality_method == "degree":
                         centalities.compute_degree_centrality()
@@ -969,11 +875,11 @@ Examples:
                         )
                         continue
                 except Exception as e:
-                    print(f"Error during centrality computation: {e}")
-                    print("Skipping centrality computation.")
+                    logger.error(f"Error during centrality computation for {name}: {e}")
+                    continue
 
                 for measure_name, measures in centalities.centrality_measures.items():
-                    print(f"\nTop 10 nodes by {measure_name} centrality:")
+                    print(f"\nTop 10 nodes by {measure_name} centrality in {name}:")
                     sorted_measures = sorted(
                         measures.items(), key=lambda x: x[1], reverse=True
                     )[:10]
