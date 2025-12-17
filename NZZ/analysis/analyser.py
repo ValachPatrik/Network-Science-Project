@@ -191,13 +191,13 @@ class ArticleReporter:
             for section, count in sorted_counts:
                 # Replace the float('nan') key with a readable string
                 section_name = (
-                    "NO SECTION (NaN)"
+                    "NO RESORT (NaN)"
                     if (isinstance(section, float) and math.isnan(section))
                     else section
                 )
 
                 detailed_data.append(
-                    {"Cluster ID": cluster_id, "Section": section_name, "Count": count}
+                    {"Cluster ID": cluster_id, "Resort": section_name, "Count": count}
                 )
 
         df_detailed = pd.DataFrame(detailed_data)
