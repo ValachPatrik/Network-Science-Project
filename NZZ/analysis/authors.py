@@ -24,8 +24,7 @@ load_dotenv()
 
 
 class AuthorsBuilder:
-    """Loads NZZ authors data, maps the authors to their resort
-    """
+    """Loads NZZ authors data, maps the authors to their resort"""
 
     def __init__(self):
         """Initialize ArticleGraphBuilder with Supabase PostgreSQL connection."""
@@ -94,7 +93,7 @@ class AuthorsBuilder:
             return engine
         except Exception as e:
             raise ConnectionError(f"Failed to create database engine: {e}")
-    
+
     def load_data(self, limit=None, chunk_size=10000):
         """Load articles from Supabase PostgreSQL into a DataFrame.
 
@@ -169,7 +168,7 @@ class AuthorsBuilder:
                     "Consider using load_data(limit=N) to load a subset of data first."
                 )
             raise ConnectionError(f"Failed to load data from database: {e}")
-        
+
 
 if __name__ == "__main__":
     builder = AuthorsBuilder()

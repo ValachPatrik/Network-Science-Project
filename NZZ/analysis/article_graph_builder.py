@@ -17,16 +17,21 @@ except ImportError:
 # Conditional imports based on your new code's requirements
 try:
     from sqlalchemy import create_engine
+
     HAS_SQLALCHEMY = True
 except ImportError:
     HAS_SQLALCHEMY = False
 
 
 logger = logging.getLogger("author_network")
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
+
 class ArticleGraphBuilder:
     """
-    Loads NZZ article data from Supabase, builds multilayer author graphs, 
+    Loads NZZ article data from Supabase, builds multilayer author graphs,
     and performs initial graph analysis.
     """
 
@@ -42,7 +47,7 @@ class ArticleGraphBuilder:
         self.G: nx.Graph = nx.Graph()  # Combined graph
         self.author_map: Optional[Dict[str, List[str]]] = None
         self.all_authors: Optional[List[str]] = None
-        
+
         # Analysis results storage (from new code)
         self.components_sorted = None
         self.clusters = None
@@ -59,7 +64,9 @@ class ArticleGraphBuilder:
 
         # Validate connection parameters
         if not all([self.user, self.password, self.host, self.dbname]):
-            missing = [k for k in ["user", "password", "host", "dbname"] if not os.getenv(k)]
+            missing = [
+                k for k in ["user", "password", "host", "dbname"] if not os.getenv(k)
+            ]
             raise ValueError(
                 f"Missing required database connection parameters: {', '.join(missing)}\n"
                 "Set the following in your .env file..."
@@ -67,7 +74,6 @@ class ArticleGraphBuilder:
 
         # Create SQLAlchemy engine
         self.engine = self._create_engine()
-
 
     def _create_engine(self):
         """Create SQLAlchemy engine for PostgreSQL (Supabase) connection."""
@@ -90,7 +96,9 @@ class ArticleGraphBuilder:
             raise ConnectionError(f"Failed to create database engine: {e}")
 
     # === 1. Load data ===
-    def load_data(self, limit: Optional[int] = None, chunk_size: int = 10000) -> pd.DataFrame:
+    def load_data(
+        self, limit: Optional[int] = None, chunk_size: int = 10000
+    ) -> pd.DataFrame:
         """Load articles from Supabase PostgreSQL into a DataFrame."""
         try:
             # First, try to get total count
@@ -154,7 +162,7 @@ class ArticleGraphBuilder:
         """
         if pd.isna(author_field):
             return []
-        
+
         if isinstance(author_field, list):
             return [str(a).strip() for a in author_field if str(a).strip()]
 
@@ -169,9 +177,8 @@ class ArticleGraphBuilder:
 
             # Fallback for a single string author
             return [author_field.strip()]
-        
+
         return [str(author_field).strip()] if str(author_field).strip() else []
-    
 
     def _parse_related_articles(self, value: object) -> List[str]:
         """Parse the related_articles field into a Python list."""
@@ -188,38 +195,37 @@ class ArticleGraphBuilder:
                 logger.debug("Could not parse related_articles entry: %s", value)
         return []
 
-
     def build_author_map(self) -> Dict[str, List[str]]:
         """
-        Builds a mapping of article_id -> normalized list of authors 
+        Builds a mapping of article_id -> normalized list of authors
         and identifies all unique authors.
         """
         if self.df is None:
             raise RuntimeError("DataFrame is not loaded. Call load_data() first.")
-            
+
         print("Building author map...")
-        
+
         author_map: Dict[str, List[str]] = {}
         all_authors_set: set[str] = set()
 
         for row in self.df.itertuples(index=False):
-            authors = self._normalize_authors(getattr(row, 'authors', None))
-            
-            article_id = getattr(row, 'article_id', None)
+            authors = self._normalize_authors(getattr(row, "authors", None))
+
+            article_id = getattr(row, "article_id", None)
             if article_id is not None:
                 str_article_id = str(article_id)
                 author_map[str_article_id] = authors
                 all_authors_set.update(authors)
-                
+
                 # Also store category membership for later node attributes
-                category = getattr(row, 'category', 'Unknown')
+                category = getattr(row, "category", "Unknown")
                 for author in authors:
                     # Simple assignment; complex logic (e.g., majority category) would go here
-                    self.authors_to_category[author] = category 
+                    self.authors_to_category[author] = category
 
         self.author_map = author_map
         self.all_authors = sorted(list(all_authors_set))
-        
+
         print(f"Total unique authors identified: {len(self.all_authors)}")
         return self.author_map
 
@@ -232,12 +238,12 @@ class ArticleGraphBuilder:
 
         G = nx.Graph(layer="coauthor")
         G.add_nodes_from(self.all_authors)
-        
+
         for authors in self.author_map.values():
             unique_authors = sorted(set(a for a in authors if a))
             if len(unique_authors) < 2:
                 continue
-            
+
             for a1, a2 in itertools.combinations(unique_authors, 2):
                 if G.has_edge(a1, a2):
                     G[a1][a2]["weight"] += 1
@@ -262,11 +268,13 @@ class ArticleGraphBuilder:
         # Determine the column for related articles (relies on load_data COALESCE)
         related_column = "related_articles_filtered"
         if related_column not in self.df.columns:
-            print("Warning: Column 'related_articles_filtered' not found after load. Returning empty layer.")
+            print(
+                "Warning: Column 'related_articles_filtered' not found after load. Returning empty layer."
+            )
             return G
 
         for row in self.df.itertuples(index=False):
-            source_id = str(getattr(row, 'article_id', None))
+            source_id = str(getattr(row, "article_id", None))
             source_authors = self.author_map.get(source_id, [])
             if not source_authors:
                 continue
@@ -275,21 +283,21 @@ class ArticleGraphBuilder:
             related_list = self._parse_related_articles(related_field)
             if not related_list:
                 continue
-            
+
             for target_id in related_list:
                 target_authors = self.author_map.get(target_id, [])
                 if not target_authors:
                     continue
-                
+
                 # Edges between every source author and every target author
                 for a1 in source_authors:
                     for a2 in target_authors:
                         if a1 == a2:
-                            continue 
-                        
+                            continue
+
                         # Accumulate edge weight
                         u, v = (a1, a2) if a1 < a2 else (a2, a1)
-                        
+
                         if G.has_edge(u, v):
                             G[u][v]["weight"] += 1
                         else:
@@ -302,13 +310,13 @@ class ArticleGraphBuilder:
 
     def summarize_graph(self, name: str, G: nx.Graph) -> None:
         """Print quick stats about a graph/layer."""
-        
+
         num_nodes = G.number_of_nodes()
         num_edges = G.number_of_edges()
-        
+
         if num_nodes == 0:
-             print(f"{name} → nodes: 0 | edges: 0")
-             return
+            print(f"{name} → nodes: 0 | edges: 0")
+            return
 
         # Ensure all nodes are added to the graph before checking components
         if self.all_authors:
@@ -317,7 +325,7 @@ class ArticleGraphBuilder:
         # Components are only calculated for the largest graphs
         components = list(nx.connected_components(G))
         largest_component = max((len(c) for c in components), default=0)
-        
+
         density = nx.density(G) if num_nodes > 1 else 0.0
         isolated_nodes = len(list(nx.isolates(G)))
 
@@ -325,12 +333,12 @@ class ArticleGraphBuilder:
         print(
             f"{name} → nodes: {num_nodes} | edges: {num_edges} | largest component: {largest_component} | density: {density:.4f} | isolates: {isolated_nodes}"
         )
-    
+
     def build_base_graph(self, limit: Optional[int]) -> Tuple[nx.Graph, Dict[str, int]]:
         """
         Builds the base, unweighted, combined graph and its degree profile.
-        
-        The process involves: Loading data -> Building author map -> Building layers 
+
+        The process involves: Loading data -> Building author map -> Building layers
         -> Combining layers (sum) -> Removing weights for a 'base' unweighted graph.
         """
         # 1. Load Data
@@ -338,13 +346,13 @@ class ArticleGraphBuilder:
 
         # 2. Build Author Map (and self.all_authors)
         self.build_author_map()
-        
+
         # 3. Build Layers (via the internal pipeline method)
         # We use a placeholder for MultiLayerAuthorGraph for execution logic
         layers, combined_weighted = self.build_empirical_multilayer(
-            limit=None, # Already filtered by self.load_data(limit)
-            combine_mode="sum", 
-            run_load_data=False # Already loaded
+            limit=None,  # Already filtered by self.load_data(limit)
+            combine_mode="sum",
+            run_load_data=False,  # Already loaded
         )
 
         # 4. Summarize (already done inside build_empirical_multilayer)
@@ -356,23 +364,26 @@ class ArticleGraphBuilder:
         base_graph = nx.Graph()
         base_graph.add_nodes_from(combined_weighted.nodes())
         # Adding edges without weights (by not passing data=True)
-        base_graph.add_edges_from(combined_weighted.edges()) 
+        base_graph.add_edges_from(combined_weighted.edges())
 
         degree_profile = dict(base_graph.degree())
-        
+
         # logger.info (using print as placeholder)
-        avg_degree = (sum(degree_profile.values()) / max(len(degree_profile), 1)) if degree_profile else 0.0
+        avg_degree = (
+            (sum(degree_profile.values()) / max(len(degree_profile), 1))
+            if degree_profile
+            else 0.0
+        )
         print(
             f"Base graph contains {base_graph.number_of_nodes()} authors and {base_graph.number_of_edges()} edges. Avg degree {avg_degree:.2f}"
         )
         return base_graph, degree_profile
 
-
     def build_empirical_multilayer(
-        self, 
-        limit: Optional[int], 
-        combine_mode: str = "sum", 
-        run_load_data: bool = True
+        self,
+        limit: Optional[int],
+        combine_mode: str = "sum",
+        run_load_data: bool = True,
     ) -> Tuple[Dict[str, nx.Graph], nx.Graph]:
         """
         Build and return the empirical multilayer author graphs.
@@ -389,18 +400,19 @@ class ArticleGraphBuilder:
         # Ensure MultiLayerAuthorGraph is available.
         # Placeholder/Assumption: MultiLayerAuthorGraph is imported or accessible.
         try:
-             MultiLayerAuthorGraph
+            MultiLayerAuthorGraph
         except NameError:
-             raise NameError("MultiLayerAuthorGraph class must be defined/imported to use this method.")
-
+            raise NameError(
+                "MultiLayerAuthorGraph class must be defined/imported to use this method."
+            )
 
         # 1. Load data and build author map if not already done
         if run_load_data or self.df is None:
             self.load_data(limit=limit)
-        
+
         if self.author_map is None:
             self.build_author_map()
-        
+
         # Since the class methods already work on self.df, we don't need to copy df or pass author_map/all_authors
         # The original functions needed df.copy() because they were *external*.
 

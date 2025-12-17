@@ -1,4 +1,5 @@
 """Test script for author normalizer."""
+
 from author_normalizer import AuthorNormalizer
 
 normalizer = AuthorNormalizer()
@@ -27,7 +28,7 @@ for test in test_cases:
     print(f"\nInput: '{test}'")
     print("-" * 80)
     authors = normalizer.parse_author_string(test)
-    
+
     if not authors:
         print("  -> No authors parsed")
     else:
@@ -47,4 +48,3 @@ for test in test_cases:
 print("\n" + "=" * 80)
 print("Test Complete")
 print("=" * 80)
-

@@ -25,7 +25,9 @@ except ImportError:  # script-style execution
 
 
 logger = logging.getLogger("author_network")
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 
 def degree_preserving_random_layer(
@@ -73,7 +75,9 @@ def compute_activity(layers: Dict[str, nx.Graph]) -> Dict[str, int]:
     return activity
 
 
-def print_activity_table(activity_scores: Dict[str, int], top_k: int, layer_count: int) -> tuple[float | None, float | None]:
+def print_activity_table(
+    activity_scores: Dict[str, int], top_k: int, layer_count: int
+) -> tuple[float | None, float | None]:
     if not activity_scores:
         logger.warning("No authors found while ranking activity.")
         return None, None
@@ -83,7 +87,9 @@ def print_activity_table(activity_scores: Dict[str, int], top_k: int, layer_coun
         key=lambda item: (-item[1], item[0]),
     )[:top_k]
 
-    header = f"{'Rank':>4}  {'Author':<40} {'Activity (Σ degrees)':>22}  {'Per Layer':>10}"
+    header = (
+        f"{'Rank':>4}  {'Author':<40} {'Activity (Σ degrees)':>22}  {'Per Layer':>10}"
+    )
     print("\n=== Activity Ranking (degree-based) ===")
     print(header)
     print("-" * len(header))
@@ -104,7 +110,9 @@ def print_activity_table(activity_scores: Dict[str, int], top_k: int, layer_coun
     return top_per_layer, avg_activity
 
 
-def maybe_export_layers(layers: Dict[str, nx.Graph], combined: nx.Graph | None, prefix: str) -> None:
+def maybe_export_layers(
+    layers: Dict[str, nx.Graph], combined: nx.Graph | None, prefix: str
+) -> None:
     for name, layer in layers.items():
         path = f"{prefix}_{name}.gexf"
         nx.write_gexf(layer, path)
@@ -113,9 +121,6 @@ def maybe_export_layers(layers: Dict[str, nx.Graph], combined: nx.Graph | None, 
         path = f"{prefix}_combined.gexf"
         nx.write_gexf(combined, path)
         logger.info("Saved %s", path)
-
-
-
 
 
 def run_random_baseline(
@@ -138,7 +143,11 @@ def run_random_baseline(
         logger.error("No authors available. Nothing to randomise.")
         return None
 
-    layer_names = ["random_layer_authors", "random_layer_citations", "random_layer_activity"]
+    layer_names = [
+        "random_layer_authors",
+        "random_layer_citations",
+        "random_layer_activity",
+    ]
     random_layers: Dict[str, nx.Graph] = {}
     for offset, name in enumerate(layer_names):
         layer_seed = seed + offset * 101
@@ -158,7 +167,9 @@ def run_random_baseline(
     summarize_graph("combined (random baseline)", combined_view)
 
     activity_scores = compute_activity(random_layers)
-    top_act, avg_act = print_activity_table(activity_scores, top_k, layer_count=len(layer_names))
+    top_act, avg_act = print_activity_table(
+        activity_scores, top_k, layer_count=len(layer_names)
+    )
 
     if export_prefix:
         maybe_export_layers(random_layers, combined_view, export_prefix)
@@ -181,7 +192,12 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Build a multilayer author network combining co-authorship and related-article edges.",
     )
-    parser.add_argument("--limit", type=int, default=None, help="Limit number of articles fetched from Supabase.")
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Limit number of articles fetched from Supabase.",
+    )
     parser.add_argument(
         "--layers",
         nargs="+",
@@ -297,7 +313,10 @@ def main() -> None:
         else:
             graph_to_visualize = multilayer.layers.get(args.visualize_target)
         if graph_to_visualize is None:
-            logger.error("Cannot visualize '%s' because that layer was not constructed.", args.visualize_target)
+            logger.error(
+                "Cannot visualize '%s' because that layer was not constructed.",
+                args.visualize_target,
+            )
         else:
             visualizer.visualize_existing_graph_interactive(
                 graph_to_visualize,

@@ -24,12 +24,20 @@ def largest_component_subgraph(G: nx.Graph) -> nx.Graph:
     return G.subgraph(largest).copy()
 
 
-def compute_assortativity_for_graph(name: str, G: nx.Graph) -> dict[str, float | int | None]:
+def compute_assortativity_for_graph(
+    name: str, G: nx.Graph
+) -> dict[str, float | int | None]:
     """Compute and log degree assortativity for a graph if it is non-trivial."""
     n, m = G.number_of_nodes(), G.number_of_edges()
     if n < 2 or m == 0:
         logger.info("%s: too small for assortativity (nodes=%s, edges=%s)", name, n, m)
-        return {"name": name, "nodes": n, "edges": m, "r_unweighted": None, "r_weighted": None}
+        return {
+            "name": name,
+            "nodes": n,
+            "edges": m,
+            "r_unweighted": None,
+            "r_weighted": None,
+        }
 
     logger.info("%s: nodes=%s, edges=%s", name, n, m)
 
@@ -42,7 +50,13 @@ def compute_assortativity_for_graph(name: str, G: nx.Graph) -> dict[str, float |
         logger.info("%s: weighted degree assortativity r = %.4f", name, r_weighted)
     except Exception as exc:
         logger.info("%s: could not compute weighted assortativity (%s)", name, exc)
-    return {"name": name, "nodes": n, "edges": m, "r_unweighted": r_unweighted, "r_weighted": r_weighted}
+    return {
+        "name": name,
+        "nodes": n,
+        "edges": m,
+        "r_unweighted": r_unweighted,
+        "r_weighted": r_weighted,
+    }
 
 
 def compute_cross_layer_degree_correlation(
@@ -73,7 +87,9 @@ def compute_cross_layer_degree_correlation(
     return correlations
 
 
-def print_correlation_summary(correlations: dict[tuple[str, str], float], scope: str) -> None:
+def print_correlation_summary(
+    correlations: dict[tuple[str, str], float], scope: str
+) -> None:
     if not correlations:
         return
     print(f"\n=== Cross-layer degree correlations ({scope}) ===")
@@ -84,12 +100,16 @@ def print_correlation_summary(correlations: dict[tuple[str, str], float], scope:
             print(f"{layer_a} vs {layer_b}: Pearson r = {corr:.4f}")
 
 
-def build_multilayer(limit: int | None, combine_mode: str = "sum") -> tuple[dict[str, nx.Graph], nx.Graph]:
+def build_multilayer(
+    limit: int | None, combine_mode: str = "sum"
+) -> tuple[dict[str, nx.Graph], nx.Graph]:
     """Build coauthor, related, and combined layers using the multilayer pipeline."""
     logger.info("=== Building empirical multilayer for assortativity analysis ===")
     load_dotenv()
     builder = ArticleGraphBuilder()
-    layers, combined = builder.build_empirical_multilayer(limit=limit, combine_mode=combine_mode)
+    layers, combined = builder.build_empirical_multilayer(
+        limit=limit, combine_mode=combine_mode
+    )
     return layers, combined
 
 
@@ -97,7 +117,12 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Compute assortativity measures on the multilayer author network (coauthor, related, combined).",
     )
-    parser.add_argument("--limit", type=int, default=None, help="Limit number of articles loaded from the database.")
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Limit number of articles loaded from the database.",
+    )
     parser.add_argument(
         "--combine-mode",
         choices=["sum", "max"],
@@ -115,7 +140,9 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
 
-    layers, combined = build_multilayer(limit=args.limit, combine_mode=args.combine_mode)
+    layers, combined = build_multilayer(
+        limit=args.limit, combine_mode=args.combine_mode
+    )
 
     logger.info("\n=== Assortativity on empirical multilayer ===")
 
@@ -125,19 +152,29 @@ def main() -> None:
         suffix = " (largest component)" if args.largest_component else " (full graph)"
         results.append(compute_assortativity_for_graph(name + suffix, target))
 
-    target_combined = largest_component_subgraph(combined) if args.largest_component else combined
-    suffix_combined = " (largest component)" if args.largest_component else " (full graph)"
-    combined_result = compute_assortativity_for_graph("combined" + suffix_combined, target_combined)
+    target_combined = (
+        largest_component_subgraph(combined) if args.largest_component else combined
+    )
+    suffix_combined = (
+        " (largest component)" if args.largest_component else " (full graph)"
+    )
+    combined_result = compute_assortativity_for_graph(
+        "combined" + suffix_combined, target_combined
+    )
     results.append(combined_result)
 
     # Cross-layer degree correlations (overall)
     reference_nodes = sorted(combined.nodes())
-    overall_correlations = compute_cross_layer_degree_correlation(layers, reference_nodes)
+    overall_correlations = compute_cross_layer_degree_correlation(
+        layers, reference_nodes
+    )
     print_correlation_summary(overall_correlations, scope="all nodes")
 
     # Cross-layer correlations (largest component of combined graph)
     largest = largest_component_subgraph(combined)
-    component_correlations = compute_cross_layer_degree_correlation(layers, sorted(largest.nodes()))
+    component_correlations = compute_cross_layer_degree_correlation(
+        layers, sorted(largest.nodes())
+    )
     print_correlation_summary(component_correlations, scope="largest component")
 
     print("\n=== Summary ===")
@@ -154,4 +191,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

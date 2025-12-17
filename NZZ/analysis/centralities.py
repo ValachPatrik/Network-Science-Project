@@ -18,7 +18,9 @@ from visualizer import GraphVisualizer
 
 
 logger = logging.getLogger("centralities")
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 MEASURE_CHOICES = ["betweenness", "degree", "closeness", "eigenvector"]
 
@@ -44,7 +46,9 @@ class CentralityAnalysis:
         return self.centrality_measures["closeness"]
 
     def compute_eigenvector_centrality(self) -> Dict[str, float]:
-        self.centrality_measures["eigenvector"] = nx.eigenvector_centrality(self.graph, max_iter=1000)
+        self.centrality_measures["eigenvector"] = nx.eigenvector_centrality(
+            self.graph, max_iter=1000
+        )
         return self.centrality_measures["eigenvector"]
 
 
@@ -103,7 +107,9 @@ def build_rankings(
     top_k: int,
     role_map: Dict[str, str],
 ) -> List[Tuple[int, str, float, str]]:
-    sorted_nodes = sorted(values.items(), key=lambda item: item[1], reverse=True)[:top_k]
+    sorted_nodes = sorted(values.items(), key=lambda item: item[1], reverse=True)[
+        :top_k
+    ]
     rows: List[Tuple[int, str, float, str]] = []
     for rank, (name, score) in enumerate(sorted_nodes, start=1):
         rows.append((rank, name, score, lookup_role(name, role_map)))
@@ -123,7 +129,9 @@ def print_table(measure_name: str, rows: List[Tuple[int, str, float, str]]) -> N
         print(f"{rank:>4}  {author:<35}  {value:>10.4f}  {role}")
 
 
-def summarize_hubs(top_rows: Dict[str, List[Tuple[int, str, float, str]]], role_map: Dict[str, str]) -> None:
+def summarize_hubs(
+    top_rows: Dict[str, List[Tuple[int, str, float, str]]], role_map: Dict[str, str]
+) -> None:
     frequency: Counter[str] = Counter()
     for rows in top_rows.values():
         for _, author, _, _ in rows:
@@ -138,7 +146,9 @@ def summarize_hubs(top_rows: Dict[str, List[Tuple[int, str, float, str]]], role_
     if hubs:
         print("\n=== Central hubs (appear in multiple measures) ===")
         for name in sorted(hubs, key=lambda x: frequency[x], reverse=True):
-            print(f"- {name} ({lookup_role(name, role_map)}) → {frequency[name]} measures")
+            print(
+                f"- {name} ({lookup_role(name, role_map)}) → {frequency[name]} measures"
+            )
 
     if specialists:
         print("\n=== Peripheral specialists (single measure appearance) ===")
@@ -155,7 +165,9 @@ def largest_component_subgraph(graph: nx.Graph) -> nx.Graph:
     return graph.subgraph(nodes).copy()
 
 
-def compute_measures(analysis: CentralityAnalysis, measures: Iterable[str]) -> Dict[str, Dict[str, float]]:
+def compute_measures(
+    analysis: CentralityAnalysis, measures: Iterable[str]
+) -> Dict[str, Dict[str, float]]:
     result: Dict[str, Dict[str, float]] = {}
     for name in measures:
         method = getattr(analysis, f"compute_{name}_centrality", None)
@@ -166,13 +178,20 @@ def compute_measures(analysis: CentralityAnalysis, measures: Iterable[str]) -> D
             result[name] = method()
         except Exception as exc:
             logger.error("Failed to compute %s centrality: %s", name, exc)
+    print(result)
     return result
 
 
 def build_graph(limit: int | None, combine_mode: str, target: str) -> nx.Graph:
     builder = ArticleGraphBuilder()
-    layers, combined = builder.build_empirical_multilayer(limit=limit, combine_mode=combine_mode)
-    mapping = {"coauthor": layers["coauthor"], "related": layers["related"], "combined": combined}
+    layers, combined = builder.build_empirical_multilayer(
+        limit=limit, combine_mode=combine_mode
+    )
+    mapping = {
+        "coauthor": layers["coauthor"],
+        "related": layers["related"],
+        "combined": combined,
+    }
     return mapping[target]
 
 
@@ -194,24 +213,79 @@ def visualize_measure(
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Compute and visualize centralities for the author network.")
-    parser.add_argument("--limit", type=int, default=None, help="Limit number of articles loaded from Supabase.")
-    parser.add_argument("--graph", choices=["coauthor", "related", "combined"], default="combined", help="Which layer to analyze.")
-    parser.add_argument("--combine-mode", choices=["sum", "max"], default="sum", help="Combination method for the multilayer graph.")
-    parser.add_argument("--measures", nargs="+", choices=MEASURE_CHOICES, default=MEASURE_CHOICES, help="Centrality measures to compute.")
-    parser.add_argument("--top-k", type=int, default=10, help="Number of top authors to display per measure.")
-    parser.add_argument("--largest-component", action="store_true", help="Restrict analysis to the largest connected component.")
-    parser.add_argument("--impressum", type=str, default="NZZ/impressum.html", help="Path to the NZZ Impressum HTML file.")
-    parser.add_argument("--visualize", action="store_true", help="Visualize the selected graph colored by a centrality measure.")
+    parser = argparse.ArgumentParser(
+        description="Compute and visualize centralities for the author network."
+    )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Limit number of articles loaded from Supabase.",
+    )
+    parser.add_argument(
+        "--graph",
+        choices=["coauthor", "related", "combined"],
+        default="combined",
+        help="Which layer to analyze.",
+    )
+    parser.add_argument(
+        "--combine-mode",
+        choices=["sum", "max"],
+        default="sum",
+        help="Combination method for the multilayer graph.",
+    )
+    parser.add_argument(
+        "--measures",
+        nargs="+",
+        choices=MEASURE_CHOICES,
+        default=MEASURE_CHOICES,
+        help="Centrality measures to compute.",
+    )
+    parser.add_argument(
+        "--top-k",
+        type=int,
+        default=10,
+        help="Number of top authors to display per measure.",
+    )
+    parser.add_argument(
+        "--largest-component",
+        action="store_true",
+        help="Restrict analysis to the largest connected component.",
+    )
+    parser.add_argument(
+        "--impressum",
+        type=str,
+        default="NZZ/impressum.html",
+        help="Path to the NZZ Impressum HTML file.",
+    )
+    parser.add_argument(
+        "--visualize",
+        action="store_true",
+        help="Visualize the selected graph colored by a centrality measure.",
+    )
     parser.add_argument(
         "--visualize-measure",
         choices=MEASURE_CHOICES,
         default="betweenness",
         help="Centrality metric to use for visualization.",
     )
-    parser.add_argument("--visualize-weight-threshold", type=float, default=0.0, help="Minimum edge weight when visualizing.")
-    parser.add_argument("--label-top-n", type=int, default=40, help="Number of node labels to show in the interactive plot.")
-    parser.add_argument("--show-names", action="store_true", help="Always show node labels in the visualization viewport.")
+    parser.add_argument(
+        "--visualize-weight-threshold",
+        type=float,
+        default=0.0,
+        help="Minimum edge weight when visualizing.",
+    )
+    parser.add_argument(
+        "--label-top-n",
+        type=int,
+        default=40,
+        help="Number of node labels to show in the interactive plot.",
+    )
+    parser.add_argument(
+        "--show-names",
+        action="store_true",
+        help="Always show node labels in the visualization viewport.",
+    )
     return parser.parse_args()
 
 
@@ -219,7 +293,9 @@ def main() -> None:
     args = parse_args()
     load_dotenv()
 
-    graph = build_graph(limit=args.limit, combine_mode=args.combine_mode, target=args.graph)
+    graph = build_graph(
+        limit=args.limit, combine_mode=args.combine_mode, target=args.graph
+    )
     if args.largest_component:
         graph = largest_component_subgraph(graph)
 
@@ -242,7 +318,9 @@ def main() -> None:
     if args.visualize:
         selected = args.visualize_measure
         if selected not in centrality_values:
-            logger.error("Cannot visualize measure '%s' because it was not computed.", selected)
+            logger.error(
+                "Cannot visualize measure '%s' because it was not computed.", selected
+            )
         else:
             visualize_measure(graph, selected, centrality_values[selected], args)
 
