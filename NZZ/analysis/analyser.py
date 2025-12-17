@@ -673,12 +673,13 @@ Examples:
         help="Analyze specific author",
     )
 
+
+    
+
     parser.add_argument(
         "--centrality",
-        type=str,
-        nargs="?",
+        nargs="+",
         default=None,
-        const="degree",
         choices=[
             "degree",
             "betweenness",
@@ -710,6 +711,13 @@ Examples:
         nargs="?",
         default="full_graph",
         help="Specify which graph cluster to analyze. Options: 'full_graph', 'largest_cluster', or a **positive integer N** to analyze the top N largest clusters (e.g., '--graph 3'). Defaults to analyzing entire full graph.",
+    )
+
+    parser.add_argument(
+        "--top-k",
+        type=int,
+        default=10,
+        help="Number of top authors to display per measure.",
     )
 
     args = parser.parse_args()
@@ -852,39 +860,33 @@ Examples:
                 centalities = CentralityAnalysis(G_centrality)
                 print(f"\n--- Centrality for {name} ---")
                 
-                try:
-                    if centrality_method == "degree":
-                        centalities.compute_degree_centrality()
-                    elif centrality_method == "betweenness":
-                        centalities.compute_betweenness_centrality()
-                    elif centrality_method == "closeness":
-                        centalities.compute_closeness_centrality()
-                    elif centrality_method == "eigenvector":
-                        centalities.compute_eigenvector_centrality()
-                    else:
-                        print(
-                            f"Unknown centrality method: {centrality_method}. Skipping."
-                        )
-                        continue
-                except Exception as e:
-                    logger.error(f"Error during centrality computation for {name}: {e}")
-                    continue
+                centrality_values = centalities.compute_measures(list(args.centrality))
+                if not centrality_values:
+                    logger.error("No centrality measures were computed; exiting.")
+                    sys.exit(1)
 
-                for measure_name, measures in centalities.centrality_measures.items():
-                    print(f"\nTop 10 nodes by {measure_name} centrality in {name}:")
-                    sorted_measures = sorted(
-                        measures.items(), key=lambda x: x[1], reverse=True
-                    )[:10]
-                    for node, value in sorted_measures:
-                        print(f"  {node}: {value:.4f}")
 
-                    # Visualize centrality
-                    visualizer.visualize_existing_graph_interactive(
+                top_rows= {}
+                for name, values in centrality_values.items():
+                    rows = centalities.build_rankings(values, args.top_k, None)
+                    top_rows[name] = rows
+                    centalities.print_table(name, rows)
+
+                    if args.visualize:
+                        visualizer.visualize_existing_graph_interactive(
                         G_centrality,
                         show_names=True,
-                        measure_name=measure_name,
-                        centrality_measures=measures,
+                        measure_name=name,
+                        centrality_measures=values,
                     )
+        
+                        
+
+                centalities.summarize_hubs(top_rows, None)
+
+                    # Visualize centrality
+                    
+                
 
     except KeyboardInterrupt:
         print("\n\nInterrupted by user.")

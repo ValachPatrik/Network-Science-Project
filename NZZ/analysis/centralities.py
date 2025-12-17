@@ -51,6 +51,73 @@ class CentralityAnalysis:
         )
         return self.centrality_measures["eigenvector"]
 
+    def compute_measures(
+        self, measures: Iterable[str]
+    ) -> Dict[str, Dict[str, float]]:
+        result: Dict[str, Dict[str, float]] = {}
+        print(measures)
+        print(self.graph)
+
+        for name in measures:
+            method = getattr(self, f"compute_{name}_centrality", None)
+            if not method:
+                logger.warning("Unsupported centrality measure: %s", name)
+                continue
+            try:
+                result[name] = method()
+            except Exception as exc:
+                logger.error("Failed to compute %s centrality: %s", name, exc)
+        return result
+
+
+    def build_rankings(self, values: Dict[str, float], top_k: int, role_map: Dict[str, str]) -> List[Tuple[int, str, float, str]]:
+        sorted_nodes = sorted(values.items(), key=lambda item: item[1], reverse=True)[
+            :top_k
+        ]
+        rows: List[Tuple[int, str, float, str]] = []
+        for rank, (name, score) in enumerate(sorted_nodes, start=1):
+            rows.append((rank, name, score, lookup_role(name, role_map)))
+        return rows
+
+    def print_table(self,measure_name: str, rows: List[Tuple[int, str, float, str]]) -> None:
+        if not rows:
+            logger.warning("No centrality data available for %s", measure_name)
+            return
+
+        print(f"\n=== {measure_name.title()} centrality (top {len(rows)}) ===")
+        header = f"{'Rank':>4}  {'Author':<35}  {'Score':>10}  {'Role from Impressum'}"
+        print(header)
+        print("-" * len(header))
+        for rank, author, value, role in rows:
+            print(f"{rank:>4}  {author:<35}  {value:>10.4f}  {role}")
+    
+    def summarize_hubs(self, 
+        top_rows: Dict[str, List[Tuple[int, str, float, str]]], role_map: Dict[str, str]
+    ) -> None:
+        frequency: Counter[str] = Counter()
+        for rows in top_rows.values():
+            for _, author, _, _ in rows:
+                frequency[author] += 1
+
+        if not frequency:
+            return
+
+        hubs = [name for name, count in frequency.items() if count >= 2]
+        specialists = [name for name, count in frequency.items() if count == 1]
+
+        if hubs:
+            print("\n=== Central hubs (appear in multiple measures) ===")
+            for name in sorted(hubs, key=lambda x: frequency[x], reverse=True):
+                print(
+                    f"- {name} ({lookup_role(name, role_map)}) → {frequency[name]} measures"
+                )
+
+        if specialists:
+            print("\n=== Peripheral specialists (single measure appearance) ===")
+            for name in sorted(specialists):
+                print(f"- {name} ({lookup_role(name, role_map)})")
+
+
 
 def parse_impressum(html_path: str) -> Dict[str, str]:
     """Extract author roles from the NZZ Impressum."""
@@ -102,60 +169,6 @@ def lookup_role(name: str, role_map: Dict[str, str]) -> str:
     return role_map[match[0]] if match else "Unknown"
 
 
-def build_rankings(
-    values: Dict[str, float],
-    top_k: int,
-    role_map: Dict[str, str],
-) -> List[Tuple[int, str, float, str]]:
-    sorted_nodes = sorted(values.items(), key=lambda item: item[1], reverse=True)[
-        :top_k
-    ]
-    rows: List[Tuple[int, str, float, str]] = []
-    for rank, (name, score) in enumerate(sorted_nodes, start=1):
-        rows.append((rank, name, score, lookup_role(name, role_map)))
-    return rows
-
-
-def print_table(measure_name: str, rows: List[Tuple[int, str, float, str]]) -> None:
-    if not rows:
-        logger.warning("No centrality data available for %s", measure_name)
-        return
-
-    print(f"\n=== {measure_name.title()} centrality (top {len(rows)}) ===")
-    header = f"{'Rank':>4}  {'Author':<35}  {'Score':>10}  {'Role from Impressum'}"
-    print(header)
-    print("-" * len(header))
-    for rank, author, value, role in rows:
-        print(f"{rank:>4}  {author:<35}  {value:>10.4f}  {role}")
-
-
-def summarize_hubs(
-    top_rows: Dict[str, List[Tuple[int, str, float, str]]], role_map: Dict[str, str]
-) -> None:
-    frequency: Counter[str] = Counter()
-    for rows in top_rows.values():
-        for _, author, _, _ in rows:
-            frequency[author] += 1
-
-    if not frequency:
-        return
-
-    hubs = [name for name, count in frequency.items() if count >= 2]
-    specialists = [name for name, count in frequency.items() if count == 1]
-
-    if hubs:
-        print("\n=== Central hubs (appear in multiple measures) ===")
-        for name in sorted(hubs, key=lambda x: frequency[x], reverse=True):
-            print(
-                f"- {name} ({lookup_role(name, role_map)}) → {frequency[name]} measures"
-            )
-
-    if specialists:
-        print("\n=== Peripheral specialists (single measure appearance) ===")
-        for name in sorted(specialists):
-            print(f"- {name} ({lookup_role(name, role_map)})")
-
-
 def largest_component_subgraph(graph: nx.Graph) -> nx.Graph:
     if graph.number_of_nodes() == 0:
         return nx.Graph()
@@ -163,23 +176,6 @@ def largest_component_subgraph(graph: nx.Graph) -> nx.Graph:
         return graph.copy()
     nodes = max(nx.connected_components(graph), key=len)
     return graph.subgraph(nodes).copy()
-
-
-def compute_measures(
-    analysis: CentralityAnalysis, measures: Iterable[str]
-) -> Dict[str, Dict[str, float]]:
-    result: Dict[str, Dict[str, float]] = {}
-    for name in measures:
-        method = getattr(analysis, f"compute_{name}_centrality", None)
-        if not method:
-            logger.warning("Unsupported centrality measure: %s", name)
-            continue
-        try:
-            result[name] = method()
-        except Exception as exc:
-            logger.error("Failed to compute %s centrality: %s", name, exc)
-    print(result)
-    return result
 
 
 def build_graph(limit: int | None, combine_mode: str, target: str) -> nx.Graph:
@@ -300,7 +296,7 @@ def main() -> None:
         graph = largest_component_subgraph(graph)
 
     analysis = CentralityAnalysis(graph)
-    centrality_values = compute_measures(analysis, args.measures)
+    centrality_values = analysis.compute_measures(args.measures)
     if not centrality_values:
         logger.error("No centrality measures were computed; exiting.")
         return
@@ -309,11 +305,11 @@ def main() -> None:
 
     top_rows: Dict[str, List[Tuple[int, str, float, str]]] = {}
     for name, values in centrality_values.items():
-        rows = build_rankings(values, args.top_k, role_map)
+        rows = analysis.build_rankings(values, args.top_k, role_map)
         top_rows[name] = rows
-        print_table(name, rows)
+        analysis.print_table(name, rows)
 
-    summarize_hubs(top_rows, role_map)
+    analysis.summarize_hubs(top_rows, role_map)
 
     if args.visualize:
         selected = args.visualize_measure
