@@ -205,10 +205,6 @@ class ArticleReporter:
         return df_detailed
 
 
-# ==============================================================================
-# 2. Refactored ArticleAnalyser Class
-# ==============================================================================
-
 class ArticleAnalyser:
     """Loads NZZ article data, builds a graph, and performs graph analysis."""
 
@@ -312,8 +308,6 @@ class ArticleAnalyser:
         excluded = all_nodes - largest
         print(f"Nodes not in largest component: {len(excluded)}")
         return excluded
-    # ... (End of minor analysis methods) ...
-
 
     def save_graph_to_gexf(
         self, filename="authors_graph.gexf", graph: nx.Graph | None = None
@@ -537,8 +531,6 @@ class ArticleAnalyser:
         self.reporter.format_cluster_summary(cluster_section_data)
         
         return cluster_section_data
-
-    # === Data Preparation Methods (Renamed 'resort' to 'category/section') ===
     
     def authors_to_category_mapping(self, G: nx.Graph, df: pd.DataFrame) -> dict:
         """

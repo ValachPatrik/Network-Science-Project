@@ -193,7 +193,7 @@ class GraphVisualizer:
             if legend_handles:
                 # Place legend to the right of the axes
                 ax.legend(handles=legend_handles, labels=legend_labels, 
-                          title="Clusters", loc='upper left', bbox_to_anchor=(0.99, 1.00),
+                          title="Clusters", loc='upper left', bbox_to_anchor=(0.98, 1.00),
                           frameon=False, fontsize=7)
 
 
