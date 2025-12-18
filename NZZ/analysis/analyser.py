@@ -5,24 +5,19 @@ import argparse
 import pandas as pd
 import networkx as nx
 import logging
+from difflib import get_close_matches
 from collections import defaultdict, Counter
 from dotenv import load_dotenv
 import math
 
-# Use the package structure for imports first, fall back for script execution
-try:
-    from .visualizer import GraphVisualizer
-    from .authors import AuthorsBuilder
-    from .centralities import CentralityAnalysis
-    from .article_graph_builder import ArticleGraphBuilder
-    from .multilayer_network import MultiLayerAuthorGraph
-except ImportError:
+
     # when executed as scripts without package context (assuming local files)
-    from visualizer import GraphVisualizer
-    from authors import AuthorsBuilder
-    from centralities import CentralityAnalysis
-    from article_graph_builder import ArticleGraphBuilder
-    from multilayer_network import MultiLayerAuthorGraph
+from visualizer import GraphVisualizer
+from authors import AuthorsBuilder
+from centralities import CentralityAnalysis
+from article_graph_builder import ArticleGraphBuilder
+from multilayer_network import MultiLayerAuthorGraph
+from impressum_parser import NZZParser
 
 # Setup logging
 logging.basicConfig(
@@ -47,10 +42,6 @@ try:
 except ImportError:
     HAS_IGRAPH = False
     # igraph is optional, only needed for Infomap and Leiden
-
-# ==============================================================================
-# 1. New Reporting/Data Manipulation Class
-# ==============================================================================
 
 class ArticleReporter:
     """Handles the creation and formatting of analysis reports, 
@@ -191,13 +182,13 @@ class ArticleReporter:
             for section, count in sorted_counts:
                 # Replace the float('nan') key with a readable string
                 section_name = (
-                    "NO SECTION (NaN)"
+                    "NO RESORT (NaN)"
                     if (isinstance(section, float) and math.isnan(section))
                     else section
                 )
 
                 detailed_data.append(
-                    {"Cluster ID": cluster_id, "Section": section_name, "Count": count}
+                    {"Cluster ID": cluster_id, "Resort": section_name, "Count": count}
                 )
 
         df_detailed = pd.DataFrame(detailed_data)
@@ -490,40 +481,89 @@ class ArticleAnalyser:
         # (in modern Python) will maintain this. No need for re-sorting here.
         return self.cluster_author_map
 
+    # def assign_clusters_to_dataframe(self, df_authors: pd.DataFrame):
+    #     """
+    #     Assigns pre-computed cluster IDs to a DataFrame of authors and delegates 
+    #     the reporting to ArticleReporter. (Refactored to use ArticleReporter)
+    #     """
+    #     if self.clusters is None:
+    #         raise ValueError("Run compute_clusters() first.")
+        
+    #     self.reporter.clusters = self.clusters # Pass clusters to the reporter
+
+    #     # 1. Assign Clusters: Map cluster IDs to the DataFrame
+    #     # Assumes df_authors has an 'Author' column
+    #     df_authors["cluster"] = df_authors["Author"].map(self.clusters)
+
+    #     # 2. Check Initial Cluster Count
+    #     total_clusters_with_unassigned = df_authors["cluster"].nunique(dropna=False)
+    #     print(
+    #         f"Total unique clusters (including unassigned) found: {total_clusters_with_unassigned}"
+    #     )
+
+    #     # 3. Finalize Clustered DataFrame
+    #     df_clustered = df_authors.dropna(subset=["cluster"]).copy()
+    #     df_clustered["cluster"] = df_clustered["cluster"].astype(int)
+
+    #     # 4. Final Cluster Metrics
+    #     final_num_clusters = df_clustered["cluster"].nunique()
+    #     print(f"Final number of unique clusters analyzed: {final_num_clusters}")
+
+    #     num_clustered_authors = df_clustered["Author"].nunique()
+    #     print(f"Number of clustered unique authors: {num_clustered_authors}")
+        
+    #     logger.info(f"Clustered DataFrame Info:\n{df_clustered.info()}")
+
+    #     # 5. Generate Summary and Reports (Delegated to Reporter)
+    #     cluster_section_data = self.reporter.get_section_counts_per_cluster(
+    #         df_clustered=df_clustered
+    #     )
+
+    #     self.reporter.format_cluster_summary(cluster_section_data)
+        
+    #     return cluster_section_data
+
+
     def assign_clusters_to_dataframe(self, df_authors: pd.DataFrame):
-        """
-        Assigns pre-computed cluster IDs to a DataFrame of authors and delegates 
-        the reporting to ArticleReporter. (Refactored to use ArticleReporter)
-        """
+        """Main entry point to assign clusters and generate reports."""
         if self.clusters is None:
             raise ValueError("Run compute_clusters() first.")
         
-        self.reporter.clusters = self.clusters # Pass clusters to the reporter
+        # 1. Map data
+        df_clustered = self._prepare_clustered_dataframe(df_authors)
 
-        # 1. Assign Clusters: Map cluster IDs to the DataFrame
-        # Assumes df_authors has an 'Author' column
+        # 2. Log Metrics
+        self._log_cluster_metrics(df_authors, df_clustered)
+
+        # 3. Delegate to Reporter
+        return self._generate_cluster_reports(df_clustered)
+
+    def _prepare_clustered_dataframe(self, df_authors: pd.DataFrame) -> pd.DataFrame:
+        """Handles the mapping and type conversion of the cluster data."""
         df_authors["cluster"] = df_authors["Author"].map(self.clusters)
-
-        # 2. Check Initial Cluster Count
-        total_clusters_with_unassigned = df_authors["cluster"].nunique(dropna=False)
-        print(
-            f"Total unique clusters (including unassigned) found: {total_clusters_with_unassigned}"
-        )
-
-        # 3. Finalize Clustered DataFrame
+        
+        # Drop unassigned authors and convert cluster ID to int
         df_clustered = df_authors.dropna(subset=["cluster"]).copy()
         df_clustered["cluster"] = df_clustered["cluster"].astype(int)
+        
+        return df_clustered
 
-        # 4. Final Cluster Metrics
-        final_num_clusters = df_clustered["cluster"].nunique()
-        print(f"Final number of unique clusters analyzed: {final_num_clusters}")
+    def _log_cluster_metrics(self, df_original: pd.DataFrame, df_clustered: pd.DataFrame):
+        """Handles all print and logger statements regarding data shape."""
+        total_initial = df_original["cluster"].nunique(dropna=False)
+        final_clusters = df_clustered["cluster"].nunique()
+        num_authors = df_clustered["Author"].nunique()
 
-        num_clustered_authors = df_clustered["Author"].nunique()
-        print(f"Number of clustered unique authors: {num_clustered_authors}")
+        print(f"Total unique clusters (including unassigned) found: {total_initial}")
+        print(f"Final number of unique clusters analyzed: {final_clusters}")
+        print(f"Number of clustered unique authors: {num_authors}")
         
         logger.info(f"Clustered DataFrame Info:\n{df_clustered.info()}")
 
-        # 5. Generate Summary and Reports (Delegated to Reporter)
+    def _generate_cluster_reports(self, df_clustered: pd.DataFrame):
+        """Delegates the heavy lifting to the ArticleReporter."""
+        self.reporter.clusters = self.clusters
+        
         cluster_section_data = self.reporter.get_section_counts_per_cluster(
             df_clustered=df_clustered
         )
@@ -582,14 +622,33 @@ class ArticleAnalyser:
         
         return result_df
 
+    def _get_role_from_map(self, name, role_map):
+        if not role_map:
+            return "Unknown"
+        if name in role_map:
+            if isinstance(role_map[name], list):
+                return ", ".join(role_map[name])
+            return role_map[name]
+        match = get_close_matches(name, role_map.keys(), n=1, cutoff=0.85)
+        return ", ".join(role_map[match[0]]) if match else "Unknown"
 
-if __name__ == "__main__":
-    # --- The main block remains but is updated to use the new structure ---
+    def add_team_roles(self, df: pd.DataFrame, role_map: dict) -> pd.DataFrame:
+        """
+        Adds a 'Role' column to the DataFrame based on the provided role mapping.
+        """
+        if df.empty:
+            return df
+
+        df['Role'] = df['Author'].apply(lambda name: self._get_role_from_map(name, role_map))
+        return df
+    
+def parse_args() -> argparse.Namespace:
+    """Parse command-line arguments."""
     parser = argparse.ArgumentParser(
         description="Build and analyze article-author networks from NZZ database",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
-Examples:
+    Examples:
   # Build and analyze the graph
   python analyser.py
   
@@ -673,12 +732,13 @@ Examples:
         help="Analyze specific author",
     )
 
+
+    
+
     parser.add_argument(
         "--centrality",
-        type=str,
-        nargs="?",
+        nargs="+",
         default=None,
-        const="degree",
         choices=[
             "degree",
             "betweenness",
@@ -712,11 +772,30 @@ Examples:
         help="Specify which graph cluster to analyze. Options: 'full_graph', 'largest_cluster', or a **positive integer N** to analyze the top N largest clusters (e.g., '--graph 3'). Defaults to analyzing entire full graph.",
     )
 
-    args = parser.parse_args()
+    parser.add_argument(
+        "--top-k",
+        type=int,
+        default=10,
+        help="Number of top authors to display per measure.",
+    )
+
+    parser.add_argument(
+        "--impressum",
+        type=str,
+        default="nzz_impressum.csv",
+        help="Path to the NZZ Impressum CSV file.",
+    )
+
+    return parser.parse_args()
+
+def main():
+
+    args = parse_args()
 
     # Assuming these classes exist as per imports
     visualizer = GraphVisualizer()
-    authors = AuthorsBuilder()
+    impressum_parser = NZZParser(args.impressum)
+
 
     try:
         print("=" * 80)
@@ -752,6 +831,13 @@ Examples:
             #print(df_table.to_markdown(index=False))
             df_table.to_csv('author_section_counts.csv', index=False)
 
+            # Filter to highest count section per author for summary
+            df_filtered = builder.highest_count_section_per_author(df=df_table.copy())
+
+            builder.add_team_roles(df_filtered, impressum_parser.get_dict()).to_csv('author_section_counts_with_roles.csv', index=False)
+
+
+
             if args.author:
                 builder.component_of_node(args.author)
                 builder.degree_of_author(args.author)
@@ -765,13 +851,17 @@ Examples:
             try:
                 builder.compute_clusters(method=cluster_method)
                 
-                cluster_summary_data = builder.assign_clusters_to_dataframe(df_authors=df_table.copy())
-                builder.reporter.print_detailed_counts(cluster_section_data=cluster_summary_data).to_csv('detailed_cluster_resort_counts.csv', index=False)
+                if args.analyze:
+                    cluster_summary_data = builder.assign_clusters_to_dataframe(df_authors=df_table.copy())
+                    builder.reporter.print_detailed_counts(cluster_section_data=cluster_summary_data).to_csv('detailed_cluster_resort_counts.csv', index=False)
 
-                # Filter to highest count section per author for summary
-                df_filtered = builder.highest_count_section_per_author(df=df_table.copy())
-                cluster_summary_data_filtered = builder.assign_clusters_to_dataframe(df_authors=df_filtered)
-                builder.reporter.print_detailed_counts(cluster_section_data=cluster_summary_data_filtered).to_csv('filtered_cluster_resort_counts.csv', index=False)
+
+                    cluster_summary_data_filtered = builder.assign_clusters_to_dataframe(df_authors=df_filtered.copy())
+
+                    (builder._prepare_clustered_dataframe(df_filtered)).to_csv('filtered_clustered_authors.csv', index=False)
+        
+
+                    builder.reporter.print_detailed_counts(cluster_section_data=cluster_summary_data_filtered).to_csv('filtered_cluster_resort_counts.csv', index=False)
 
                 # Use the clusters for visualization
                 cluster_colors = builder.clusters
@@ -841,7 +931,6 @@ Examples:
                         )
                         sys.exit(1)
             
-            
             # Perform Centrality Calculation and Visualization
             for G_centrality, name in zip(subgraphs, graph_names):
                 
@@ -852,39 +941,35 @@ Examples:
                 centalities = CentralityAnalysis(G_centrality)
                 print(f"\n--- Centrality for {name} ---")
                 
-                try:
-                    if centrality_method == "degree":
-                        centalities.compute_degree_centrality()
-                    elif centrality_method == "betweenness":
-                        centalities.compute_betweenness_centrality()
-                    elif centrality_method == "closeness":
-                        centalities.compute_closeness_centrality()
-                    elif centrality_method == "eigenvector":
-                        centalities.compute_eigenvector_centrality()
-                    else:
-                        print(
-                            f"Unknown centrality method: {centrality_method}. Skipping."
-                        )
-                        continue
-                except Exception as e:
-                    logger.error(f"Error during centrality computation for {name}: {e}")
-                    continue
+                centrality_values = centalities.compute_measures(list(args.centrality))
+                if not centrality_values:
+                    logger.error("No centrality measures were computed; exiting.")
+                    sys.exit(1)
 
-                for measure_name, measures in centalities.centrality_measures.items():
-                    print(f"\nTop 10 nodes by {measure_name} centrality in {name}:")
-                    sorted_measures = sorted(
-                        measures.items(), key=lambda x: x[1], reverse=True
-                    )[:10]
-                    for node, value in sorted_measures:
-                        print(f"  {node}: {value:.4f}")
 
-                    # Visualize centrality
-                    visualizer.visualize_existing_graph_interactive(
+                top_rows= {}
+
+                for name, values in centrality_values.items():
+                    
+                    rows = centalities.build_rankings(values, args.top_k, impressum_parser.get_dict())
+                    top_rows[name] = rows
+                    centalities.print_table(name, rows)
+
+                    if args.visualize:
+                        visualizer.visualize_existing_graph_interactive(
                         G_centrality,
                         show_names=True,
-                        measure_name=measure_name,
-                        centrality_measures=measures,
+                        measure_name=name,
+                        centrality_measures=values,
                     )
+        
+                        
+
+                centalities.summarize_hubs(top_rows, None)
+
+                    # Visualize centrality
+                    
+                
 
     except KeyboardInterrupt:
         print("\n\nInterrupted by user.")
@@ -895,3 +980,7 @@ Examples:
 
         traceback.print_exc()
         sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

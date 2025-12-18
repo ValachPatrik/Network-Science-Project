@@ -1,0 +1,342 @@
+Organization,Department,Name
+NZZ,Chefredaktion,Eric Gujer
+NZZ,Chefredaktion,Daniel Wechlin
+NZZ,Chefredaktion,Ivo Mijnssen
+NZZ,Chefredaktion,Carola Ettenreich
+NZZ,Chefredaktion,Barnaby Skinner
+NZZ,Tagesleitung,Ivo Mijnssen
+NZZ,Tagesleitung,Samuel Burgener
+NZZ,Tagesleitung,Jacqueline Lipp
+NZZ,International,Benedict Neff
+NZZ,International,Andreas Rüesch
+NZZ,International,Marco Kauffmann
+NZZ,International,Nina Belz
+NZZ,International,Werner J. Marti
+NZZ,International,Dominique Burckhardt
+NZZ,International,Katrin Büchenbacher
+NZZ,International,Jonas Roth
+NZZ,International,Isabelle Jacobi
+NZZ,International,Anne Allmeling
+NZZ,Meinung und Debatte,Martin Senti
+NZZ,Meinung und Debatte,Andreas Breitenstein
+NZZ,Meinung und Debatte,Claudia Schwartz
+NZZ,Meinung und Debatte,Manuel Müller
+NZZ,Schweiz,Christina Neuhaus
+NZZ,Schweiz,Andri Rostetter
+NZZ,Schweiz,Erich Aschwanden
+NZZ,Schweiz,Daniel Gerny
+NZZ,Schweiz,Marc Tribelhorn
+NZZ,Schweiz,Simon Hehli
+NZZ,Schweiz,Tobias Gafafer
+NZZ,Schweiz,David Vonplon
+NZZ,Schweiz,Samuel Tanner
+NZZ,Schweiz,Sebastian Briellmann
+NZZ,Bundeshaus,Fabian Schäfer
+NZZ,Bundeshaus,Katharina Fontana
+NZZ,Bundeshaus,Matthias Venetz
+NZZ,Bundeshaus,Andrea Fopp
+NZZ,Bundeshaus,Selina Berner
+NZZ,Westschweiz,Matthias Sander
+NZZ,Zürich,Daniel Fritzsche
+NZZ,Zürich,Zeno Geisseler
+NZZ,Zürich,Fabian Baumgartner
+NZZ,Zürich,Katja Baigger
+NZZ,Zürich,Robin Schwarzenbach
+NZZ,Zürich,Jan Hudec
+NZZ,Zürich,Claudia Rey
+NZZ,Zürich,Michael von Ledebur
+NZZ,Zürich,Isabel Heusser
+NZZ,Zürich,Giorgio Scherrer
+NZZ,Zürich,Oliver Camenzind
+NZZ,Zürich,Tobias Marti
+NZZ,Zürich,Marius Huber
+NZZ,Zürich,Francesca Prader
+NZZ,Zürich,Andrea Marti
+NZZ,Wirtschaft,Chanchal Biswas
+NZZ,Wirtschaft,Lorenz Honegger
+NZZ,Wirtschaft,Guido Schätti
+NZZ,Wirtschaft,Thomas Fuster
+NZZ,Wirtschaft,Christin Severin
+NZZ,Wirtschaft,Andrea Martel Fus
+NZZ,Wirtschaft,Matthias Benz
+NZZ,Wirtschaft,Michael Ferber
+NZZ,Wirtschaft,Hansueli Schöchli
+NZZ,Wirtschaft,Benjamin Triebe
+NZZ,Wirtschaft,Dieter Bachmann
+NZZ,Wirtschaft,Dominik Feldges
+NZZ,Wirtschaft,Eflamm Mordelle
+NZZ,Wirtschaft,Isabelle Wachter
+NZZ,Wirtschaft,Moritz Kaufmann
+NZZ,Wirtschaft,Jürg Meier
+NZZ,Wirtschaft,Markus Städeli
+NZZ,Wirtschaft,Albert Steck
+NZZ,Wirtschaft,Jürg Zulliger
+NZZ,Wirtschaft,Janique Weder
+NZZ,Wirtschaft,Jannik Belser
+NZZ,Wirtschaft,Beatrice Bösiger
+NZZ,Wirtschaft,Thomas Schlittler
+NZZ,Wirtschaft,Malin Hunziker
+NZZ,NZZ Pro,Peter A. Fischer
+NZZ,NZZ Pro,Peter Rásonyi
+NZZ,NZZ Pro,Georg Häsler
+NZZ,NZZ Pro,Leon Igel
+NZZ,NZZ Pro,Lukas Mäder
+NZZ,Wissenschaft,Christiane Hanna Henkel
+NZZ,Wissenschaft,Christian Speicher
+NZZ,Wissenschaft,Patrick Imhasly
+NZZ,Wissenschaft,Stephanie Lahrtz
+NZZ,Wissenschaft,Herbert Schmidt
+NZZ,Wissenschaft,Ruth Fulterer
+NZZ,Wissenschaft,Gioia da Silva
+NZZ,Wissenschaft,Sven Titz
+NZZ,Wissenschaft,Judith Blage
+NZZ,Wissenschaft,Kalina Oroschakoff
+NZZ,Wissenschaft,Esther Widmann
+NZZ,Wissenschaft,Philipp Wolf
+NZZ,Wissenschaft,Eva Mell
+NZZ,Wissenschaft,Martin Amrein
+NZZ,Wissenschaft,Anna Weber
+NZZ,Wissenschaft,Georg Rüschemeyer
+NZZ,Wissenschaft,Lena Waltle
+NZZ,Wissenschaft,Leonid Leiva Ariosa
+NZZ,Wissenschaft,Michael Brendler
+NZZ,Wissenschaft,Ori Schipper
+NZZ,Feuilleton,Rico Bandle
+NZZ,Feuilleton,Roman Bucheli
+NZZ,Feuilleton,Thomas Ribi
+NZZ,Feuilleton,Ueli Bernays
+NZZ,Feuilleton,Philipp Meier
+NZZ,Feuilleton,Lucien Scherrer
+NZZ,Feuilleton,Birgit Schmid
+NZZ,Feuilleton,Christian Wildhagen
+NZZ,Feuilleton,Nadine A. Brügger
+NZZ,Feuilleton,Rahel Zingg
+NZZ,Sport,Sebastian Bräuer
+NZZ,Sport,Remo Geisser
+NZZ,Sport,Christof Krapf
+NZZ,Sport,Christine Steffen
+NZZ,Sport,Stephan Ramming
+NZZ,Sport,Daniel Germann
+NZZ,Sport,Peter B. Birrer
+NZZ,Sport,Nicola Berger
+NZZ,Sport,Stefan Osterhaus
+NZZ,Sport,Eva Breitenstein
+NZZ,Sport,Benedikt Koller
+NZZ,Sport,Dominic Wirth
+NZZ,Wochenende / Gesellschaft,Daniel Wechlin
+NZZ,Wochenende / Gesellschaft,Florian Schoop
+NZZ,Wochenende / Gesellschaft,Esther Baumann-Rüdiger
+NZZ,Wochenende / Gesellschaft,Peter Ackermann
+NZZ,Reporter,Andrea Spalinger
+NZZ,Reporter,Marcel Gyr
+NZZ,Reporter,Michael Schilliger
+NZZ,Reporter,Katharina Bracher
+NZZ,Nachrichten,Samuel Burgener
+NZZ,Nachrichten,Michele Coviello
+NZZ,Nachrichten,Elena Panagiotidis
+NZZ,Nachrichten,Kathrin Klette
+NZZ,Nachrichten,Dennis Hoffmeyer
+NZZ,Nachrichten,Melchior Poppe
+NZZ,Nachrichten,Jacqueline Lipp
+NZZ,Nachrichten,Corina Gall
+NZZ,Nachrichten,Lia Pescatore
+NZZ,Nachrichten,Philipp Gollmer
+NZZ,Nachrichten,Max Sprick
+NZZ,Nachrichten,Kevin Weber
+NZZ,Nachrichten,Elena Oberholzer
+NZZ,Nachrichten,Leonie Charlotte Wagner
+NZZ,Nachrichten,Salome Woerlen
+NZZ,Nachrichten,Yasmin Müller
+NZZ,Nachrichten,Lisa Aeschlimann
+NZZ,Nachrichten,Renato Schatz
+NZZ,Nachrichten,Viviane Bischoff
+NZZ,Nachrichten,Inna Hartwich
+NZZ,Nachrichten,Lillybelle Eisele
+NZZ,Video / Social Media,Madleen Kamrath
+NZZ,Video / Social Media,Michelle Amstutz
+NZZ,Video / Social Media,Pascal Burkhard
+NZZ,Video / Social Media,Florentin Erb
+NZZ,Video / Social Media,Jasmine Jacot-Descombes
+NZZ,Video / Social Media,Lucia Grassi
+NZZ,Video / Social Media,Severin Pomsel
+NZZ,Video / Social Media,Raca Wita
+NZZ,Video / Social Media,Valentina Winkler
+NZZ,Video / Social Media,Simon Knolmayer
+NZZ,Video / Social Media,Patrizia Widmer
+NZZ,Video / Social Media,Aline Syfrig
+NZZ,Format,Jörg Walch
+NZZ,Format,Nicole Krättli
+NZZ,Format,Sévérine Bruderer
+NZZ,Format,Sophie Brunner
+NZZ,Format,Roman Hodel
+NZZ,Format,Luca Froelicher
+NZZ,Podcast,Sarah Ziegler
+NZZ,Podcast,Nadine Landert
+NZZ,Podcast,David Vogel
+NZZ,Podcast,Marlen Oehler
+NZZ,Podcast,Antonia Moser
+NZZ,Podcast,Jenny Rieger
+NZZ,Podcast,Simon Schaffer
+NZZ,Podcast,Alice Grosjean
+NZZ,Audience Management,Jonas Holenstein
+NZZ,Audience Management,Thierry Figini
+NZZ,Audience Management,Nicolas Fröhner
+NZZ,Visuals & Tech,Markus Ikehata
+NZZ,Visuals & Tech,Anja Lemcke
+NZZ,Visuals & Tech,Jan Ludwig
+NZZ,Visuals & Tech,Franco Gervasi
+NZZ,Visuals & Tech,Simon Tanner
+NZZ,Visuals & Tech,Kaspar Manz
+NZZ,Visuals & Tech,Joana Kelén
+NZZ,Visuals & Tech,Jasmine Rueegg
+NZZ,Visuals & Tech,Nikolai Thelitz
+NZZ,Visuals & Tech,Jonas Oesch
+NZZ,Visuals & Tech,Adina Renner
+NZZ,Visuals & Tech,Florian Seliger
+NZZ,Visuals & Tech,Nicolas Staub
+NZZ,Visuals & Tech,Simon Off
+NZZ,Visuals & Tech,Eike Hoppmann
+NZZ,Visuals & Tech,Simon Huwiler
+NZZ,Visuals & Tech,Michel Grautstück
+NZZ,Visuals & Tech,Forrest Rogers
+NZZ,Visuals & Tech,Julia Monn
+NZZ,Visuals & Tech,Roland Shaw
+NZZ,Visuals & Tech,Cian Jochem
+NZZ,Visuals & Tech,Seda Motie
+NZZ,Visuals & Tech,Sophia Kissling
+NZZ,Visuals & Tech,Jessica Eberhart
+NZZ,Visuals & Tech,Jasmin Hegetschweiler
+NZZ,Visuals & Tech,Ida Götz
+NZZ,Visuals & Tech,Andrea Brühlmann
+NZZ,Produktion,Benno Mattli
+NZZ,Produktion,Caspar Hesse
+NZZ,Produktion,Lucie Paska
+NZZ,Produktion,Andreas Kopp
+NZZ,Produktion,Stefan Reis Schweizer
+NZZ,Produktion,Manuela Kessler
+NZZ,Produktion,Roland Tellenbach
+NZZ,Produktion,Bodo Lamparsky
+NZZ,Produktion,Philipp Hufschmid
+NZZ,Produktion,Ilda Özalp
+NZZ,Produktion,Lisa Leonardy
+NZZ,Produktion,Yves Tardent
+NZZ,Produktion,Tanja von Arx
+NZZ,Produktion,Marco Krüger
+NZZ,Art Director,Reto Althaus
+NZZ,Bildredaktion,Gilles Steinmann
+NZZ,Bildredaktion,Andrea Mittelholzer
+NZZ,Bildredaktion,Roman Sigrist
+NZZ,Bildredaktion,Reto Gratwohl
+NZZ,Bildredaktion,Nicole Aeby
+NZZ,Bildredaktion,Martin Berz
+NZZ,Bildredaktion,Dario Veréb
+NZZ,Bildredaktion,Isabella Hager
+NZZ,Bildredaktion,Maja Siebrecht
+NZZ,Bildredaktion,Simone Imhof
+NZZ,Bildredaktion,Stefan Günther
+NZZ,Fotografen,Karin Hofer
+NZZ,Fotografen,Annick Ramp
+NZZ,Fotografen,Dominic Nahr
+NZZ,Leitung Weitere,René Sommer (Blattplanung)
+NZZ,Leitung Weitere,Natascha Fischer (Korrektorat)
+NZZ,Redaktion Deutschland,Morten Freidel
+NZZ,Redaktion Deutschland,Oliver Maksan
+NZZ,Redaktion Deutschland,Jonas Hermann
+NZZ,Redaktion Deutschland,Susann Kreutzmann
+NZZ,Redaktion Deutschland,Beatrice Achterberg
+NZZ,Redaktion Deutschland,Marco Seliger
+NZZ,Redaktion Deutschland,Johannes C. Bockenheimer
+NZZ,Redaktion Deutschland,Nathan Giwerzew
+NZZ,Redaktion Deutschland,Anna Schiller
+NZZ,Redaktion Deutschland,Malte Fischer
+NZZ,Korrespondenten,Daniel Steinvorth (Paris)
+NZZ,Korrespondenten,Niklaus Nuspliger (London)
+NZZ,Korrespondenten,David Signer (London)
+NZZ,Korrespondenten,Luzi Bernet (Rom)
+NZZ,Korrespondenten,Ute Müller (Madrid)
+NZZ,Korrespondenten,Meret Baumann (Wien)
+NZZ,Korrespondenten,Volker Pabst (Berlin/Warschau)
+NZZ,Korrespondenten,Michael Rasch (Frankfurt)
+NZZ,Korrespondenten,Daniel Imwinkelried (Brüssel)
+NZZ,Korrespondenten,Antonio Fumagalli (Brüssel)
+NZZ,Korrespondenten,Linda Koponen (Tallinn)
+NZZ,Korrespondenten,Rewert Hoffer (Tel Aviv)
+NZZ,Korrespondenten,Markus Ackeret (Moskau)
+NZZ,Korrespondenten,Samuel Misteli (Nairobi)
+NZZ,Korrespondenten,Nicole Anliker (Istanbul)
+NZZ,Korrespondenten,Daniel Böhm (Beirut)
+NZZ,Korrespondenten,Ulrich von Schwerin (Mumbai)
+NZZ,Korrespondenten,Andreas Babst (Bangkok)
+NZZ,Korrespondenten,Patrick Zoll (Taipeh)
+NZZ,Korrespondenten,Matthias Kamp (Peking)
+NZZ,Korrespondenten,Martin Kölling (Tokio)
+NZZ,Korrespondenten,Barbara Barkhausen (Sydney)
+NZZ,Korrespondenten,Christian Weisflog (Washington)
+NZZ,Korrespondenten,Andreas Scheiner (Chicago)
+NZZ,Korrespondenten,André Müller (New York)
+NZZ,Korrespondenten,Marie-Astrid Langer (San Francisco)
+NZZ,Korrespondenten,Alexander Busch (Salvador/Bahia)
+NZZ,Korrespondenten,Thomas Milz (Rio de Janeiro)
+NZZ am Sonntag,Chefredaktor,Beat Balzli
+NZZ am Sonntag,Stellvertreter,Daniel Foppa
+NZZ am Sonntag,Mitglieder Chefredaktion,Daniel Foppa
+NZZ am Sonntag,Mitglieder Chefredaktion,Christoph Zürcher
+NZZ am Sonntag,Mitglieder Chefredaktion,Paula Scheidt
+NZZ am Sonntag,International,Gordana Mijuk
+NZZ am Sonntag,International,Markus Bernath
+NZZ am Sonntag,International,Karin A. Wenger
+NZZ am Sonntag,International,Dennis Frasch
+NZZ am Sonntag,Schweiz und Debatte,Daniel Foppa
+NZZ am Sonntag,Schweiz und Debatte,René Donzé
+NZZ am Sonntag,Schweiz und Debatte,Georg Humbel
+NZZ am Sonntag,Schweiz und Debatte,Simon Marti
+NZZ am Sonntag,Schweiz und Debatte,Mirko Plüss
+NZZ am Sonntag,Schweiz und Debatte,Ladina Triaca
+NZZ am Sonntag,Schweiz und Debatte,Daniel Friedli
+NZZ am Sonntag,Schweiz und Debatte,Gina Bachmann
+NZZ am Sonntag,Schweiz und Debatte,Thomas Isler
+NZZ am Sonntag,Schweiz und Debatte,Alain Zucker
+NZZ am Sonntag,Schweiz und Debatte,Nicole Althaus
+NZZ am Sonntag,Schweiz und Debatte,Patrizia Messmer
+NZZ am Sonntag,Schweiz und Debatte,Leo Eiholzer
+NZZ am Sonntag,Schweiz und Debatte,Stefanie Pauli
+NZZ am Sonntag,Kultur,Peer Teuwsen
+NZZ am Sonntag,Kultur,Denise Bucher
+NZZ am Sonntag,Kultur,Frank Heer
+NZZ am Sonntag,Kultur,Martina Läubli
+NZZ am Sonntag,Kultur,Anna Kardos
+NZZ am Sonntag,Kultur,Linus Schöpfer
+NZZ am Sonntag,Layout und Produktion,Daniela Salm
+NZZ am Sonntag,Layout und Produktion,Andreas Steiner
+NZZ am Sonntag,Layout und Produktion,Mark Walter
+NZZ am Sonntag,Layout und Produktion,Christina Duss
+NZZ am Sonntag,Art Director,Björn Vondras
+NZZ am Sonntag,Bildredaktion,Dario Veréb
+NZZ am Sonntag,Ständige Mitarbeit,Patrick Chappatte
+NZZ am Sonntag,Magazin / Bellevue / Z,Paula Scheidt
+NZZ am Sonntag,Magazin / Bellevue / Z,Kerstin Netsch
+NZZ am Sonntag,Magazin / Bellevue / Z,Sacha Batthyany
+NZZ am Sonntag,Magazin / Bellevue / Z,Martin Helg
+NZZ am Sonntag,Magazin / Bellevue / Z,Andrea Bornhauser
+NZZ am Sonntag,Magazin / Bellevue / Z,Rafaela Roth
+NZZ am Sonntag,Magazin / Bellevue / Z,Kim Dang
+NZZ am Sonntag,Magazin / Bellevue / Z,Lea Hagmann
+NZZ am Sonntag,Magazin / Bellevue / Z,Jocelyne Iten
+NZZ am Sonntag,Magazin / Bellevue / Z,Peter Keller
+NZZ am Sonntag,Magazin / Bellevue / Z,Malena Ruder
+NZZ am Sonntag,Magazin / Bellevue / Z,Jana Schibli
+NZZ am Sonntag,Magazin / Bellevue / Z,Sonja Siegenthaler
+NZZ am Sonntag,Magazin / Bellevue / Z,Urs Bühler
+NZZ am Sonntag,Magazin / Bellevue / Z,Carole Koch
+NZZ am Sonntag,Magazin Produktion,Patrizia Trebbi
+NZZ am Sonntag,Magazin Produktion,Claudio Gmür
+NZZ am Sonntag,Magazin Produktion,Jürg Sturzenegger
+NZZ Folio,Redaktion,Aline Wanner
+NZZ Folio,Redaktion,Reto U. Schneider
+NZZ Folio,Redaktion,Flurin Clalüna
+NZZ Folio,Redaktion,Barbara Klingbacher
+NZZ Geschichte,Redaktion,Claudia Mäder
+NZZ Geschichte,Redaktion,Daniel Di Falco
+NZZ Geschichte,Redaktion,Barbara Stauss
+NZZ Residence,Redaktion,Christina Hubbeling
+Corporate,CEO,Felix Graf
