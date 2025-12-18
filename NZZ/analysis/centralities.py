@@ -164,9 +164,11 @@ def lookup_role(name: str, role_map: Dict[str, str]) -> str:
     if not role_map:
         return "Unknown"
     if name in role_map:
+        if isinstance(role_map[name], list):
+            return ", ".join(role_map[name])
         return role_map[name]
     match = get_close_matches(name, role_map.keys(), n=1, cutoff=0.85)
-    return role_map[match[0]] if match else "Unknown"
+    return ", ".join(role_map[match[0]]) if match else "Unknown"
 
 
 def largest_component_subgraph(graph: nx.Graph) -> nx.Graph:
