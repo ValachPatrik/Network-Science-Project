@@ -252,16 +252,15 @@ class GraphVisualizer:
             )[:label_top_n]
 
             labels = {}
-            for node, _ in top_nodes:
-                if show_names:
-                    node_data = H.nodes[node]
-                    label = node_data.get("name", node)
-                    if label == node and node.startswith("author_"):
-                        label = node_data.get("name", node.replace("author_", ""))
-                else:
-                    label = node
+            if show_names:
+                for node, _ in top_nodes:
+                    
+                        node_data = H.nodes[node]
+                        label = node_data.get("name", node)
+                        if label == node and node.startswith("author_"):
+                            label = node_data.get("name", node.replace("author_", ""))
 
-                labels[node] = label
+                        labels[node] = label
 
             nx.draw_networkx_labels(H, pos, labels=labels, font_size=8, ax=ax)
 
