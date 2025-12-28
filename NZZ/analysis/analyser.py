@@ -246,7 +246,6 @@ class ArticleAnalyser:
 
         print("Graph connected?", nx.is_connected(self.G))
         print("Number of components:", len(self.components_sorted))
-
         for i, comp in enumerate(self.components_sorted, 1):
             comp_size = len(comp)
             # Use safe string conversion for display
@@ -255,7 +254,7 @@ class ArticleAnalyser:
             if comp_size > 5:
                 sample_str += f", ... ({comp_size - 5} more)"
             print(f"Component {i} (size {comp_size}): {sample_str}")
-
+        
         return self.components_sorted
 
     # ... (highest_degree_node, degree_of_author, component_of_node, nodes_not_in_largest remain the same) ...
@@ -481,48 +480,6 @@ class ArticleAnalyser:
         # (in modern Python) will maintain this. No need for re-sorting here.
         return self.cluster_author_map
 
-    # def assign_clusters_to_dataframe(self, df_authors: pd.DataFrame):
-    #     """
-    #     Assigns pre-computed cluster IDs to a DataFrame of authors and delegates 
-    #     the reporting to ArticleReporter. (Refactored to use ArticleReporter)
-    #     """
-    #     if self.clusters is None:
-    #         raise ValueError("Run compute_clusters() first.")
-        
-    #     self.reporter.clusters = self.clusters # Pass clusters to the reporter
-
-    #     # 1. Assign Clusters: Map cluster IDs to the DataFrame
-    #     # Assumes df_authors has an 'Author' column
-    #     df_authors["cluster"] = df_authors["Author"].map(self.clusters)
-
-    #     # 2. Check Initial Cluster Count
-    #     total_clusters_with_unassigned = df_authors["cluster"].nunique(dropna=False)
-    #     print(
-    #         f"Total unique clusters (including unassigned) found: {total_clusters_with_unassigned}"
-    #     )
-
-    #     # 3. Finalize Clustered DataFrame
-    #     df_clustered = df_authors.dropna(subset=["cluster"]).copy()
-    #     df_clustered["cluster"] = df_clustered["cluster"].astype(int)
-
-    #     # 4. Final Cluster Metrics
-    #     final_num_clusters = df_clustered["cluster"].nunique()
-    #     print(f"Final number of unique clusters analyzed: {final_num_clusters}")
-
-    #     num_clustered_authors = df_clustered["Author"].nunique()
-    #     print(f"Number of clustered unique authors: {num_clustered_authors}")
-        
-    #     logger.info(f"Clustered DataFrame Info:\n{df_clustered.info()}")
-
-    #     # 5. Generate Summary and Reports (Delegated to Reporter)
-    #     cluster_section_data = self.reporter.get_section_counts_per_cluster(
-    #         df_clustered=df_clustered
-    #     )
-
-    #     self.reporter.format_cluster_summary(cluster_section_data)
-        
-    #     return cluster_section_data
-
 
     def assign_clusters_to_dataframe(self, df_authors: pd.DataFrame):
         """Main entry point to assign clusters and generate reports."""
@@ -714,6 +671,21 @@ def parse_args() -> argparse.Namespace:
         help="Skip interactive visualization",
     )
 
+
+    parser.add_argument(
+        "--largest-component",
+        action="store_true",
+        default =True,
+        help="Restrict analysis to the largest connected component.",
+    )
+
+    parser.add_argument(
+        "--no-largest-component",
+        dest="largest_component",
+        action="store_false",
+        help="Use the full graph for analysis.",)
+    
+
     parser.add_argument(
         "--analyze",
         action="store_true",
@@ -786,6 +758,23 @@ def parse_args() -> argparse.Namespace:
         help="Path to the NZZ Impressum CSV file.",
     )
 
+    parser.add_argument(
+        "--show-names",
+        action="store_true",
+        default=True,
+        help="Show node labels in the visualization viewport.",
+    )
+    
+
+    
+
+    parser.add_argument(
+        "--no-show-names",
+        dest="show_names",
+        action="store_false",
+        help="Hide node labels in the visualization viewport.",
+    )
+
     return parser.parse_args()
 
 def main():
@@ -816,19 +805,18 @@ def main():
         builder = ArticleAnalyser(G=combined_graph)
         builder.df = data_builder.df
         df_table = pd.DataFrame()
-
+        G = builder.G.copy()
+        if args.largest_component:
+            G = builder.get_largest_component_graph()
         if args.analyze:
-            builder.analyze_components()
+            if not args.largest_component:
+                builder.analyze_components()
             builder.highest_degree_node()
             
-            # Use largest component for category mapping
-            G_largest = builder.get_largest_component_graph() 
             builder.authors_to_category_mapping(
-                    G=G_largest, df=builder.df)
+                    G=G, df=builder.df)
             
             df_table = builder.create_author_section_table()
-            #print("## 📊 Author Article Counts by Section")
-            #print(df_table.to_markdown(index=False))
             df_table.to_csv('author_section_counts.csv', index=False)
 
             # Filter to highest count section per author for summary
@@ -879,11 +867,10 @@ def main():
 
         if args.visualize:
             # Visualize the largest component by default
-            G_visualize = builder.get_largest_component_graph()
-            if G_visualize.nodes:
+            if G.nodes:
                 visualizer.visualize_existing_graph_interactive(
-                    G_visualize,
-                    show_names=True,
+                    G,
+                    show_names=args.show_names,
                     cluster_colors=cluster_colors,
                 )
 
@@ -958,7 +945,7 @@ def main():
                     if args.visualize:
                         visualizer.visualize_existing_graph_interactive(
                         G_centrality,
-                        show_names=True,
+                        show_names=args.show_names,
                         measure_name=name,
                         centrality_measures=values,
                     )
