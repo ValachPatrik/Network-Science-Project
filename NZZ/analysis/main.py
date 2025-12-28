@@ -23,6 +23,7 @@ COMMAND_MODULES = {
     "centralities": "NZZ.analysis.centralities",
     "analyser": "NZZ.analysis.analyser",
     "hubs": "NZZ.analysis.identify_hubs",
+    "robustness": "NZZ.analysis.robustness_analysis",
 }
 
 # Default arguments we want to inject when running everything sequentially.
