@@ -22,6 +22,7 @@ COMMAND_MODULES = {
     "average-path": "NZZ.analysis.average_path_length_diameter",
     "centralities": "NZZ.analysis.centralities",
     "analyser": "NZZ.analysis.analyser",
+    "hubs": "NZZ.analysis.identify_hubs",
 }
 
 # Default arguments we want to inject when running everything sequentially.
@@ -52,6 +53,7 @@ def build_parser() -> argparse.ArgumentParser:
 
             Pass the original script arguments after the command, e.g.
               python NZZ/analysis/main.py author-network --limit 2000 --visualize
+              python NZZ/analysis/main.py hubs --method betweenness
             """
         ),
     )
