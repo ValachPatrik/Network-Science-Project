@@ -754,7 +754,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--impressum",
         type=str,
-        default="nzz_impressum.csv",
+        default="NZZ/analysis/nzz_impressum.csv",
         help="Path to the NZZ Impressum CSV file.",
     )
 
