@@ -381,6 +381,7 @@ Filters: Cluster
 Column Fields: Data, and Row Fields: Role, and Data Fields: Count-Role. Also, see the provided filtered_clustered_authors.osd file,
 and the Pivot Table_filtered_clustered_authors_1_2 tab. Different filtering was used to get all tables in the report.
 
+The file "author_section_counts.csv" shows the mapping between articles and their authors. The count is the number of times different articles appear in that resort.
 
 
 
