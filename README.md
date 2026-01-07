@@ -367,6 +367,24 @@ python clean_db.py --reset
 - **ZEIT**: `ZEIT/scraper.log`
 - **NZZ**: `NZZ/nzz_scraper.log`
 
+## Build Graph and analye it
+**Examples:**
+```bash
+# Visualiztion of combined graph in sum mode
+python NZZ/analysis/main.py analyser --visualize --no-largest-component --no-show-names
+
+# Visualization of largest connected component and clustering with analysis.
+python NZZ/analysis/main.py analyser --visualize --analyze --cluster louvain --no-show-names
+```
+Then, use the filtered_clustered_authors.csv file and do a pivot with the following settings:
+Filters: Cluster
+Column Fields: Data, and Row Fields: Role, and Data Fields: Count-Role. Also, see the provided filtered_clustered_authors.osd file,
+and the Pivot Table_filtered_clustered_authors_1_2 tab. Different filtering was used to get all tables in the report.
+
+
+
+
+
 ## Requirements
 
 See `requirements.txt` for all dependencies:
