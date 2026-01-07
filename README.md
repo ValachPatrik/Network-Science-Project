@@ -2,34 +2,6 @@
 
 This project contains scrapers for extracting articles from news websites.
 
-## Project Structure
-
-```
-Network-Science-Project/
-├── ZEIT/                   # ZEIT.de scraper
-│   ├── scraper.py          # Main scraper
-│   ├── database.py         # Database models
-│   ├── run_scraper.py      # Run scraper script
-│   ├── view_articles.py    # View scraped articles
-│   ├── check_status.py     # Check scraper status
-│   └── verify_scraper.py   # Verify articles
-├── NZZ/                    # NZZ.ch scraper and analysis
-│   ├── scraper/            # Scraping logic for NZZ
-│   ├── process/            # Processing and cleaning of scraped data
-│   ├── analysis/           # Network science analysis (multilayer, assortativity, etc.)
-│   ├── visuals/            # Visualizations and exported graph files
-│   ├── debug/              # Debugging helpers and scripts
-│   ├── gephi/              # Gephi project files (if any)
-│   ├── test_data/          # Test data for experiments
-│   ├── database.py         # Database models
-│   ├── run_scraper.py      # Run scraper script
-│   ├── view_articles.py    # View scraped articles
-│   └── clean_db.py         # Database cleanup script
-├── requirements.txt        # Python dependencies
-├── README.md               # This file
-└── QUICK_START.md          # Quick start guide
-```
-
 ## Installation
 
 1. **Install Python dependencies:**
@@ -43,10 +15,6 @@ Network-Science-Project/
    MAIL=your_email@example.com
    PASS=your_password
    ```
-
-## Quick Start
-
-See [QUICK_START.md](QUICK_START.md) for a quick reference guide.
 
 ## Running the Scrapers
 
@@ -74,49 +42,14 @@ cd ZEIT
 python run_scraper.py
 ```
 
-The scraper will:
+The NZZ scraper will:
 - Automatically handle cookie consent
 - Login with your credentials
 - Navigate to https://www.zeit.de/news/index
 - Extract all articles
 - Save to `scraped_articles.db`
 
-#### Step 3: View Scraped Articles
 
-```bash
-cd ZEIT
-# Show all articles as DataFrame (recommended)
-python view_articles.py df
-
-# Show first 10 articles
-python view_articles.py df --limit 10
-
-# Show specific article
-python view_articles.py df --id article-id-here
-
-# Search articles
-python view_articles.py df --search "politics"
-
-# View detailed article information
-python view_articles.py view --limit 5
-
-# List summary
-python view_articles.py list
-```
-
-#### Additional Commands
-
-```bash
-cd ZEIT
-# Check scraper status
-python check_status.py
-
-# Verify articles format
-python verify_scraper.py
-
-# Run with retry (if login fails)
-python run_with_retry.py
-```
 
 ### NZZ.ch Scraper
 
@@ -133,91 +66,12 @@ The NZZ scraper uses requests and BeautifulSoup (no login required).
 
 ```bash
 cd NZZ
-python run_scraper.py
+python run_scraper_v3.py
 ```
 
 The scraper will:
 - Navigate to https://www.nzz.ch/neueste-artikel
-- Extract all articles
-- Save to `nzz_scraped_articles.db`
-
-#### Step 3: View Scraped Articles
-
-```bash
-cd NZZ
-# Show all articles as DataFrame (recommended)
-python view_articles.py df
-
-# Show first 10 articles
-python view_articles.py df --limit 10
-
-# Show specific article
-python view_articles.py df --id article-id-here
-
-# Search articles
-python view_articles.py df --search "wirtschaft"
-
-# View detailed article information
-python view_articles.py view --limit 5
-
-# List summary
-python view_articles.py list
-```
-
-#### Step 4: Clean Database (Optional)
-
-```bash
-cd NZZ
-# Show database statistics
-python clean_db.py --stats
-
-# Delete all articles (with confirmation)
-python clean_db.py --delete-all
-
-# Delete articles older than 30 days
-python clean_db.py --delete-before-days 30
-
-# Delete articles in a specific category
-python clean_db.py --delete-category zuerich
-
-# Delete duplicate articles (keep oldest)
-python clean_db.py --delete-duplicates
-
-# Reset entire database (drop and recreate tables)
-python clean_db.py --reset
-
-# Skip confirmation prompts (use with caution!)
-python clean_db.py --delete-all --no-confirm
-```
-
-## Database Files
-
-- **ZEIT**: `ZEIT/scraped_articles.db`
-- **NZZ**: `NZZ/nzz_scraped_articles.db`
-
-## Features
-
-### ZEIT.de Scraper Features
-
-- ✅ Automatic cookie consent handling
-- ✅ Automatic login with credentials
-- ✅ Handles Keycloak/OpenID Connect login
-- ✅ Extracts articles from https://www.zeit.de/news/index
-- ✅ Extracts tags from `<ul class="article-tags__list">`
-- ✅ Extracts source from `<span class="metadata__source">`
-- ✅ Extracts publication date from `<time class="metadata__date">`
-- ✅ Removes " | DIE ZEIT" from titles
-- ✅ Rate limiting and retry logic
-- ✅ Infinite scroll and pagination support
-
-### NZZ.ch Scraper Features
-
-- ✅ Extracts articles from https://www.nzz.ch/neueste-artikel
-- ✅ Extracts tags from `news_keywords` meta tag (Step 1)
-- ✅ Filters out generic keywords (Step 2)
-- ✅ Extracts category from URL path (Step 3)
-- ✅ Extracts author, description, dates
-- ✅ Rate limiting and retry logic
+- Extract all articles, authors from impressum
 
 ## Extracted Fields
 
@@ -235,132 +89,70 @@ python clean_db.py --delete-all --no-confirm
 
 ### NZZ Articles
 
-- **ID**: Article ID (from URL pattern ld.XXXXX)
-- **Title**: Article title
-- **URL**: Article URL
-- **Content**: Full article content
-- **Tags**: Tags from news_keywords meta tag (filtered)
-- **Category**: Category from URL path (e.g., zuerich, wirtschaft)
-- **Author**: Author name
-- **Description**: Article description
-- **Published**: Publication date
-- **Updated**: Updated date (if available)
-- **Scraped At**: Exact time when article was downloaded (down to second)
+#### Core Fields
 
-## Viewing Articles
+- **article_id**: Unique article identifier
+- **title**: Article title
+- **content**: Full text content of the article
+- **article_url**: Source URL for the article (metadata)
+- **description**: Article description/summary
+- **tags**: Tags embedded within the article page
+- **category**: URL category the article is assigned into (e.g., zuerich, wirtschaft, international)
+- **article_date**: Release/publication date of the article
+- **article_updated**: Latest update date (if article was edited)
+- **scraped_at**: Timestamp when article was downloaded (metadata)
 
-Both scrapers include a `view_articles.py` script that displays scraped articles in a DataFrame format.
+#### Author-Related Fields
 
-### DataFrame View (Recommended)
+- **author**: Raw author line containing author names, potentially with location and department information (needs processing)
+- **authors**: List of author names extracted from the authors table
+- **department**: List of author departments extracted from the authors table
+- **location**: List of author locations extracted from the authors table
+- **author_links**: Embedded links to author pages (if author is listed in impressum)
 
-The DataFrame view shows:
-- **Total articles**: Number of articles in database
-- **Number of datapoints**: Number of articles displayed
-- **Number of columns**: Number of columns (11 for NZZ, 10 for ZEIT)
-- **All columns**: Including **Content Length** (instead of actual content)
+#### Network Analysis Fields
 
-### Example Output
+- **related_articles**: List of recommended related articles by NZZ (article IDs)
+- **related_articles_filtered**: Filtered list containing only related articles that have been scraped, processed, and are within the one-year timeframe
 
-```
-================================================================================
-NZZ ARTICLES DATAFRAME
-================================================================================
-Total articles: 35
-Number of datapoints: 35
-Number of columns: 11
+#### Data Statistics
 
-     ID    Title    URL    Category    Author    Tags    Description    Published    Updated    Scraped At    Content Length
-...
-```
+- **Total Articles**: 16,417 articles scraped
+- **Timeframe**: Up to one year of article history
+- **Data Sources**:
+  - Article history page (endlessly scrollable)
+  - Related articles from each article page
 
-### Available Commands
+### NZZ Authors
 
-```bash
-# Show all articles
-python view_articles.py df
+Authors are sourced from the NZZ impressum page, which contains detailed information about employed authors. Note that NZZ employs many authors on a freelance/non-permanent basis, so the impressum list serves as enrichment data rather than a complete author dataset.
 
-# Show first N articles
-python view_articles.py df --limit 10
+#### Core Fields
 
-# Show specific article
-python view_articles.py df --id article-id-here
+- **author_id**: Unique identifier assigned to authors in impressum (also referenced in articles)
+- **name**: Author's full name (includes first, middle, and last names)
+- **title**: Author's title/position within the firm (e.g., Chefredaktor, Stellvertretender Chefredaktor)
+- **alt_name**: Shortcuts or initials used by NZZ to identify authors (e.g., "eg.", "daw.", "mij.")
+- **bio**: Biography of the author
+- **author_url**: Source URL from impressum page (metadata for potential further processing)
+- **alias**: Potential aliases for author names to allow mapping even when string representations differ (e.g., "Eric Gujer (eg.)")
+- **has_info**: Flag indicating whether author has bio and other information present from impressum (useful when processing authors from articles)
 
-# Search articles
-python view_articles.py df --search "search-term"
+#### Organizational Fields
 
-# View detailed information
-python view_articles.py view --limit 5
+- **department**: Teams/departments authors are grouped into (e.g., International, Wochenende/Gesellschaft/Reisen)
 
-# List summary
-python view_articles.py list
-```
+#### Enrichment Fields
 
-## Troubleshooting
+- **location**: Location data mapped from articles (potentially finding new insights)
+- **tags**: Tag data mapped from articles (potentially finding new insights)
+- **scraped_at**: Timestamp when author data was scraped (metadata)
 
-### ZEIT Scraper Issues
+#### Data Statistics
 
-1. **Login fails:**
-   - Check your credentials in `.env` file
-   - Ensure you have a valid ZEIT.de account
-   - Check if the website structure has changed
-
-2. **Cookie dialog not accepted:**
-   - The scraper should handle this automatically
-   - If it fails, check the logs in `scraper.log`
-
-3. **Session invalid:**
-   - The scraper includes retry logic
-   - Check `scraper.log` for detailed error messages
-
-### NZZ Scraper Issues
-
-1. **No articles found:**
-   - Check your internet connection
-   - Verify the website is accessible
-   - Check the logs for errors
-
-2. **Content not extracted:**
-   - Some articles may be behind a paywall
-   - Check if the article structure has changed
-
-## Database Management
-
-### NZZ Database Cleanup
-
-The NZZ scraper includes a `clean_db.py` script for managing the database:
-
-**Available Operations:**
-- `--stats`: Show database statistics (total articles, date range, categories)
-- `--delete-all`: Delete all articles from the database
-- `--delete-before-days N`: Delete articles scraped before N days ago
-- `--delete-after-days N`: Delete articles scraped after N days ago
-- `--delete-category CATEGORY`: Delete articles in a specific category
-- `--delete-duplicates`: Delete duplicate articles (keeps the oldest version)
-- `--reset`: Reset entire database (drops and recreates all tables)
-- `--no-confirm`: Skip confirmation prompts (use with caution!)
-
-**Examples:**
-```bash
-cd NZZ
-
-# Show statistics
-python clean_db.py --stats
-
-# Delete all articles
-python clean_db.py --delete-all
-
-# Delete articles older than 30 days
-python clean_db.py --delete-before-days 30
-
-# Delete articles in 'zuerich' category
-python clean_db.py --delete-category zuerich
-
-# Delete duplicates
-python clean_db.py --delete-duplicates
-
-# Reset database
-python clean_db.py --reset
-```
+- **Total Authors**: 342 authors from impressum
+- **Data Source**: NZZ impressum page
+- **Note**: The impressum list is incomplete as many authors work on a freelance/non-permanent basis. Throughout the project, authors are primarily sourced from articles, with impressum data used for enrichment.
 
 ## Logs
 
@@ -383,9 +175,6 @@ and the Pivot Table_filtered_clustered_authors_1_2 tab. Different filtering was 
 
 The file "author_section_counts.csv" shows the mapping between articles and their authors. The count is the number of times different articles appear in that resort.
 
-
-
-
 ## Requirements
 
 See `requirements.txt` for all dependencies:
@@ -402,5 +191,5 @@ See `requirements.txt` for all dependencies:
 - The ZEIT scraper requires Chrome/Chromium browser (managed by webdriver-manager)
 - The NZZ scraper uses requests library (no browser needed)
 - Both scrapers include rate limiting to be respectful to the servers
-- Articles are stored in SQLite databases
+- Articles are stored in SQLite databases then migrated to supabase where we prvide cretentials for, in case the instance is inactive, please contact the creators.
 
