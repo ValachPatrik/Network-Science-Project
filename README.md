@@ -374,7 +374,7 @@ python clean_db.py --reset
 python NZZ/analysis/main.py analyser --visualize --no-largest-component --no-show-names
 
 # Visualization of largest connected component and clustering with analysis.
-python NZZ/analysis/main.py analyser --visualize --analyze --cluster louvain --no-show-names
+python NZZ/analysis/main.py analyser --visualize --analyze --cluster louvain --no-show-names --impressum {path to the nzz_impressum.csv file}
 ```
 Then, use the filtered_clustered_authors.csv file and do a pivot with the following settings:
 Filters: Cluster
