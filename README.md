@@ -171,6 +171,9 @@ uv sync
 # Visualiztion of combined graph in sum mode
 uv run NZZ/analysis/main.py analyser --visualize --no-largest-component --no-show-names
 
+# Visualization of coauthor layer with author names shown
+uv run NZZ/analysis/main.py author-network --layers coauthor --visualize --visualize-target coauthor --visualize-show-names
+
 # Visualization of largest connected component and clustering with analysis.
 # Usually impressum file is at NZZ/analysis/nzz_impressum.csv
 uv run NZZ/analysis/main.py analyser --visualize --analyze --cluster louvain --no-show-names --impressum {path to the nzz_impressum.csv file}
@@ -203,4 +206,3 @@ See `requirements.txt` for all dependencies:
 - The NZZ scraper uses requests library (no browser needed)
 - Both scrapers include rate limiting to be respectful to the servers
 - Articles are stored in SQLite databases then migrated to supabase where we prvide cretentials for, in case the instance is inactive, please contact the creators.
-
