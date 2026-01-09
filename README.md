@@ -159,7 +159,7 @@ Authors are sourced from the NZZ impressum page, which contains detailed informa
 - **ZEIT**: `ZEIT/scraper.log`
 - **NZZ**: `NZZ/nzz_scraper.log`
 
-## Build Graph and analye it
+## Build Graph and analyze it
 **Examples:**
 ```bash
 # Install uv if not already installed
@@ -180,6 +180,23 @@ uv run NZZ/analysis/main.py analyser --visualize --analyze --cluster louvain --n
 
 #Small world problem
 uv run  NZZ/analysis/main.py average-path
+
+# Basic run with defaults (all measures, combined graph)
+uv run NZZ/analysis/main.py centralities
+# Quick test with limited data
+uv run NZZ/analysis/main.py centralities --limit 50 --top-k 5
+# Analyze coauthor layer with visualization
+uv run NZZ/analysis/main.py centralities --graph coauthor --visualize --visualize-measure degree
+# Only degree and betweenness on largest component
+uv run NZZ/analysis/main.py centralities --measures degree betweenness --largest-component
+
+# Assortativity
+# Basic run on full graph
+uv run NZZ/analysis/main.py assortativity
+# With article limit and largest component only
+uv run NZZ/analysis/main.py assortativity --limit 2000 --largest-component
+# Using max instead of sum to combine edge weights across layers
+uv run NZZ/analysis/main.py assortativity --combine-mode max --largest-component
 ```
 
 Then, use the filtered_clustered_authors.csv file and do a pivot with the following settings:
