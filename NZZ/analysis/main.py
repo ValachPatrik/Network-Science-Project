@@ -24,6 +24,19 @@ COMMAND_MODULES = {
     "analyser": "NZZ.analysis.analyser"
 }
 
+# Default arguments we want to inject when running everything sequentially.
+RUN_ALL_DEFAULT_ARGS = {
+    # show all three visual layers plus the random baseline
+    "author-network": [
+        "--visualize",
+        "--visualize-target",
+        "combined",
+        "--visualize-weight-threshold",
+        "1",
+        "--run-baseline",
+    ],
+}
+
 
 def build_parser() -> argparse.ArgumentParser:
     descriptions = "\n".join(
@@ -71,7 +84,7 @@ def main() -> None:
     if args.command == "run-all":
         for name in COMMAND_MODULES:
             print(f"\n=== Running {name} ===")
-            dispatch(name, [])
+            dispatch(name, RUN_ALL_DEFAULT_ARGS.get(name, []))
         return
     dispatch(args.command, args.script_args)
 
