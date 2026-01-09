@@ -175,6 +175,9 @@ uv run NZZ/analysis/main.py analyser --visualize --no-largest-component --no-sho
 # Usually impressum file is at NZZ/analysis/nzz_impressum.csv
 uv run NZZ/analysis/main.py analyser --visualize --analyze --cluster louvain --no-show-names --impressum {path to the nzz_impressum.csv file}
 ```
+#Small world problem
+uv run  NZZ/analysis/main.py average-path
+
 Then, use the filtered_clustered_authors.csv file and do a pivot with the following settings:
 Filters: Cluster
 Column Fields: Data, and Row Fields: Role, and Data Fields: Count-Role. Also, see the provided filtered_clustered_authors.osd file,
