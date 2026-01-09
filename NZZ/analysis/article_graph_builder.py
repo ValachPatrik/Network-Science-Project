@@ -142,7 +142,6 @@ class ArticleGraphBuilder:
                 print("Loading data from Supabase...")
                 self.df = pd.read_sql(query, self.engine)
 
-            print("Columns found:", self.df.columns.tolist())
             print(f"Loaded {len(self.df)} rows.")
             return self.df
         except Exception as e:

@@ -145,9 +145,7 @@ class ArticleReporter:
             )
 
         df_summary = pd.DataFrame(summary_data)
-
-        print(df_summary.head())
-
+        print("\n")
         print(
             "## 📊 Cluster Section Distribution Summary (n={:,})".format(
                 df_summary["Total Authors"].sum()
@@ -159,10 +157,8 @@ class ArticleReporter:
         return df_summary
 
     def print_detailed_counts(self, cluster_section_data: list[dict]) -> pd.DataFrame:
-        """Prints the full, detailed breakdown of section counts per cluster and returns the DataFrame."""
+        """Full, detailed breakdown of section counts per cluster and returns the DataFrame."""
 
-        print("\n## 📝 Detailed Section Counts per Cluster")
-        print("-" * 50)
 
         detailed_data = []
 
@@ -192,7 +188,6 @@ class ArticleReporter:
                 )
 
         df_detailed = pd.DataFrame(detailed_data)
-        # print(df_detailed.to_markdown(index=False)) # Optional: Print to console
         return df_detailed
 
 
@@ -257,7 +252,6 @@ class ArticleAnalyser:
         
         return self.components_sorted
 
-    # ... (highest_degree_node, degree_of_author, component_of_node, nodes_not_in_largest remain the same) ...
     def highest_degree_node(self):
         """Return node with the most edges."""
         if not self.G.degree:
@@ -515,7 +509,6 @@ class ArticleAnalyser:
         print(f"Final number of unique clusters analyzed: {final_clusters}")
         print(f"Number of clustered unique authors: {num_authors}")
         
-        logger.info(f"Clustered DataFrame Info:\n{df_clustered.info()}")
 
     def _generate_cluster_reports(self, df_clustered: pd.DataFrame):
         """Delegates the heavy lifting to the ArticleReporter."""
@@ -811,7 +804,6 @@ def main():
         if args.analyze:
             if not args.largest_component:
                 builder.analyze_components()
-            builder.highest_degree_node()
             
             builder.authors_to_category_mapping(
                     G=G, df=builder.df)
@@ -840,8 +832,6 @@ def main():
                 builder.compute_clusters(method=cluster_method)
                 
                 if args.analyze:
-                    cluster_summary_data = builder.assign_clusters_to_dataframe(df_authors=df_table.copy())
-                    builder.reporter.print_detailed_counts(cluster_section_data=cluster_summary_data).to_csv('detailed_cluster_resort_counts.csv', index=False)
 
 
                     cluster_summary_data_filtered = builder.assign_clusters_to_dataframe(df_authors=df_filtered.copy())
