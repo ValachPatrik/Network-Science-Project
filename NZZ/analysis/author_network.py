@@ -134,6 +134,8 @@ def run_random_baseline(
     visualize: bool = False,
     visualizer: GraphVisualizer | None = None,
     weight_threshold: float = 0.0,
+    label_top_n: int = 50,
+    show_names: bool = False,
 ) -> dict | None:
     temp_builder = ArticleGraphBuilder()
     temp_builder.load_data(limit=limit)
@@ -177,7 +179,8 @@ def run_random_baseline(
     if visualize and visualizer:
         visualizer.visualize_existing_graph_interactive(
             combined_view,
-            show_names=False,
+            show_names=show_names,
+            label_top_n=label_top_n,
             weight_threshold=weight_threshold,
         )
 
@@ -227,6 +230,17 @@ def parse_args() -> argparse.Namespace:
         type=float,
         default=0.0,
         help="Minimum edge weight shown in the visualization.",
+    )
+    parser.add_argument(
+        "--visualize-label-top-n",
+        type=int,
+        default=50,
+        help="How many top nodes to label in the visualization (0 disables labels).",
+    )
+    parser.add_argument(
+        "--visualize-show-names",
+        action="store_true",
+        help="Show author names (if available) instead of node IDs in labels.",
     )
     parser.add_argument(
         "--export",
@@ -320,7 +334,8 @@ def main() -> None:
         else:
             visualizer.visualize_existing_graph_interactive(
                 graph_to_visualize,
-                show_names=False,
+                show_names=args.visualize_show_names,
+                label_top_n=args.visualize_label_top_n,
                 weight_threshold=args.visualize_weight_threshold,
             )
 
@@ -342,6 +357,8 @@ def main() -> None:
             visualize=args.visualize,
             visualizer=visualizer,
             weight_threshold=args.visualize_weight_threshold,
+            label_top_n=args.visualize_label_top_n,
+            show_names=args.visualize_show_names,
         )
         if baseline_result:
             top_act = baseline_result.get("top_activity_per_layer")
