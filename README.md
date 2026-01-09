@@ -172,7 +172,7 @@ uv sync
 uv run NZZ/analysis/main.py analyser --visualize --no-largest-component --no-show-names
 
 # Visualization of largest connected component and clustering with analysis.
-# Usually impressum file is at NZZ/analysis/
+# Usually impressum file is at NZZ/analysis/nzz_impressum.csv
 uv run NZZ/analysis/main.py analyser --visualize --analyze --cluster louvain --no-show-names --impressum {path to the nzz_impressum.csv file}
 ```
 Then, use the filtered_clustered_authors.csv file and do a pivot with the following settings:
